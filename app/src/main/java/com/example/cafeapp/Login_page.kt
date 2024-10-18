@@ -5,6 +5,9 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.MakanDatabase.MakanDatabase
+import com.example.cafeapp.MakanDatabase.TestDatabase1
+
 class Login_page : AppCompatActivity(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,7 +24,7 @@ class Login_page : AppCompatActivity(){
             val InputPass = InputPassword.text.toString()
 
             if (InputUser == Data.username && InputPass == Data.password) {
-                val submit = Intent(this, Login_page::class.java)
+                val submit = Intent(this, TestDatabase1::class.java)
                 startActivity(submit)
             } else {
                 Toast.makeText(this, "Gagal,input data dengan benar", Toast.LENGTH_SHORT).show()

@@ -7,6 +7,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".HalamanKetiga">
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="Back"
+            android:textSize="10sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
         <!--        <androidx.constraintlayout.widget.Guideline-->
         <!--            android:layout_width="match_parent"-->
         <!--            android:layout_height="match_parent"-->
@@ -15,14 +24,16 @@
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="0dp"
+            android:orientation="vertical"
+            app:layout_constraintHeight_percent="0.9"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/test_item_menu"/>
+                tools:listitem="@layout/test_item_menu" />
 
         </LinearLayout>
 

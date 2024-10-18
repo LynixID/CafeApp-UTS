@@ -1,6 +1,9 @@
 package com.example.cafeapp.TestDatabase
 
+import android.content.Context
 import android.content.DialogInterface
+import android.content.Intent
+import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -12,11 +15,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
 import kotlinx.coroutines.launch
+import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
 
 class TestDatabase2 : AppCompatActivity() {
 
     private lateinit var binding: ActivityTestDatabase2Binding
-    private lateinit var database: ColorDatabase
+    private lateinit var database: MenuDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,7 +32,7 @@ class TestDatabase2 : AppCompatActivity() {
         setContentView(binding.root)
 
         // Inisialisasi database
-        database = ColorDatabase.getInstance(this)
+        database = MenuDatabase.getInstance(this)
 
         // Setup RecyclerView
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
@@ -37,6 +43,11 @@ class TestDatabase2 : AppCompatActivity() {
             binding.recyclerView.adapter = MenuAdapter(menus) { menu ->
                 DialogKonfirmasi(menu)
             }
+        }
+
+        binding.back.setOnClickListener(){
+            val intent = Intent(this, TestDatabase1::class.java)
+            startActivity(intent)
         }
     }
 
@@ -63,4 +74,6 @@ class TestDatabase2 : AppCompatActivity() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
+
+
 }

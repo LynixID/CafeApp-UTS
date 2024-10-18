@@ -6,18 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 
 @Database(entities = [Menu::class], version = 2)
-abstract class ColorDatabase: RoomDatabase() {
+abstract class MenuDatabase: RoomDatabase() {
     abstract fun colorDao(): MenuDAO
 
     companion object{
         @Volatile
-        private var INSTANCE: ColorDatabase? = null
+        private var INSTANCE: MenuDatabase? = null
 
-        fun getInstance(context: Context):ColorDatabase{
+        fun getInstance(context: Context):MenuDatabase{
             return INSTANCE?: synchronized(this){
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    ColorDatabase::class.java, "color_database"
+                    MenuDatabase::class.java, "menu_database"
                 )
                     .fallbackToDestructiveMigration().build()
                     .also { INSTANCE = it }

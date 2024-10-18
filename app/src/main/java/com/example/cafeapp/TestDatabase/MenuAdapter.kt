@@ -8,6 +8,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
+import java.io.File
 
 class MenuAdapter(
     private val colorList: List<Menu>,
@@ -27,15 +28,30 @@ class MenuAdapter(
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        val color = colorList[position]
-        holder.colorName.text = color.name
-        holder.hexMenu.text = color.hex
-        holder.fotoMenu.setImageURI(Uri.parse(color.imagePath))
+        val menu = colorList[position]
 
+        // Menampilkan nama dan harga menu
+        holder.colorName.text = menu.name
+        holder.hexMenu.text = menu.harga.toString()
+
+        // Dapatkan path gambar dari direktori internal
+        val context = holder.itemView.context
+        val imgPath = File(context.filesDir, "app_images/${menu.imagePath}")
+
+        if (imgPath.exists()) {
+            // Jika file gambar ada, set gambar ke ImageView
+            holder.fotoMenu.setImageURI(Uri.fromFile(imgPath))
+        } else {
+            // Jika gambar tidak ditemukan, tampilkan gambar default atau kosongkan
+            holder.fotoMenu.setImageResource(R.drawable.placeholder_image) // Ganti dengan placeholder yang sesuai
+        }
+
+        // Set listener untuk klik item
         holder.itemView.setOnClickListener {
-            onItemClick(color)
+            onItemClick(menu)
         }
     }
+
 
     override fun getItemCount() = colorList.size
 }

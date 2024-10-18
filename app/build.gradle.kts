@@ -68,6 +68,7 @@ dependencies {
 
 //    untuk ActivityResultLauncher
     implementation ("androidx.activity:activity-ktx:1.7.0" )// Versi terbaru dapat bervariasi, pastikan memeriksanya.
+    implementation(kotlin("script-runtime"))
 
 
 }

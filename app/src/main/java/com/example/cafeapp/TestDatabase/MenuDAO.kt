@@ -18,8 +18,8 @@ interface MenuDAO {
     @Query("SELECT * FROM colors WHERE name = :name")
     fun getMenuByName(name: String): LiveData<Menu>
 
-    @Query("SELECT * FROM colors WHERE hex_color = :hex")
-    fun getMenuByHex(hex: String): LiveData<Menu>
+    @Query("SELECT * FROM colors WHERE harga = :harga")
+    fun getMenuByHex(harga: Int): LiveData<Menu>
 
     @Query("DELETE FROM colors WHERE _id = :id")
     suspend fun deleteById(id: Int)

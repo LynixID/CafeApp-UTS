@@ -9,6 +9,6 @@ import androidx.room.PrimaryKey
 data class Menu(
     @PrimaryKey(autoGenerate = true) val _id: Int,
     val name: String,
-    @ColumnInfo(name = "hex_color") val hex: String,
+    val harga: Int,
     @ColumnInfo(name = "image_path") val imagePath: String
 )

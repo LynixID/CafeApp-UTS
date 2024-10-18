@@ -1,23 +1,23 @@
-package com.example.cafeapp.TestDatabase
+package com.example.cafeapp.MakanDatabase
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Menu::class], version = 2)
-abstract class MenuDatabase: RoomDatabase() {
-    abstract fun colorDao(): MenuDAO
+@Database(entities = [Makan::class], version = 3)
+abstract class MakanDatabase: RoomDatabase() {
+    abstract fun colorDao(): MakanDAO
 
     companion object{
         @Volatile
-        private var INSTANCE: MenuDatabase? = null
+        private var INSTANCE: MakanDatabase? = null
 
-        fun getInstance(context: Context):MenuDatabase{
+        fun getInstance(context: Context):MakanDatabase{
             return INSTANCE?: synchronized(this){
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    MenuDatabase::class.java, "menu_database"
+                    MakanDatabase::class.java, "menu_database"
                 )
                     .fallbackToDestructiveMigration().build()
                     .also { INSTANCE = it }

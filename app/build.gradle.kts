@@ -56,6 +56,9 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+//Untuk ViewModel
+    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
+    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
 
     implementation ("androidx.room:room-runtime:2.5.0")
     ksp("androidx.room:room-compiler:2.5.0")

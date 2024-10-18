@@ -2,6 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,13 +15,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.CafeApp"
         tools:targetApi="31">
-        <activity
-            android:name=".TestDatabase.TestDatabase2"
-            android:exported="false" >
 
-        </activity>
         <activity
-            android:name=".TestDatabase.TestDatabase1"
+            android:name=".MakanDatabase.TestDatabase2"
+            android:exported="false"/>
+        <activity
+            android:name=".MakanDatabase.TestDatabase1"
+            android:exported="false"/>
+        <activity
+            android:name=".welcome_logo_page"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,15 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".welcome_logo_page"
-            android:exported="false">
-
-        </activity>
         <activity android:name=".Login_page" />
     </application>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-
 
 </manifest>

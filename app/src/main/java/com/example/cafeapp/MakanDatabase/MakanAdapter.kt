@@ -1,4 +1,4 @@
-package com.example.cafeapp.TestDatabase
+package com.example.cafeapp.MakanDatabase
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -10,14 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
 import java.io.File
 
-class MenuAdapter(
-    private val colorList: List<Menu>,
-    private val onItemClick: (Menu) -> Unit
-) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+class MakanAdapter(
+    private val makanList: List<Makan>,
+    private val onItemClick: (Makan) -> Unit
+) : RecyclerView.Adapter<MakanAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val colorName: TextView = view.findViewById(R.id.namaMenu)
-        val hexMenu: TextView = view.findViewById(R.id.hargaMenu)
+        val namaMenu: TextView = view.findViewById(R.id.namaMenu)
+        val hargaMenu: TextView = view.findViewById(R.id.hargaMenu)
         val fotoMenu: ImageView = view.findViewById(R.id.fotoMenu)
     }
 
@@ -28,15 +28,15 @@ class MenuAdapter(
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        val menu = colorList[position]
+        val makan = makanList[position]
 
-        // Menampilkan nama dan harga menu
-        holder.colorName.text = menu.name
-        holder.hexMenu.text = menu.harga.toString()
+        // Menampilkan nama dan harga makan
+        holder.namaMenu.text = makan.name
+        holder.hargaMenu.text = makan.harga.toString()
 
         // Dapatkan path gambar dari direktori internal
         val context = holder.itemView.context
-        val imgPath = File(context.filesDir, "app_images/${menu.imagePath}")
+        val imgPath = File(context.filesDir, "app_images/${makan.imagePath}")
 
         if (imgPath.exists()) {
             // Jika file gambar ada, set gambar ke ImageView
@@ -48,10 +48,10 @@ class MenuAdapter(
 
         // Set listener untuk klik item
         holder.itemView.setOnClickListener {
-            onItemClick(menu)
+            onItemClick(makan)
         }
     }
 
 
-    override fun getItemCount() = colorList.size
+    override fun getItemCount() = makanList.size
 }

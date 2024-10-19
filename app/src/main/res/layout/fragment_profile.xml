@@ -8,7 +8,7 @@
     android:background="#F5F5F5"
     tools:context=".ProfileFragment">
 
-    <!-- Circle Image View for Profile Image -->
+<!--    &lt;!&ndash; Circle Image View for Profile Image &ndash;&gt;-->
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/profileImageView"
         android:layout_width="100dp"
@@ -53,14 +53,16 @@
             android:orientation="vertical">
 
             <!-- Tentang Kita -->
-            <TextView
+            <Button
                 android:id="@+id/aboutUsButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="Tentang Kita"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="start|center_vertical" />
 
             <!-- Divider -->
             <View
@@ -69,14 +71,16 @@
                 android:background="#E0E0E0" />
 
             <!-- Tentang Aplikasi -->
-            <TextView
+            <Button
                 android:id="@+id/aboutAppButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="Tentang Aplikasi"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="start|center_vertical" />
 
             <!-- Divider -->
             <View
@@ -85,15 +89,18 @@
                 android:background="#E0E0E0" />
 
             <!-- Bantuan -->
-            <TextView
+            <Button
                 android:id="@+id/helpButton"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="16dp"
                 android:text="Bantuan"
                 android:textColor="#000000"
-                android:textSize="16sp" />
+                android:textSize="16sp"
+                android:background="?android:attr/selectableItemBackground"
+                android:gravity="start|center_vertical" />
         </LinearLayout>
+
 
     </androidx.cardview.widget.CardView>
 

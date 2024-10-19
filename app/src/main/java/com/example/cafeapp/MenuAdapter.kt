@@ -9,7 +9,9 @@ import com.example.cafeapp.R
 import androidx.recyclerview.widget.RecyclerView
 
 
-class MenuAdapter(private val menuList: List<Menu>, private val onItemClick: (Menu) -> Unit) :
+class MenuAdapter(
+    private val menuList: List<Menu>,
+    private val onItemClick: (Menu) -> Unit) :
     RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {

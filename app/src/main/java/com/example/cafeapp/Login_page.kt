@@ -7,32 +7,44 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafeapp.MakanDatabase.TestDatabase1
+import com.example.cafeapp.TambahMenu.TambahMenu
 
-class LoginPage : AppCompatActivity() {
+class Login_page : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
 
-        val inputUsername: EditText = findViewById(R.id.InputUsername)
-        val inputPassword: EditText = findViewById(R.id.InputPassword)
-        val tombolSubmit: Button = findViewById(R.id.BtnSubmit)
+        val InputUsername: EditText = findViewById(R.id.inputUser)
+        val InputPassword: EditText = findViewById(R.id.inputPassword)
+        val TombolSubmit: Button = findViewById(R.id.BtnSubmit)
 
-        tombolSubmit.setOnClickListener {
-            val inputUser = inputUsername.text.toString()
-            val inputPass = inputPassword.text.toString()
+        // Data login untuk admin dan staff
+        val dataLogin = listOf(
+            user("staff", "staff"),
+            user("admin", "admin")
+        )
 
-            // Check credentials
-            if (inputUser == "admin" && inputPass == "admin") {
-                // Navigate to TestDatabase if admin
-                val intent = Intent(this, TestDatabase1::class.java)
-                startActivity(intent)
-            } else if (inputUser == "user" && inputPass == "user") {
-                // Navigate to MainActivity if regular user
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            } else {
-                    Toast.makeText(this, "Gagal, input data dengan benar", Toast.LENGTH_SHORT).show()
+        TombolSubmit.setOnClickListener {
+            val InputUser = InputUsername.text.toString()
+            val InputPass = InputPassword.text.toString()
+
+            val user = dataLogin.find { it.username == InputUser && it.password == InputPass }
+
+            if (user != null) {
+                if (user.username == "admin") {
+                    val intent = Intent(this, TambahMenu::class.java)
+                    startActivity(intent)
+                    finish()
                 }
+
+//                else if (user.username == "staff") {
+//                    val intent = Intent(this, HomeAdmin::class.java)
+//                    startActivity(intent)
+//                    finish()
+//                }
+            } else {
+                Toast.makeText(this, "Gagal, input data dengan benar", Toast.LENGTH_SHORT).show()
             }
         }
     }
+}

@@ -23,12 +23,19 @@
             android:name=".MakanDatabase.TestDatabase1"
             android:exported="false"/>
         <activity
+            android:name=".TentangAplikasiActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".TentangKitaActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".BantuanActivity"
+            android:exported="false"/>
+
+        <activity
             android:name=".MenuDetailActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
+
         </activity>
         <activity
             android:name=".AllFoodActivity"
@@ -36,7 +43,13 @@
         <activity
             android:name=".MainActivity"
             android:exported="true"/>
-        <activity android:name=".Login_page" />
+        <activity android:name=".Login_page"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.example.cafeapp.TambahMenu.TambahMenu" />
     </application>
 

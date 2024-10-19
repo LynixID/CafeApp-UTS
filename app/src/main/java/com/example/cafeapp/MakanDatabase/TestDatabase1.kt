@@ -34,6 +34,8 @@ class TestDatabase1 : AppCompatActivity() {
     private lateinit var tampilkanFotoSementara: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
+
         super.onCreate(savedInstanceState)
         binding = ActivityTestDatabase1Binding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -46,7 +48,7 @@ class TestDatabase1 : AppCompatActivity() {
         val spinner: Spinner = findViewById(R.id.spinner)
         ArrayAdapter.createFromResource(
             this,
-            R.array.opsi_menu, // Array dari strings.xml
+            R.array.menu_options, // Array dari strings.xml
             android.R.layout.simple_spinner_item // Tampilan dasar dropdown
         ).also { adapter ->
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
@@ -101,6 +103,8 @@ class TestDatabase1 : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Mohon lengkapi semua field", Toast.LENGTH_SHORT).show()
             }
+
+
         }
 
         tampilkanFotoSementara = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -128,7 +132,6 @@ class TestDatabase1 : AppCompatActivity() {
             intent.type = "image/*"
             tampilkanFotoSementara.launch(intent)
         }
-
 
     }
 

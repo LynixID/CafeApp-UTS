@@ -21,22 +21,28 @@
             android:exported="false"/>
         <activity
             android:name=".MakanDatabase.TestDatabase1"
-            android:exported="false"/>
+            android:exported="false">
+
+        </activity>
         <activity
             android:name=".welcome_logo_page"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            android:exported="false">
+
         </activity>
         <activity
             android:name=".AllFoodActivity"
             android:exported="false"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
-        <activity android:name=".Login_page" />
+            android:exported="false"/>
+        <activity
+            android:name=".Login_page"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name="com.example.cafeapp.TambahMenu.TambahMenu" />
     </application>
 

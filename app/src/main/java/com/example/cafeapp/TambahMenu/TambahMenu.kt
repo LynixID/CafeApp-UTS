@@ -16,9 +16,11 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.Makan
+import com.example.cafeapp.Minum
+import com.example.cafeapp.MinumDatabase.MinumViewModel
 //import com.example.cafeapp.MinumanDatabase.MinumanViewModel
 //import com.example.cafeapp.SnackDatabase.SnackViewModel
-import com.example.cafeapp.MakanDatabase.Makan
 //import com.example.cafeapp.MinumanDatabase.Minuman
 //import com.example.cafeapp.SnackDatabase.Snack
 import com.example.cafeapp.databinding.TambahMenuBinding
@@ -28,7 +30,7 @@ class TambahMenu : AppCompatActivity() {
 
     private lateinit var binding: TambahMenuBinding
     private val makanViewModel: MakanViewModel by viewModels()
-//    private val minumanViewModel: MinumanViewModel by viewModels()
+    private val minumViewModel: MinumViewModel by viewModels()
 //    private val snackViewModel: SnackViewModel by viewModels()
     private var imagePath: String? = null
 
@@ -94,20 +96,20 @@ class TambahMenu : AppCompatActivity() {
                         _id = 0,
                         name = nama,
                         harga = harga,
-                        imagePath = imagePath!!
+                        namaFoto = imagePath!!
                     )
                     makanViewModel.insertMakan(makan)
                 }
-//                "Minuman" -> {
-//                    // Create Minuman object and save to Minuman table
-//                    val minuman = Minuman(
-//                        _id = 0,
-//                        name = nama,
-//                        harga = harga,
-//                        imagePath = imagePath!!
-//                    )
-//                    minumanViewModel.insertMinuman(minuman)
-//                }
+                "Minuman" -> {
+                    // Create Minuman object and save to Minuman table
+                    val minuman = Minum(
+                        _id = 0,
+                        name = nama,
+                        harga = harga,
+                        namaFoto = imagePath!!
+                    )
+                    minumViewModel.insertMinum(minuman)
+                }
 //                "Snack" -> {
 //                    // Create Snack object and save to Snack table
 //                    val snack = Snack(

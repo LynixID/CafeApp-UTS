@@ -9,11 +9,15 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
+import android.widget.ArrayAdapter
+import android.widget.Spinner
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.Makan
+import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ActivityTestDatabase1Binding
 import java.io.IOException
 
@@ -24,7 +28,7 @@ class TestDatabase1 : AppCompatActivity() {
     private var imagePath: String? = null // Menyimpan path gambar yang dipilih
 
     // ActivityResultLauncher
-    private lateinit var getImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var tampilkanFotoSementara: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,26 +39,50 @@ class TestDatabase1 : AppCompatActivity() {
         binding.inputHarga.text?.clear()
         binding.inputMenu.text?.clear()
 
+        // Membuat adapter dari array yang ada di strings.xml
+        val spinner: Spinner = findViewById(R.id.spinner)
+        ArrayAdapter.createFromResource(
+            this,
+            R.array.opsi_menu, // Array dari strings.xml
+            android.R.layout.simple_spinner_item // Tampilan dasar dropdown
+        ).also { adapter ->
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            spinner.adapter = adapter // Mengatur adapter untuk Spinner
+        }
+
         binding.next.setOnClickListener {
             val intent = Intent(this, TestDatabase2::class.java)
             startActivity(intent)
         }
 
         binding.btnSubmit.setOnClickListener {
-            val namaMakan = binding.inputMenu.text.toString().trim()
+            val namaMenu = binding.inputMenu.text.toString().trim()
             val hargaMakan = binding.inputHarga.text.toString().trim()
+            val kategori = spinner.selectedItem.toString()
 
-            if (namaMakan.isNotEmpty() && hargaMakan.isNotEmpty() && imagePath != null) {
+            if (namaMenu.isNotEmpty() && hargaMakan.isNotEmpty() && imagePath != null) {
                 // Membuat objek Makan
-                val makan = Makan(
+                val menu = Makan(
                     _id = 0,
-                    name = namaMakan,
+                    name = namaMenu,
                     harga = hargaMakan.toInt(),
-                    imagePath = imagePath!! // Nama file gambar, bukan path lengkap
+                    namaFoto = imagePath!! // Nama file gambar, bukan path lengkap
                 )
 
-                // Simpan makan menggunakan ViewModel
-                makanViewModel.insertMakan(makan)
+                if(kategori == "Makanan"){
+                    // Simpan makan menggunakan ViewModel
+                    makanViewModel.insertMakan(menu)
+                }else if (kategori == "Minuman"){
+                    // Simpan makan menggunakan ViewModel
+                    makanViewModel.insertMakan(menu)
+
+                }else{
+
+                }
+
+
+
+
 
                 // Pindah ke TestDatabase2 setelah data disimpan
                 val intent = Intent(this, TestDatabase2::class.java)
@@ -64,7 +92,7 @@ class TestDatabase1 : AppCompatActivity() {
             }
         }
 
-        getImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+        tampilkanFotoSementara = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 result.data?.data?.let { uri ->
                     binding.foto.setImageURI(uri) // Tampilkan gambar yang dipilih
@@ -87,8 +115,10 @@ class TestDatabase1 : AppCompatActivity() {
             // Pilih gambar dari galeri
             val intent = Intent(Intent.ACTION_PICK)
             intent.type = "image/*"
-            getImageLauncher.launch(intent)
+            tampilkanFotoSementara.launch(intent)
         }
+
+
     }
 
     // Fungsi untuk mengubah URI menjadi Bitmap

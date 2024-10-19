@@ -7,6 +7,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cafeapp.Makan
 import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
 
 class TestDatabase2 : AppCompatActivity() {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cafeapp.Makan
 import com.example.cafeapp.R
 import java.io.File
 
@@ -36,7 +37,7 @@ class MakanAdapter(
 
         // Dapatkan path gambar dari direktori internal
         val context = holder.itemView.context
-        val imgPath = File(context.filesDir, "app_images/${makan.imagePath}")
+        val imgPath = File(context.filesDir, "app_images/${makan.namaFoto}")
 
         if (imgPath.exists()) {
             // Jika file gambar ada, set gambar ke ImageView

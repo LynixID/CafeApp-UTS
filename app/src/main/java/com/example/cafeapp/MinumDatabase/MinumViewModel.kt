@@ -1,4 +1,4 @@
-package com.example.cafeapp.MakanDatabase
+package com.example.cafeapp.MinumDatabase
 
 import android.app.Application
 import android.graphics.Bitmap
@@ -6,21 +6,22 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import com.example.cafeapp.Makan
+import com.example.cafeapp.MakanDatabase.MakanDAO
+import com.example.cafeapp.MakanDatabase.MakanDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
-class MakanViewModel(application: Application): AndroidViewModel(application) {
-
-    private val makanDao: MakanDAO
+class MinumViewModel(application: Application): AndroidViewModel(application) {
+    private val minumDao: MakanDAO
     private val allMakans: LiveData<List<Makan>>
 
     init {
         val db = MakanDatabase.getInstance(application)
-        makanDao = db.menuDao()
-        allMakans = makanDao.getAll() // Mengambil semua data menu
+        minumDao = db.menuDao()
+        allMakans = minumDao.getAll() // Mengambil semua data menu
     }
 
     fun getAllMakans(): LiveData<List<Makan>> {
@@ -29,23 +30,16 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
 
     fun insertMakan(menu: Makan) {
         viewModelScope.launch(Dispatchers.IO) {
-            makanDao.insert(menu)
+            minumDao.insert(menu)
         }
     }
 
     fun deleteMakanById(id: Int) {
         viewModelScope.launch(Dispatchers.IO) {
-            makanDao.deleteById(id)
+            minumDao.deleteById(id)
         }
     }
 
-//    fun getMakanByName(name: String): LiveData<Makan> {
-//        return makanDao.getMakanByName(name)
-//    }
-//
-//    fun getMakanByHex(harga: Int): LiveData<Makan> {
-//        return makanDao.getMakanByHex(harga)
-//    }
 
     fun saveImageToInternalStorage(bitmap: Bitmap, imageName: String): String? {
         // Gunakan getApplication() untuk mengakses context
@@ -67,5 +61,4 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
             null
         }
     }
-
 }

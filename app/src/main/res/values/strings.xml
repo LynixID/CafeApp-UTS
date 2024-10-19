@@ -1,9 +1,10 @@
 <resources>
     <string name="app_name">Cafe App</string>
 
-    <string-array name="menu_options">
+    <string-array name="opsi_menu">
         <item>Makanan</item>
         <item>Minuman</item>
         <item>Snack</item>
     </string-array>
+
 </resources>

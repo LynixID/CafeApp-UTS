@@ -1,25 +1,25 @@
-package com.example.cafeapp.MakanDatabase
+package com.example.cafeapp.MinumDatabase
 
 import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.example.cafeapp.Makan
+import com.example.cafeapp.Minum
 
 @Dao
-interface MakanDAO {
+interface MinumDAO {
 
-    @Query("SELECT * FROM makans")
-    fun getAll(): LiveData<List<Makan>>
+    @Query("SELECT * FROM minums")
+    fun getAll(): LiveData<List<Minum>>
 
     @Insert
-    suspend fun insert(menu: Makan)
+    suspend fun insert(menu: Minum)
 
     @Query("SELECT * FROM makans WHERE name = :name")
-    fun getMakanByName(name: String): LiveData<Makan>
+    fun getMinumByName(name: String): LiveData<Minum>
 
     @Query("SELECT * FROM makans WHERE harga = :harga")
-    fun getMakanByHex(harga: Int): LiveData<Makan>
+    fun getMinumByHex(harga: Int): LiveData<Minum>
 
     @Query("DELETE FROM makans WHERE _id = :id")
     suspend fun deleteById(id: Int)

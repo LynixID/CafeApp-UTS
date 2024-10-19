@@ -1,6 +1,6 @@
 package com.example.cafeapp
 
 data class datalogin(
-    val username: String = "admingoks",
-    val password: String = "GRID",
+    val username: String = "admin",
+    val password: String = "admin",
 )

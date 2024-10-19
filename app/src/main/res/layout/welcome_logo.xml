@@ -6,8 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/coklatmuda"
     tools:context=".welcome_logo_page">
-
-
     <ImageView
         android:id="@+id/cafegrid"
         android:layout_width="wrap_content"
@@ -17,7 +15,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
     <!--    <TextView-->
     <!--        android:id="@+id/since"-->
     <!--        android:layout_width="wrap_content"-->
@@ -29,7 +26,6 @@
     <!--        app:layout_constraintTop_toBottomOf="@+id/cafegrid"-->
     <!--        app:layout_constraintStart_toStartOf="parent"-->
     <!--        tools:layout_editor_absoluteY="254dp" />-->
-
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="200dp"
@@ -39,5 +35,4 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

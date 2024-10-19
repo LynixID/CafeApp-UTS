@@ -17,14 +17,14 @@ class MakanAdapter(
 ) : RecyclerView.Adapter<MakanAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val namaMenu: TextView = view.findViewById(R.id.namaMenu)
-        val hargaMenu: TextView = view.findViewById(R.id.hargaMenu)
-        val fotoMenu: ImageView = view.findViewById(R.id.fotoMenu)
+        val namaMenu: TextView = view.findViewById(R.id.foodName)
+        val hargaMenu: TextView = view.findViewById(R.id.foodPrice)
+        val fotoMenu: ImageView = view.findViewById(R.id.food_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.test_item_menu, parent, false)
+            .inflate(R.layout.item_food, parent, false)
         return MenuViewHolder(view)
     }
 
@@ -33,7 +33,7 @@ class MakanAdapter(
 
         // Menampilkan nama dan harga makan
         holder.namaMenu.text = makan.name
-        holder.hargaMenu.text = makan.harga.toString()
+        holder.hargaMenu.text = "$${makan.harga}" // Menambahkan simbol mata uang
 
         // Dapatkan path gambar dari direktori internal
         val context = holder.itemView.context
@@ -52,7 +52,6 @@ class MakanAdapter(
             onItemClick(makan)
         }
     }
-
 
     override fun getItemCount() = makanList.size
 }

@@ -1,58 +1,65 @@
 package com.example.cafeapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
 import android.os.Bundle
-import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.example.cafeapp.databinding.ActivityMainBinding
+import android.text.Editable
+import android.text.TextWatcher
+import android.widget.EditText
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
-    class MainActivity : AppCompatActivity() {
-        private lateinit var binding: ActivityMainBinding
-        private lateinit var viewModel: MainViewModel
+class MainActivity : AppCompatActivity() {
 
-        override fun onCreateOptionsMenu(menu: Menu): Boolean {
-            menuInflater.inflate(R.menu.main_menu, menu)
-            return true
-        }
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        setContentView(R.layout.activity_main)
 
-        override fun onOptionsItemSelected(item: MenuItem): Boolean {
-            return when (item.itemId) {
-                R.id.action_logout -> {
-                    // Implement logout logic here
-                    finish() // This will close the app
+        // Bottom Navigation Setup
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
+        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+            when (menuItem.itemId) {
+                R.id.nav_home -> {
+                    // Navigate to Home Fragment
+                    val homeFragment = HomeFragment()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, homeFragment)
+                        .commit()
                     true
                 }
-                else -> super.onOptionsItemSelected(item)
-            }
-        }
-
-        override fun onCreate(savedInstanceState: Bundle?) {
-            super.onCreate(savedInstanceState)
-            binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-            viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-
-            binding.lifecycleOwner = this
-            binding.viewModel = viewModel
-
-            setupNavigation()
-        }
-
-        private fun setupNavigation() {
-            binding.bottomNavigation.setOnItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.nav_home -> loadFragment(HomeFragment())
-                    R.id.nav_about -> loadFragment(AboutUsFragment())
-                    R.id.nav_app_info -> loadFragment(AppInfoFragment())
-                    R.id.nav_help -> loadFragment(HelpFragment())
+                R.id.nav_favorites -> {
+                    // Navigate to Favorites Fragment
+                    val favoritesFragment = FavoritesFragment()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, favoritesFragment)
+                        .commit()
+                    true
                 }
-                true
+                R.id.cart -> {
+                    val cartFragment = CartFragment()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, cartFragment)
+                        .commit()
+                    true
+                }
+                R.id.nav_profile -> {
+                    val profileFragment = ProfileFragment()
+                    supportFragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, profileFragment)
+                        .commit()
+                    true
+                }
+                else -> false
             }
         }
 
-        private fun loadFragment(fragment: Fragment) {
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.fragmentContainer, fragment)
-                .commit()
+        // Load default fragment
+        if (savedInstanceState == null) {
+            bottomNavigationView.selectedItemId = R.id.nav_home // Set default selection
         }
     }
+}

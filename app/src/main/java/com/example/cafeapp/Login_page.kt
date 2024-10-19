@@ -1,34 +1,38 @@
 package com.example.cafeapp
+
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cafeapp.MakanDatabase.MakanDatabase
 import com.example.cafeapp.MakanDatabase.TestDatabase1
 
-class Login_page : AppCompatActivity(){
+class LoginPage : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_page)
 
-        val InputUsername: EditText = findViewById(R.id.InputUsername)
-        val InputPassword: EditText = findViewById(R.id.InputPassword)
-        val TombolSubmit: Button = findViewById(R.id.BtnSubmit)
+        val inputUsername: EditText = findViewById(R.id.InputUsername)
+        val inputPassword: EditText = findViewById(R.id.InputPassword)
+        val tombolSubmit: Button = findViewById(R.id.BtnSubmit)
 
-        val Data = datalogin()
+        tombolSubmit.setOnClickListener {
+            val inputUser = inputUsername.text.toString()
+            val inputPass = inputPassword.text.toString()
 
-        TombolSubmit.setOnClickListener {
-            val InputUser = InputUsername.text.toString()
-            val InputPass = InputPassword.text.toString()
-
-            if (InputUser == Data.username && InputPass == Data.password) {
-                val submit = Intent(this, TestDatabase1::class.java)
-                startActivity(submit)
+            // Check credentials
+            if (inputUser == "admin" && inputPass == "admin") {
+                // Navigate to TestDatabase if admin
+                val intent = Intent(this, TestDatabase1::class.java)
+                startActivity(intent)
+            } else if (inputUser == "user" && inputPass == "user") {
+                // Navigate to MainActivity if regular user
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
             } else {
-                Toast.makeText(this, "Gagal,input data dengan benar", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Gagal, input data dengan benar", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }
-}

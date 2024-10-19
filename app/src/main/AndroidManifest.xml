@@ -23,7 +23,7 @@
             android:name=".MakanDatabase.TestDatabase1"
             android:exported="false"/>
         <activity
-            android:name=".welcome_logo_page"
+            android:name=".MenuDetailActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

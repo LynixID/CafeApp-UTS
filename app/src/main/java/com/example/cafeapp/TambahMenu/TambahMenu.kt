@@ -29,7 +29,6 @@ class TambahMenu : AppCompatActivity() {
     private lateinit var binding: TambahMenuBinding
     private val makanViewModel: MakanViewModel by viewModels()
 //    private val minumanViewModel: MinumanViewModel by viewModels()
-//    private val snackViewModel: SnackViewModel by viewModels()
     private var imagePath: String? = null
 
     private lateinit var getImageLauncher: ActivityResultLauncher<Intent>
@@ -43,7 +42,7 @@ class TambahMenu : AppCompatActivity() {
         clearInputFields()
 
         // Set up Spinner for category selection
-        val kategoriList = arrayOf("Makanan", "Minuman", "Snack")
+        val kategoriList = arrayOf("Makanan", "Minuman")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, kategoriList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerKategori.adapter = adapter
@@ -58,10 +57,8 @@ class TambahMenu : AppCompatActivity() {
                     // Convert URI to Bitmap
                     val bitmap = getBitmapFromUri(this, uri)
                     if (bitmap != null) {
-                        val imageName = "menu_${System.currentTimeMillis()}" // Unique file name
-                        makanViewModel.saveImageToInternalStorage(bitmap, imageName)?.let { savedImageName ->
-                            imagePath = savedImageName // Save image file name
-                        }
+                        val imageName = "menu_${System.currentTimeMillis()}.png" // Unique file name
+                        imagePath = makanViewModel.saveImageToInternalStorage(bitmap, imageName) // Save image file name
                     }
                 }
             }
@@ -107,16 +104,6 @@ class TambahMenu : AppCompatActivity() {
 //                        imagePath = imagePath!!
 //                    )
 //                    minumanViewModel.insertMinuman(minuman)
-//                }
-//                "Snack" -> {
-//                    // Create Snack object and save to Snack table
-//                    val snack = Snack(
-//                        _id = 0,
-//                        name = nama,
-//                        harga = harga,
-//                        imagePath = imagePath!!
-//                    )
-//                    snackViewModel.insertSnack(snack)
 //                }
             }
 

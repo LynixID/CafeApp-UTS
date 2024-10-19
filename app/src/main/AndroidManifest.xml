@@ -34,6 +34,9 @@
             android:name=".AllFoodActivity"
             android:exported="false"/>
         <activity
+            android:name=".MenuDetailActivity"
+            android:exported="false"/>
+        <activity
             android:name=".MainActivity"
             android:exported="true"/>
         <activity android:name=".Login_page" />

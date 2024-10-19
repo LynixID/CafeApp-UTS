@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/helpTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bantuan"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/helpDescriptionTextView"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Jika Anda memiliki pertanyaan atau membutuhkan bantuan, silakan hubungi kami melalui:"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/helpTitleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/instagramButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@gridcafe"
+        android:drawableStart="@drawable/ic_instagram"
+        android:drawablePadding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/helpDescriptionTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="24dp"/>
+
+    <Button
+        android:id="@+id/whatsappButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="+5278494354"
+        android:drawableStart="@drawable/ic_whatsapp"
+        android:drawablePadding="8dp"
+        app:layout_constraintTop_toBottomOf="@id/instagramButton"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="16dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

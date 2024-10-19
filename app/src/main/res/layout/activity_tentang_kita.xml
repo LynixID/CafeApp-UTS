@@ -81,7 +81,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ft_raka" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -125,7 +125,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ft_dira" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -168,7 +168,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ft_gading" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -211,7 +211,7 @@
                     android:layout_height="100dp"
                     android:layout_gravity="center"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_launcher_background" />
+                    android:src="@drawable/ft_ilma" />
 
                 <TextView
                     android:layout_width="wrap_content"

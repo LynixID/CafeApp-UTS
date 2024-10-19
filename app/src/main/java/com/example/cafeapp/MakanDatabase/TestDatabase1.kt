@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafeapp.Makan
+import com.example.cafeapp.MinumDatabase.MinumViewModel
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ActivityTestDatabase1Binding
 import java.io.IOException
@@ -24,7 +25,8 @@ import java.io.IOException
 class TestDatabase1 : AppCompatActivity() {
 
     private lateinit var binding: ActivityTestDatabase1Binding
-    private val makanViewModel: MakanViewModel by viewModels() // Inisialisasi ViewModel
+    private val makanViewModel: MakanViewModel by viewModels()
+//    private val minumViewModel: MinumViewModel by viewModels()// Inisialisasi ViewModel
     private var imagePath: String? = null // Menyimpan path gambar yang dipilih
 
     // ActivityResultLauncher
@@ -74,7 +76,7 @@ class TestDatabase1 : AppCompatActivity() {
                     makanViewModel.insertMakan(menu)
                 }else if (kategori == "Minuman"){
                     // Simpan makan menggunakan ViewModel
-                    makanViewModel.insertMakan(menu)
+//                    minumViewModel.insertMinum(menu)
 
                 }else{
 

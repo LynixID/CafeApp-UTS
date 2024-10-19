@@ -6,9 +6,9 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.example.cafeapp.Makan
 
-@Database(entities = [Makan::class], version = 3)
+@Database(entities = [Makan::class], version = 4)
 abstract class MakanDatabase: RoomDatabase() {
-    abstract fun menuDao(): MakanDAO
+    abstract fun makanDao(): MakanDAO
 
     companion object{
         @Volatile
@@ -18,7 +18,7 @@ abstract class MakanDatabase: RoomDatabase() {
             return INSTANCE?: synchronized(this){
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    MakanDatabase::class.java, "menu_database"
+                    MakanDatabase::class.java, "makan_database"
                 )
                     .fallbackToDestructiveMigration().build()
                     .also { INSTANCE = it }

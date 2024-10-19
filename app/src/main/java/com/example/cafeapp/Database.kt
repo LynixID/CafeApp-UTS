@@ -18,7 +18,7 @@ data class Minum(
     @PrimaryKey(autoGenerate = true) val _id: Int,
     val name: String,
     val harga: Int,
-    @ColumnInfo(name = "image_path") val imagePath: String
+    @ColumnInfo(name = "image_path") val namaFoto: String
 
 )
 
@@ -27,6 +27,6 @@ data class Snack(
     @PrimaryKey(autoGenerate = true) val _id: Int,
     val name: String,
     val harga: Int,
-    @ColumnInfo(name = "image_path") val imagePath: String
+    @ColumnInfo(name = "image_path") val namaFoto: String
 
 )

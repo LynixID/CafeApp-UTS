@@ -39,13 +39,6 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
-//    fun getMakanByName(name: String): LiveData<Makan> {
-//        return makanDao.getMakanByName(name)
-//    }
-//
-//    fun getMakanByHex(harga: Int): LiveData<Makan> {
-//        return makanDao.getMakanByHex(harga)
-//    }
 
     fun saveImageToInternalStorage(bitmap: Bitmap, imageName: String): String? {
         // Gunakan getApplication() untuk mengakses context

@@ -36,12 +36,11 @@ class Login_page : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
-
-//                else if (user.username == "staff") {
-//                    val intent = Intent(this, HomeAdmin::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                }
+                else if (user.username == "staff") {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             } else {
                 Toast.makeText(this, "Gagal, input data dengan benar", Toast.LENGTH_SHORT).show()
             }

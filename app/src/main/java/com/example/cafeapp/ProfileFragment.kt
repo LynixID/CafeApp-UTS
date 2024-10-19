@@ -34,7 +34,7 @@ class ProfileFragment : Fragment() {
 
     private fun navigateToLoginPage() {
         // Arahkan pengguna ke LoginPageActivity
-        val intent = Intent(requireActivity(), LoginPage::class.java)
+        val intent = Intent(requireActivity(), Login_page::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK // Menghapus activity sebelumnya
         startActivity(intent)
         requireActivity().finish() // Tutup activity saat ini

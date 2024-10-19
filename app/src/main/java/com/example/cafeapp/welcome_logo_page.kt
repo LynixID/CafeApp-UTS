@@ -16,7 +16,7 @@ class welcome_logo_page : AppCompatActivity() {
         setContentView(R.layout.welcome_logo)
 
         Handler().postDelayed({
-            val intent = Intent(this@welcome_logo_page, LoginPage::class.java)
+            val intent = Intent(this@welcome_logo_page, Login_page::class.java)
             startActivity(intent)
             finish()
         }, SPLASH_TIME_OUT)

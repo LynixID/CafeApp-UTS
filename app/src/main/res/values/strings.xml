@@ -6,4 +6,9 @@
         <item>Minuman</item>
         <item>Snack</item>
     </string-array>
+    <string name="label_deskripsi_produk">Deskripsi Produk</string>
+    <string name="label_nama_produk">Nama Produk</string>
+    <string name="label_harga_produk">Harga Produk</string>
+    <string name="label_kategori_produk">Kategori Produk</string>
+    <string name="action_add_menu">Tambah Menu</string>
 </resources>

@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafeapp.Makan
+import com.example.cafeapp.Minum
 import com.example.cafeapp.MinumDatabase.MinumViewModel
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ActivityTestDatabase1Binding
@@ -26,7 +27,7 @@ class TestDatabase1 : AppCompatActivity() {
 
     private lateinit var binding: ActivityTestDatabase1Binding
     private val makanViewModel: MakanViewModel by viewModels()
-//    private val minumViewModel: MinumViewModel by viewModels()// Inisialisasi ViewModel
+    private val minumViewModel: MinumViewModel by viewModels()// Inisialisasi ViewModel
     private var imagePath: String? = null // Menyimpan path gambar yang dipilih
 
     // ActivityResultLauncher
@@ -63,20 +64,28 @@ class TestDatabase1 : AppCompatActivity() {
             val kategori = spinner.selectedItem.toString()
 
             if (namaMenu.isNotEmpty() && hargaMakan.isNotEmpty() && imagePath != null) {
-                // Membuat objek Makan
-                val menu = Makan(
-                    _id = 0,
-                    name = namaMenu,
-                    harga = hargaMakan.toInt(),
-                    namaFoto = imagePath!! // Nama file gambar, bukan path lengkap
-                )
+
 
                 if(kategori == "Makanan"){
+                    // Membuat objek Makan
+                    val menu = Makan(
+                        _id = 0,
+                        name = namaMenu,
+                        harga = hargaMakan.toInt(),
+                        namaFoto = imagePath!! // Nama file gambar, bukan path lengkap
+                    )
                     // Simpan makan menggunakan ViewModel
                     makanViewModel.insertMakan(menu)
                 }else if (kategori == "Minuman"){
+                    // Membuat objek Minum
+                    val menu = Minum(
+                        _id = 0,
+                        name = namaMenu,
+                        harga = hargaMakan.toInt(),
+                        namaFoto = imagePath!! // Nama file gambar, bukan path lengkap
+                    )
                     // Simpan makan menggunakan ViewModel
-//                    minumViewModel.insertMinum(menu)
+                    minumViewModel.insertMinum(menu)
 
                 }else{
 

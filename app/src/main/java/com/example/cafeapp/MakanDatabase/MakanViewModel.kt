@@ -19,7 +19,7 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
 
     init {
         val db = MakanDatabase.getInstance(application)
-        makanDao = db.menuDao()
+        makanDao = db.makanDao()
         allMakans = makanDao.getAll() // Mengambil semua data menu
     }
 

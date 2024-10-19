@@ -18,7 +18,7 @@ abstract class MakanDatabase: RoomDatabase() {
             return INSTANCE?: synchronized(this){
                 INSTANCE ?: Room.databaseBuilder(
                     context.applicationContext,
-                    MakanDatabase::class.java, "makan_database"
+                    MakanDatabase::class.java, "menu_database"
                 )
                     .fallbackToDestructiveMigration().build()
                     .also { INSTANCE = it }

@@ -11,9 +11,10 @@ import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.cafeapp.UserDatabase.UserDao // Ensure proper import
-import com.example.cafeapp.UserDatabase.User // Ensure proper import
-import com.example.cafeapp.UserDatabase.UserDatabase // Ensure proper import
+import com.example.cafeapp.UserDatabase.User
+
+import com.example.cafeapp.UserDatabase.UserDao
+
 import kotlinx.coroutines.launch
 
 class UserActivity : AppCompatActivity() {
@@ -35,7 +36,7 @@ class UserActivity : AppCompatActivity() {
         setContentView(R.layout.activity_user)
 
         // Initialize database
-        val db = UserDatabase.getDatabase(applicationContext)
+        val db = CafeDatabase.getInstance(applicationContext)
         userDao = db.userDao()
 
         editTextUsername = findViewById(R.id.user)

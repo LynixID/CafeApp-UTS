@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 
 class AddToCardAdapter(
     val items: MutableList<CartItem>,
@@ -35,33 +36,32 @@ class AddToCardAdapter(
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
         val item = items[position]
         holder.itemName.text = item.name
-        holder.itemPrice.text = item.price
-        holder.itemImage.setImageResource(item.imageResId)
+        holder.itemPrice.text = "Rp ${item.price}"
         holder.itemQuantity.text = item.quantity.toString()
 
-        // Update total price on adapter creation
-        totalPriceListener.onTotalPriceUpdated(calculateTotalPrice())
+        Glide.with(holder.itemImage.context)
+            .load(item.imagePath)
+            .placeholder(R.drawable.sample_image)
+            .into(holder.itemImage)
 
-        // Set click listener for minus button
         holder.btnMinus.setOnClickListener {
             if (item.quantity > 1) {
                 item.quantity -= 1
                 holder.itemQuantity.text = item.quantity.toString()
-                viewModel.addItem(item) // Update item in ViewModel
+                viewModel.addItem(item)
             } else {
-                viewModel.removeItem(item) // Remove item if quantity is 1
+                viewModel.removeItem(item)
                 items.removeAt(position)
                 notifyItemRemoved(position)
             }
-            totalPriceListener.onTotalPriceUpdated(calculateTotalPrice()) // Update total price
+            totalPriceListener.onTotalPriceUpdated(calculateTotalPrice()) // Update total price here
         }
 
-        // Set click listener for plus button
         holder.btnPlus.setOnClickListener {
             item.quantity += 1
             holder.itemQuantity.text = item.quantity.toString()
-            viewModel.addItem(item) // Update item in ViewModel
-            totalPriceListener.onTotalPriceUpdated(calculateTotalPrice()) // Update total price
+            viewModel.addItem(item)
+            totalPriceListener.onTotalPriceUpdated(calculateTotalPrice()) // Update total price here
         }
     }
 
@@ -69,6 +69,6 @@ class AddToCardAdapter(
 
     // Calculate total price based on items in the cart
     private fun calculateTotalPrice(): Double {
-        return items.sumOf { it.price.toDouble() * it.quantity } // Assuming price is in String format
+        return items.sumOf { it.price.toDouble() * it.quantity } // Menghitung total harga
     }
 }

@@ -1,17 +1,17 @@
 package com.example.cafeapp.MakanDatabase
 
 import android.app.Application
-import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import android.graphics.Bitmap
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
+import android.util.Log
 
 class MakanViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -36,7 +36,7 @@ class MakanViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // Metode untuk mendapatkan makanan berdasarkan ID
-    fun getMakanById(id: Int): LiveData<Makan> {
+    fun getMakanById(id: String): LiveData<Makan> { // Pastikan id adalah String
         return makanDao.getMakanById(id) // Metode ini perlu ditambahkan di DAO
     }
 
@@ -80,13 +80,25 @@ class MakanViewModel(application: Application) : AndroidViewModel(application) {
     fun saveImageToInternalStorage(bitmap: Bitmap, imageName: String): String {
         val context = getApplication<Application>().applicationContext
         val file = File(context.filesDir, imageName)
+
         return try {
             FileOutputStream(file).use { fos ->
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)
+                // Pastikan bitmap tidak null dan dapat dikompres
+                if (!bitmap.isRecycled) {
+                    if (bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos)) {
+                        imageName // Mengembalikan nama file jika sukses
+                    } else {
+                        Log.e("SaveImage", "Failed to compress bitmap")
+                        ""
+                    }
+                } else {
+                    Log.e("SaveImage", "Bitmap is recycled")
+                    ""
+                }
             }
-            imageName
         } catch (e: IOException) {
             e.printStackTrace()
+            Log.e("SaveImage", "Error saving image: ${e.message}")
             ""
         }
     }

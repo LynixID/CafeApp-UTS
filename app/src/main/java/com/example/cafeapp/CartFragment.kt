@@ -25,18 +25,18 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener { // Implem
         recyclerView = view.findViewById(R.id.recycler_view)
         totalPriceTextView = view.findViewById(R.id.tvTotalPrice)
 
-        viewModel = ViewModelProvider(this).get(CardViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(CardViewModel::class.java)
 
         // Initialize RecyclerView with the adapter
         adapter = AddToCardAdapter(mutableListOf(), viewModel, this) // Pass the listener
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(context)
 
-        // Observe changes in cart items
+// Observe changes in cart items
         viewModel.cartItems.observe(viewLifecycleOwner) { items ->
-            adapter.items.clear()
-            adapter.items.addAll(items)
-            adapter.notifyDataSetChanged()
+            adapter.items.clear() // Clear the current items
+            adapter.items.addAll(items) // Add new items
+            adapter.notifyDataSetChanged() // Notify adapter of data changes
             updateTotalPrice(items) // Update total price when items change
         }
 
@@ -59,8 +59,8 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener { // Implem
             } else {
                 0.0 // Nilai default jika harga kosong
             }
-            totalPrice += itemPriceDouble * item.quantity // Calculate total price
+            totalPrice += itemPriceDouble * item.quantity // Hitung total harga
         }
-        totalPriceTextView.text = "Rp $totalPrice" // Display total price
+        totalPriceTextView.text = "Rp $totalPrice" // Tampilkan total harga
     }
 }

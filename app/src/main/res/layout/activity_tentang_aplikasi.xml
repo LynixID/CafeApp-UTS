@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".TentangAplikasiActivity">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Tentang Aplikasi"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/contentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ada tampilan logo lalu beberapa detik masuk ke activity selanjutnya yaitu login dimana hanya ada 2 PROFILE, bila login sebagai staff (dilihat dari dia memasukkan username password) dan telah berhasil login, maka lanjut ke halaman home dan ada 4 nav (home berisi kek beranda makanan, minuman yg ada trs search by kategori dan nama trs filter, cart berisi makanan minuman yg udh di pilih beserta jumlah pesanannya lalu untuk di checkout / di fix in dan data ini akan masuk ke transaction, transaction berisi riwayat pesanan jadi haruse disini muncul jam serta tanggal bulan tahunnya, profile berisi tentang aplikasi trs tentang kita dan bantuan gitu kek mungkin berisi no hp yg dpt dihubungi lek apk e ngelag gitu). Dan tambahan activity yg dimana saat kita klik makanan/minuman yg dipilih akan masuk ke activity itu yg berisi foto makanan, detailnya trs ada + dan - gitu misal mau beli nasgor 2 ya di + gitu jadi nasgor e 2 trs di “add to cart” nah nnti data ini masuk ke nav “cart” tadi. Untuk bagian “cart” pas mau checkout ada tulisan pilihan pembayaran dan cuma bisa cash.
+Dan misal dia memasukkan username password milik admin (jdi dia masuk sbg admin), akan nampilin 2 activity, satunya untuk form input CRUD produk, dan yg satunya menampilkan seluruh produk yang ada secara vertikal seperti nama foto harga deskripsi singkat. Jangan lupa tombol logout.
+"
+        android:gravity="center"
+        android:justificationMode="inter_word"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

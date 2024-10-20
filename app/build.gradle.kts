@@ -53,25 +53,26 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("androidx.recyclerview:recyclerview:1.2.1") //show data List
+    implementation("com.google.android.material:material:1.9.0")
+    implementation("com.github.bumptech.glide:glide:4.15.0") // for load image
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.15.0") //for load image
+    implementation ("de.hdodenhof:circleimageview:3.1.0")
 //Untuk ViewModel
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
-
     implementation ("androidx.room:room-runtime:2.5.0")
     ksp("androidx.room:room-compiler:2.5.0")
-
     // Kotlin Extensions and Coroutines support for Room
     implementation ("androidx.room:room-ktx:2.5.0")
-
     // Test helpers
     testImplementation ("androidx.room:room-testing:2.5.0")
-
 //    untuk ActivityResultLauncher
     implementation ("androidx.activity:activity-ktx:1.7.0" )// Versi terbaru dapat bervariasi, pastikan memeriksanya.
     implementation(kotlin("script-runtime"))
-
-
 }

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    tools:context=".BantuanActivity">
+
+    <TextView
+        android:id="@+id/titleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Bantuan"
+        android:textColor="@color/black"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/contentTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Apabila menemukan kendala, dapat menghubungi kontak berikut"
+        android:gravity="center"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintTop_toBottomOf="@id/titleTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="40dp"/>
+
+    <!-- Ikon 1 dan TextView 1 -->
+    <ImageView
+        android:id="@+id/icon1"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/wa"
+    app:layout_constraintTop_toBottomOf="@id/contentTextView"
+    app:layout_constraintStart_toStartOf="parent"
+    android:layout_marginTop="24dp"/>
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hubungi: 083845586939"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/icon1"
+        app:layout_constraintTop_toTopOf="@id/icon1"
+        android:layout_marginStart="8dp"/>
+
+    <!-- Ikon 2 dan TextView 2 -->
+    <ImageView
+        android:id="@+id/icon2"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:src="@drawable/ig"
+    app:layout_constraintTop_toBottomOf="@id/contentTextView"
+    app:layout_constraintStart_toEndOf="@id/textView1"
+    android:layout_marginTop="24dp"
+    android:layout_marginStart="16dp"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="DM: 987654321"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@id/icon2"
+        app:layout_constraintTop_toTopOf="@id/icon2"
+        android:layout_marginStart="8dp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

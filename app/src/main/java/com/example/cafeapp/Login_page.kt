@@ -6,7 +6,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cafeapp.MakanDatabase.TestDatabase1
 import com.example.cafeapp.TambahMenu.TambahMenu
 
 class Login_page : AppCompatActivity() {
@@ -36,12 +35,11 @@ class Login_page : AppCompatActivity() {
                     startActivity(intent)
                     finish()
                 }
-
-//                else if (user.username == "staff") {
-//                    val intent = Intent(this, HomeAdmin::class.java)
-//                    startActivity(intent)
-//                    finish()
-//                }
+                else if (user.username == "staff") {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             } else {
                 Toast.makeText(this, "Gagal, input data dengan benar", Toast.LENGTH_SHORT).show()
             }

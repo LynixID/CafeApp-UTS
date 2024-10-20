@@ -11,47 +11,45 @@ import com.example.cafeapp.R
 import java.io.File
 
 class MakanAdapter(
-    private val makanList: List<Makan>,
+    private var makanList: List<Makan>,
     private val onItemClick: (Makan) -> Unit
 ) : RecyclerView.Adapter<MakanAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val namaMenu: TextView = view.findViewById(R.id.namaMenu)
-        val hargaMenu: TextView = view.findViewById(R.id.hargaMenu)
-        val fotoMenu: ImageView = view.findViewById(R.id.fotoMenu)
+        val namaMenu: TextView = view.findViewById(R.id.foodName)
+        val hargaMenu: TextView = view.findViewById(R.id.foodPrice)
+        val fotoMenu: ImageView = view.findViewById(R.id.food_image)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.test_item_menu, parent, false)
+            .inflate(R.layout.item_food, parent, false)
         return MenuViewHolder(view)
+    }
+
+    fun updateData(newMakanList: List<Makan>) {
+        makanList = newMakanList
+        notifyDataSetChanged()
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         val makan = makanList[position]
 
-        // Menampilkan nama dan harga makan
         holder.namaMenu.text = makan.name
-        holder.hargaMenu.text = makan.harga.toString()
+        holder.hargaMenu.text = "$${makan.harga}"
 
-        // Dapatkan path gambar dari direktori internal
         val context = holder.itemView.context
-        val imgPath = File(context.filesDir, "app_images/${makan.imagePath}")
-
+        val imgPath = File(context.filesDir, makan.imagePath)
         if (imgPath.exists()) {
-            // Jika file gambar ada, set gambar ke ImageView
             holder.fotoMenu.setImageURI(Uri.fromFile(imgPath))
         } else {
-            // Jika gambar tidak ditemukan, tampilkan gambar default atau kosongkan
-            holder.fotoMenu.setImageResource(R.drawable.placeholder_image) // Ganti dengan placeholder yang sesuai
+            holder.fotoMenu.setImageResource(R.drawable.placeholder_image)
         }
 
-        // Set listener untuk klik item
         holder.itemView.setOnClickListener {
             onItemClick(makan)
         }
     }
-
 
     override fun getItemCount() = makanList.size
 }

@@ -17,7 +17,7 @@ class AddToCardAdapter(
     class CartViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val itemImage: ImageView = itemView.findViewById(R.id.item_image)
         val itemName: TextView = itemView.findViewById(R.id.item_name)
-        val itemPrice: TextView = itemView.findViewById(R.id.item_price)
+        val itemPrice: TextView = itemView.findViewById(R.id.makan_harga)
         val itemQuantity: TextView = itemView.findViewById(R.id.item_quantity)
         val btnMinus: ImageButton = itemView.findViewById(R.id.btn_minus)
         val btnPlus: ImageButton = itemView.findViewById(R.id.btn_plus)

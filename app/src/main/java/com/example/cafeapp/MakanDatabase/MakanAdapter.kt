@@ -7,19 +7,29 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.Makan
 import com.example.cafeapp.R
 import java.io.File
 
 class MakanAdapter(
-    private val makanList: List<Makan>,
-    private val onItemClick: (Makan) -> Unit
+    private var makanList: List<Makan>,
+    private val onItemClick: (Makan) -> Unit,
+//    private val onEditClick: (Makan) -> Unit,
+//    private val onDeleteClick: (Makan) -> Unit
 ) : RecyclerView.Adapter<MakanAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val namaMenu: TextView = view.findViewById(R.id.foodName)
+//        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
+//        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
+//        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
+//        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
+//        val btnEdit: ImageButton = view.findViewById(R.id.makan_btn_edit)
+//        val btnHapus: ImageButton = view.findViewById(R.id.makan_btn_hapus)
+val namaMenu: TextView = view.findViewById(R.id.foodName)
         val hargaMenu: TextView = view.findViewById(R.id.foodPrice)
         val fotoMenu: ImageView = view.findViewById(R.id.food_image)
+//        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
+//        val btnEdit: ImageButton = view.findViewById(R.id.makan_btn_edit)
+//        val btnHapus: ImageButton = view.findViewById(R.id.makan_btn_hapus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
@@ -48,10 +58,17 @@ class MakanAdapter(
         }
 
         // Set listener untuk klik item
-        holder.itemView.setOnClickListener {
-            onItemClick(makan)
-        }
+//        holder.itemView.setOnClickListener {
+//            onItemClick(makan)
+//        }
+//        holder.btnEdit.setOnClickListener { onEditClick(makan) }
+//        holder.btnHapus.setOnClickListener { onDeleteClick(makan) }
     }
 
     override fun getItemCount() = makanList.size
+
+    fun updateData(newMakanList: List<Makan>) {
+        makanList = newMakanList
+        notifyDataSetChanged() // Beritahu adapter bahwa data telah berubah
+    }
 }

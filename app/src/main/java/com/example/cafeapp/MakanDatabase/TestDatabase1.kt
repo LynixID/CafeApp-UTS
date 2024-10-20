@@ -16,8 +16,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import com.example.cafeapp.Makan
-import com.example.cafeapp.Minum
+import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumViewModel
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ActivityTestDatabase1Binding

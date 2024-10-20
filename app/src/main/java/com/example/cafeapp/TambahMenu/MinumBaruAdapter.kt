@@ -1,4 +1,4 @@
-package com.example.cafeapp
+package com.example.cafeapp.TambahMenu
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cafeapp.R
+import com.example.cafeapp.item_menuBaru
 
 class MinumBaruAdapter(
     private val menuList: List<item_menuBaru>,
@@ -15,12 +17,12 @@ class MinumBaruAdapter(
 ) : RecyclerView.Adapter<MinumBaruAdapter.MinumViewHolder>() {
 
     class MinumViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemImage: ImageView = view.findViewById(R.id.item_imageBaru)
-        val itemName: TextView = view.findViewById(R.id.item_nameBaru)
-        val itemPrice: TextView = view.findViewById(R.id.item_price)
-        val itemdescription: TextView = view.findViewById(R.id.item_description)
-        val btnEdit: ImageButton = view.findViewById(R.id.btn_edit)
-        val btnHapus: ImageButton = view.findViewById(R.id.btn_hapus)
+        val itemImage: ImageView = view.findViewById(R.id.makan_image)
+        val itemName: TextView = view.findViewById(R.id.makan_nama)
+        val itemPrice: TextView = view.findViewById(R.id.makan_harga)
+        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
+        val btnEdit: ImageButton = view.findViewById(R.id.makan_btn_edit)
+        val btnHapus: ImageButton = view.findViewById(R.id.makan_btn_hapus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MinumViewHolder {

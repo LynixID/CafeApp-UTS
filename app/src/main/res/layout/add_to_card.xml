@@ -38,7 +38,7 @@
 
         <!-- TextView for item price -->
         <TextView
-            android:id="@+id/item_price"
+            android:id="@+id/makan_harga"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Rp 0"

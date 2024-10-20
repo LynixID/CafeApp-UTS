@@ -1,28 +1,14 @@
 package com.example.cafeapp.MakanDatabase
 
-import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
-import com.example.cafeapp.Makan
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-@Database(entities = [Makan::class], version = 4)
-abstract class MakanDatabase: RoomDatabase() {
-    abstract fun makanDao(): MakanDAO
 
-    companion object{
-        @Volatile
-        private var INSTANCE: MakanDatabase? = null
-
-        fun getInstance(context: Context):MakanDatabase{
-            return INSTANCE?: synchronized(this){
-                INSTANCE ?: Room.databaseBuilder(
-                    context.applicationContext,
-                    MakanDatabase::class.java, "menu_database"
-                )
-                    .fallbackToDestructiveMigration().build()
-                    .also { INSTANCE = it }
-            }
-        }
-    }
-}
+@Entity(tableName = "makans")
+data class Makan(
+    @PrimaryKey(autoGenerate = true) val _id: Int,
+    val name: String,
+    val harga: Int,
+    @ColumnInfo(name = "image_path") val namaFoto: String
+)

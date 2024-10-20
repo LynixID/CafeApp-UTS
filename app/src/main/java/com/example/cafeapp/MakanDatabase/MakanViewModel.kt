@@ -5,7 +5,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
-import com.example.cafeapp.Makan
+import com.example.cafeapp.CafeDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -18,7 +18,7 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
     private val allMakans: LiveData<List<Makan>>
 
     init {
-        val db = MakanDatabase.getInstance(application)
+        val db = CafeDatabase.getInstance(application)
         makanDao = db.makanDao()
         allMakans = makanDao.getAll() // Mengambil semua data menu
     }

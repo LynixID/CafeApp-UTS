@@ -1,4 +1,4 @@
-package com.example.cafeapp.MakanDatabase
+package com.example.cafeapp.TambahMenu
 
 import android.content.Intent
 import android.os.Bundle
@@ -7,12 +7,16 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cafeapp.MakanDatabase.Makan
+import com.example.cafeapp.MakanDatabase.MakanAdapter
+import com.example.cafeapp.MakanDatabase.MakanViewModel
+import com.example.cafeapp.MakanDatabase.TestDatabase1
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
 import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
 
-class TestDatabase2 : AppCompatActivity() {
+class MenuBaruActivity : AppCompatActivity() {
     private lateinit var binding: ActivityTestDatabase2Binding
     private val makanViewModel: MakanViewModel by viewModels()
     private val minumViewModel: MinumViewModel by viewModels()// Inisialisasi ViewModel
@@ -24,7 +28,7 @@ class TestDatabase2 : AppCompatActivity() {
         setContentView(binding.root)
 
         // Setup RecyclerView Makanan
-        binding.recyclerView1.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView1.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // Observing data from ViewModel Makanan
         makanViewModel.getAllMakans().observe(this, Observer { menus ->
@@ -35,7 +39,7 @@ class TestDatabase2 : AppCompatActivity() {
         })
 
         // Setup RecyclerView Minuman
-        binding.recyclerView2.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView2.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         // Observing data from ViewModel Minuman
         minumViewModel.getAllMinums().observe(this, Observer { minums ->
@@ -86,6 +90,4 @@ class TestDatabase2 : AppCompatActivity() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
-
-
 }

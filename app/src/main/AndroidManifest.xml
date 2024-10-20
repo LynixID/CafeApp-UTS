@@ -21,7 +21,9 @@
             android:exported="false"/>
         <activity
             android:name=".MakanDatabase.TestDatabase1"
-            android:exported="false"/>
+            android:exported="true">
+
+        </activity>
         <activity
             android:name=".TentangAplikasiActivity"
             android:exported="false"/>
@@ -42,20 +44,25 @@
             android:exported="false"/>
         <activity
             android:name=".MainActivity"
-            android:exported="true"/>
+            android:exported="false"/>
         <activity
-            android:name=".MenuBaruActivity"
+            android:name=".TambahMenu.MenuBaruActivity"
+            android:exported="false"/>
+        <activity
+            android:name=".TambahMenu.MakanItemsActivity"
+            android:exported="false"/>
+
+        <activity android:name=".Login_page"
+            android:exported="false">
+
+        </activity>
+        <activity android:name=".TambahMenu.TambahMenu"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Login_page"
-            android:exported="true">
-
-        </activity>
-        <activity android:name="com.example.cafeapp.TambahMenu.TambahMenu" />
     </application>
 
 </manifest>

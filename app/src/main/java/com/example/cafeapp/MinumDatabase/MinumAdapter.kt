@@ -7,18 +7,22 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.Minum
 import com.example.cafeapp.R
 import java.io.File
 
 class MinumAdapter(
     private val minumList: List<Minum>,
-    private val onItemClick: (Minum) -> Unit
+    private val onItemClick: (Minum) -> Unit,
+//    private val onEditClick: (Minum) -> Unit,
+//    private val onDeleteClick: (Minum) -> Unit
 ): RecyclerView.Adapter<MinumAdapter.MenuViewHolder>() {
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val namaMenu: TextView = view.findViewById(R.id.namaMenu)
-        val hargaMenu: TextView = view.findViewById(R.id.hargaMenu)
-        val fotoMenu: ImageView = view.findViewById(R.id.fotoMenu)
+        val namaMenu: TextView = view.findViewById(R.id.drink_name)
+        val hargaMenu: TextView = view.findViewById(R.id.drink_price)
+        val fotoMenu: ImageView = view.findViewById(R.id.drink_image)
+//        val itemdescription: TextView = view.findViewById(R.id.minum_deskripsi)
+//        val btnEdit: ImageButton = view.findViewById(R.id.minum_btn_edit)
+//        val btnHapus: ImageButton = view.findViewById(R.id.minum_btn_hapus)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
@@ -33,6 +37,7 @@ class MinumAdapter(
         // Menampilkan nama dan harga minum
         holder.namaMenu.text = minum.name
         holder.hargaMenu.text = minum.harga.toString()
+//        holder.itemdescription.text = "Enak Banget Uyy"
 
         // Dapatkan path gambar dari direktori internal
         val context = holder.itemView.context
@@ -50,6 +55,8 @@ class MinumAdapter(
         holder.itemView.setOnClickListener {
             onItemClick(minum)
         }
+//        holder.btnEdit.setOnClickListener { onEditClick(minum) }
+//        holder.btnHapus.setOnClickListener { onDeleteClick(minum) }
     }
 
     override fun getItemCount() = minumList.size

@@ -1,10 +1,11 @@
-package com.example.cafeapp
+package com.example.cafeapp.TambahMenu
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.cafeapp.R
+import com.example.cafeapp.item_menuBaru
 
-class MenuBaruViewModel : ViewModel() {
+class MinumBaruViewModel : ViewModel() {
 
     private val _menuList = MutableLiveData<List<item_menuBaru>?>()
     val menuList: MutableLiveData<List<item_menuBaru>?> get() = _menuList

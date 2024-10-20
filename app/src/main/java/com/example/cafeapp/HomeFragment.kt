@@ -45,8 +45,8 @@ class HomeFragment : Fragment() {
             val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
                 putExtra("EXTRA_NAMA", selectedMakan.name)
                 putExtra("EXTRA_HARGA", selectedMakan.harga)
-                putExtra("EXTRA_FOTO", selectedMakan.imagePath) // Ensure this is the correct path name
-                putExtra("EXTRA_DESKRIPSI", selectedMakan.desk) // If you have a description in the Makan model
+                putExtra("EXTRA_FOTO", selectedMakan.namaFoto) // Ensure this is the correct path name
+                putExtra("EXTRA_DESKRIPSI", selectedMakan.deskripsi) // If you have a description in the Makan model
             }
             startActivity(intent) // Navigate to MenuDetailActivity
         }

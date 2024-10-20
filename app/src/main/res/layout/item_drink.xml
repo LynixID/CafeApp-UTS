@@ -12,7 +12,7 @@
     <!-- Gambar default -->
 
     <ImageView
-        android:id="@+id/food_image"
+        android:id="@+id/drink_image"
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginTop="8dp"
@@ -24,28 +24,28 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/foodName"
+        android:id="@+id/drink_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="Food Name"
         android:textSize="14sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/food_image"
-        app:layout_constraintStart_toEndOf="@+id/food_image"
-        app:layout_constraintTop_toTopOf="@+id/food_image"
+        app:layout_constraintBottom_toBottomOf="@+id/drink_image"
+        app:layout_constraintStart_toEndOf="@+id/drink_image"
+        app:layout_constraintTop_toTopOf="@+id/drink_image"
         app:layout_constraintVertical_bias="0.073" />
 
     <TextView
-        android:id="@+id/foodPrice"
+        android:id="@+id/drink_price"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:text="$0.00"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@+id/food_image"
-        app:layout_constraintTop_toBottomOf="@+id/foodName" />
+        app:layout_constraintStart_toEndOf="@+id/drink_image"
+        app:layout_constraintTop_toBottomOf="@+id/drink_name" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -53,11 +53,11 @@
         android:layout_marginStart="20dp"
         android:text="Ini adalah teks deskripsi Produk"
         android:textSize="11sp"
-        app:layout_constraintStart_toEndOf="@+id/food_image"
-        app:layout_constraintTop_toBottomOf="@+id/foodPrice" />
+        app:layout_constraintStart_toEndOf="@+id/drink_image"
+        app:layout_constraintTop_toBottomOf="@+id/drink_price" />
 
     <ImageView
-        android:id="@+id/makan_btn_hapus"
+        android:id="@+id/drink_btn_hapus"
         android:layout_width="28dp"
         android:layout_height="28dp"
         android:layout_marginEnd="16dp"

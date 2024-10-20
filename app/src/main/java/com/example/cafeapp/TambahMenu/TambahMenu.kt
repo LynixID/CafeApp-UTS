@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.Login_page
 //import com.example.cafeapp.MinumanDatabase.MinumanViewModel
 //import com.example.cafeapp.SnackDatabase.SnackViewModel
 import com.example.cafeapp.MakanDatabase.Makan
@@ -78,6 +79,22 @@ class TambahMenu : AppCompatActivity() {
         binding.btnTambahMenu.setOnClickListener {
             addMenu()
         }
+
+        binding.ivLogout.setOnClickListener {
+            keLoginPage()
+        }
+
+        binding.tvLogout.setOnClickListener {
+            keLoginPage()
+        }
+    }
+
+    // Fungsi untuk pindah ke LoginActivity
+    private fun keLoginPage() {
+        val intent = Intent(this, Login_page::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish()
     }
 
     private fun addMenu() {
@@ -128,6 +145,8 @@ class TambahMenu : AppCompatActivity() {
             Toast.makeText(this, "Mohon lengkapi semua field", Toast.LENGTH_SHORT).show()
         }
     }
+
+
 
     private fun clearInputFields() {
         binding.inputNamaProduk.text?.clear()

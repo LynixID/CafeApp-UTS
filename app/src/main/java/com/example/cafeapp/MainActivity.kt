@@ -57,6 +57,14 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        if (intent.getBooleanExtra("NAVIGATE_TO_CART", false)) {
+            val cartFragment = CartFragment()
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, cartFragment)
+                .commit()
+            bottomNavigationView.selectedItemId = R.id.cart
+        }
+
         // Load default fragment
         if (savedInstanceState == null) {
             bottomNavigationView.selectedItemId = R.id.nav_home // Set default selection

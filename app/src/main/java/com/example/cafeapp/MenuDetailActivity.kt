@@ -1,7 +1,9 @@
 package com.example.cafeapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MakanDatabase.MakanViewModel
+import java.io.File
 
 class MenuDetailActivity : AppCompatActivity() {
 
@@ -23,8 +26,8 @@ class MenuDetailActivity : AppCompatActivity() {
     private lateinit var backButton: ImageButton
     private var quantity = 1
 
-    private val cardViewModel: CardViewModel by viewModels() // Inisialisasi CardViewModel
-    private val viewModel: MakanViewModel by viewModels() // Inisialisasi MakanViewModel
+    private val cardViewModel: CardViewModel by viewModels()
+    private val viewModel: MakanViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,74 +42,73 @@ class MenuDetailActivity : AppCompatActivity() {
         backButton = findViewById(R.id.buttonBackDetail)
 
         // Ambil ID dari Intent
-        val makanId = intent.getStringExtra("MAKAN_ID") // Mengambil ID makanan sebagai String
+        val makanIdString = intent.getStringExtra("MAKAN_ID")
 
-        // Memeriksa apakah ID valid
+        // Mengonversi ID ke Int jika makanIdString tidak null
+        val makanId = makanIdString?.toIntOrNull()
+
         makanId?.let { id ->
             viewModel.getMakanById(id).observe(this) { makan ->
                 makan?.let {
-                    // Logging untuk memastikan data benar
-                    Log.d("MenuDetailActivity", "Makan: $makan")
-                    // Mengatur data produk
                     setupProductDetails(it)
                 }
             }
         }
 
-        // Mengatur klik pada tombol Back
         backButton.setOnClickListener {
-            finish() // Kembali ke aktivitas sebelumnya
+            finish()
         }
     }
-
-    // Fungsi untuk mengatur detail produk
     private fun setupProductDetails(makan: Makan) {
         nameFood.text = makan.name
         priceFood.text = "Rp ${makan.harga}"
-        descriptionFood.text = makan.desk // Menampilkan deskripsi
-        loadImage(makan.imagePath) // Fungsi untuk memuat gambar
+        descriptionFood.text = makan.desk
 
-        // Menambahkan logika untuk menambahkan ke keranjang
+        // Ambil path gambar dari direktori internal
+        val imgPath = File(filesDir, "app_images/${makan.imagePath}")
+
+        // Pastikan gambar yang dimuat benar
+        loadImage(Uri.fromFile(imgPath))
+
         addToCartButton.setOnClickListener {
             addToCart(makan)
         }
     }
 
-    // Fungsi untuk memuat gambar dari path dengan Glide
-    private fun loadImage(imagePath: String) {
+    private fun loadImage(imageUri: Uri) {
+        // Menggunakan Glide untuk memuat gambar
         Glide.with(this)
-            .load(imagePath)
-            .placeholder(R.drawable.sample_image)
+            .load(imageUri)
+            .placeholder(R.drawable.sample_image) // Placeholder jika gambar belum tersedia
             .into(imageProduct)
     }
 
-    // Fungsi untuk menambahkan item ke keranjang
+
     private fun addToCart(makan: Makan) {
         val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
         val priceDouble = priceString.toDoubleOrNull() ?: 0.0
 
         val cartItem = CartItem(
+            id = makan._id, // Use the Makan ID as the cart item ID
             name = nameFood.text.toString(),
             price = priceDouble.toString(),
-            imagePath = makan.imagePath,
-            quantity = quantity
+            imageResId = R.drawable.sample_image,
+            quantity = 1  // Always start with quantity 1 when adding from menu
         )
 
-        // Tambahkan item ke keranjang menggunakan CardViewModel
         cardViewModel.addItem(cartItem)
-
         Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
 
-        // Pindah ke CartFragment setelah menambahkan item
-        loadCardFragment()
+        // Navigate to CartFragment
+        navigateToCart()
     }
 
-    // Fungsi untuk memuat CardFragment
-    private fun loadCardFragment() {
-        val cardFragment = CartFragment() // Buat instance dari CartFragment
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container, cardFragment) // Ganti dengan container yang sesuai
-            .addToBackStack(null) // Tambahkan ke back stack jika ingin kembali
-            .commit()
+    private fun navigateToCart() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("NAVIGATE_TO_CART", true) // Optional: Kirim data untuk navigasi otomatis
+        startActivity(intent)
+        finish() // Menutup MenuDetailActivity setelah navigasi
     }
 }
+
+

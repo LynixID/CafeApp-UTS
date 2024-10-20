@@ -7,16 +7,14 @@ import androidx.room.Query
 
 @Dao
 interface MakanDAO {
-
     @Query("SELECT * FROM makans")
     fun getAll(): LiveData<List<Makan>>
 
-    // Ubah id dari Int menjadi String
     @Query("SELECT * FROM makans WHERE _id = :id LIMIT 1")
-    fun getMakanById(id: String): LiveData<Makan> // Menggunakan String sebagai tipe ID
+    fun getMakanById(id: Int): LiveData<Makan>
 
     @Insert
-    suspend fun insert(makan: Makan)
+    suspend fun insert(menu: Makan)
 
     @Query("SELECT * FROM makans WHERE name = :name")
     fun getMakanByName(name: String): LiveData<Makan>

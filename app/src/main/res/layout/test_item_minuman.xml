@@ -14,7 +14,7 @@
 
         <!-- ImageView for item image -->
         <ImageView
-            android:id="@+id/item_imageBaru"
+            android:id="@+id/minum_image"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginEnd="8dp"
@@ -25,7 +25,7 @@
 
         <!-- TextView for item name -->
         <TextView
-            android:id="@+id/item_nameBaru"
+            android:id="@+id/minum_nama"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Item Name"
@@ -34,13 +34,13 @@
             android:textSize="16sp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="4dp"
-            app:layout_constraintStart_toEndOf="@id/item_imageBaru"
-            app:layout_constraintEnd_toStartOf="@id/btn_edit"
+            app:layout_constraintStart_toEndOf="@id/minum_image"
+            app:layout_constraintEnd_toStartOf="@id/minum_btn_edit"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TextView for item price -->
         <TextView
-            android:id="@+id/item_price"
+            android:id="@+id/minum_harga"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Rp 0"
@@ -48,13 +48,13 @@
             android:textSize="14sp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="4dp"
-            app:layout_constraintStart_toEndOf="@id/item_imageBaru"
-            app:layout_constraintEnd_toStartOf="@id/btn_edit"
-            app:layout_constraintTop_toBottomOf="@id/item_nameBaru" />
+            app:layout_constraintStart_toEndOf="@id/minum_image"
+            app:layout_constraintEnd_toStartOf="@id/minum_btn_edit"
+            app:layout_constraintTop_toBottomOf="@id/minum_nama" />
 
         <!-- TextView for item description -->
         <TextView
-            android:id="@+id/item_description"
+            android:id="@+id/minum_deskripsi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Deskripsi item"
@@ -62,26 +62,26 @@
             android:textSize="12sp"
             android:layout_marginStart="8dp"
             android:layout_marginBottom="4dp"
-            app:layout_constraintStart_toEndOf="@id/item_imageBaru"
-            app:layout_constraintEnd_toStartOf="@id/btn_edit"
-            app:layout_constraintTop_toBottomOf="@id/item_price"
+            app:layout_constraintStart_toEndOf="@id/minum_image"
+            app:layout_constraintEnd_toStartOf="@id/minum_btn_edit"
+            app:layout_constraintTop_toBottomOf="@id/minum_harga"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- Button edit -->
         <ImageButton
-            android:id="@+id/btn_edit"
+            android:id="@+id/minum_btn_edit"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:background="#E6EFEC"
             android:src="@drawable/edit_icon"
             android:contentDescription="Edit menu"
-            app:layout_constraintEnd_toStartOf="@id/btn_hapus"
+            app:layout_constraintEnd_toStartOf="@id/minum_btn_hapus"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- Button hapus -->
-        <ImageButton
-            android:id="@+id/btn_hapus"
+        <ImageView
+            android:id="@+id/minum_btn_hapus"
             android:layout_width="28dp"
             android:layout_height="28dp"
             android:background="#396330"

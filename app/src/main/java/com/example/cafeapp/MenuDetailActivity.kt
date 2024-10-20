@@ -42,7 +42,7 @@ class MenuDetailActivity : AppCompatActivity() {
                     // Mengatur data produk
                     nameFood.text = makan.name
                     priceFood.text = "Rp ${makan.harga}"
-                    loadImage(makan.imagePath) // Fungsi untuk memuat gambar
+                    loadImage(makan.namaFoto) // Fungsi untuk memuat gambar
                 }
             })
         }

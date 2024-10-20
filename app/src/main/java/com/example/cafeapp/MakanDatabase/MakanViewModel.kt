@@ -52,6 +52,13 @@ class MakanViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    fun filterByCategory(category: String) {
+        val filteredList = allMakans.value?.filter {
+            it.kategori.equals(category, ignoreCase = true)
+        } ?: emptyList()
+        _filteredMakans.value = filteredList
+    }
+
     // Pencarian item berdasarkan nama
     fun searchItems(query: String) {
         val filteredList = allMakans.value?.filter {

@@ -1,0 +1,96 @@
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="8dp"
+    android:background="?attr/selectableItemBackground"
+    android:elevation="4dp"
+    android:padding="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
+
+        <!-- ImageView for item image -->
+        <ImageView
+            android:id="@+id/item_imageBaru"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginEnd="8dp"
+            android:src="@drawable/ic_launcher_background"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- TextView for item name -->
+        <TextView
+            android:id="@+id/item_nameBaru"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Item Name"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:textSize="16sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintStart_toEndOf="@id/item_imageBaru"
+            app:layout_constraintEnd_toStartOf="@id/btn_edit"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- TextView for item price -->
+        <TextView
+            android:id="@+id/item_price"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Rp 0"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintStart_toEndOf="@id/item_imageBaru"
+            app:layout_constraintEnd_toStartOf="@id/btn_edit"
+            app:layout_constraintTop_toBottomOf="@id/item_nameBaru" />
+
+        <!-- TextView for item description -->
+        <TextView
+            android:id="@+id/item_description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Deskripsi item"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
+            app:layout_constraintStart_toEndOf="@id/item_imageBaru"
+            app:layout_constraintEnd_toStartOf="@id/btn_edit"
+            app:layout_constraintTop_toBottomOf="@id/item_price"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Button edit -->
+        <ImageButton
+            android:id="@+id/btn_edit"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="#E6EFEC"
+            android:src="@drawable/edit_icon"
+            android:contentDescription="Edit menu"
+            app:layout_constraintEnd_toStartOf="@id/btn_hapus"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+        <!-- Button hapus -->
+        <ImageButton
+            android:id="@+id/btn_hapus"
+            android:layout_width="28dp"
+            android:layout_height="28dp"
+            android:background="#396330"
+            android:src="@drawable/delete_icon"
+            android:contentDescription="Hapus menu"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>

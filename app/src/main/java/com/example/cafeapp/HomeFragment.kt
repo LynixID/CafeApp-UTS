@@ -15,7 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
-import com.example.cafeapp.MenuDetailActivity // Pastikan untuk mengimpor MenuDetailActivity
+import com.example.cafeapp.MenuDetailActivity
 
 class HomeFragment : Fragment() {
     private lateinit var makanViewModel: MakanViewModel
@@ -28,29 +28,29 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Initialize the ViewModel here
         makanViewModel = ViewModelProvider(this).get(MakanViewModel::class.java)
+
+        // Observe the filteredMakans LiveData after initialization
+        makanViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
+            makanAdapter.updateData(makans)
+        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recommendedRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
-        // Inisialisasi adapter dengan daftar awal kosong
+        // Initialize the adapter with an initial empty list
         makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
             // Handle item click event here
             val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
                 putExtra("EXTRA_NAMA", selectedMakan.name)
                 putExtra("EXTRA_HARGA", selectedMakan.harga)
-                putExtra("EXTRA_FOTO", selectedMakan.imagePath) // Pastikan ini adalah nama path yang benar
-//                putExtra("EXTRA_DESKRIPSI", selectedMakan.deskripsi) // Jika Anda memiliki deskripsi di model Makan
+                putExtra("EXTRA_FOTO", selectedMakan.imagePath) // Ensure this is the correct path name
+                putExtra("EXTRA_DESKRIPSI", selectedMakan.desk) // If you have a description in the Makan model
             }
-            startActivity(intent) // Navigasi ke MenuDetailActivity
+            startActivity(intent) // Navigate to MenuDetailActivity
         }
         recyclerView.adapter = makanAdapter
-
-        // Mengamati data yang difilter
-        makanViewModel.filteredMakans.observe(viewLifecycleOwner) { filteredList ->
-            // Update UI dengan daftar makanan yang difilter
-            makanAdapter.updateData(filteredList)
-        }
 
         val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
         seeAllTextView.setOnClickListener {
@@ -59,7 +59,7 @@ class HomeFragment : Fragment() {
         }
 
         // Search functionality using SearchView
-        val searchView = view.findViewById<SearchView>(R.id.searchView) // Pastikan SearchView ada di layout
+        val searchView = view.findViewById<SearchView>(R.id.searchView) // Ensure SearchView exists in the layout
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { makanViewModel.searchItems(it) }

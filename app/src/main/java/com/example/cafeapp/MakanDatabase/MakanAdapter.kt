@@ -39,7 +39,7 @@ class MakanAdapter(
         holder.hargaMenu.text = "$${makan.harga}"
 
         val context = holder.itemView.context
-        val imgPath = File(context.filesDir, "app_images/${makan.imagePath}")
+        val imgPath = File(context.filesDir, makan.imagePath)
         if (imgPath.exists()) {
             holder.fotoMenu.setImageURI(Uri.fromFile(imgPath))
         } else {
@@ -47,7 +47,7 @@ class MakanAdapter(
         }
 
         holder.itemView.setOnClickListener {
-            onItemClick(makan) // Memanggil lambda saat item diklik
+            onItemClick(makan)
         }
     }
 

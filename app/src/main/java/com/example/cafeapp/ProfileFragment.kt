@@ -21,6 +21,27 @@ class ProfileFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_profile, container, false)
 
+        // Tentang Kita
+        val aboutUsButton: Button = view.findViewById(R.id.aboutUsButton)
+        aboutUsButton.setOnClickListener {
+            val intent = Intent(requireContext(), TentangKitaActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Tentang Aplikasi
+        val aboutAppButton: Button = view.findViewById(R.id.aboutAppButton)
+        aboutAppButton.setOnClickListener {
+            val intent = Intent(requireContext(), TentangAplikasiActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Bantuan
+        val helpButton: Button = view.findViewById(R.id.helpButton)
+        helpButton.setOnClickListener {
+            val intent = Intent(requireContext(), BantuanActivity::class.java)
+            startActivity(intent)
+        }
+
         // Mendapatkan referensi tombol logout
         val logoutButton = view.findViewById<Button>(R.id.logoutButton)
 

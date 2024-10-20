@@ -122,6 +122,22 @@
                     android:textSize="18sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
+            <!-- Button Daftar -->
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/BtnDaftar"
+                android:layout_width="150dp"
+                android:layout_marginTop="10dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="10dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:text="Daftar"
+                android:textColor="@color/white"
+                android:backgroundTint="#355E3B"
+                app:cornerRadius="10dp" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/BtnSubmit"
                 android:layout_width="150dp"

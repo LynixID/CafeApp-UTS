@@ -122,7 +122,7 @@ class UserActivity : AppCompatActivity() {
     private fun loadUsers() {
         lifecycleScope.launch {
             usersList.clear()
-            usersList.addAll(userDao.getAllUsers())
+            usersList.addAll(userDao.getAllUsers()) // Memuat semua user dari database
 
             val userNames = usersList.map { "${it.username} (${it.role})" }
             adapter = ArrayAdapter(this@UserActivity, android.R.layout.simple_list_item_1, userNames)

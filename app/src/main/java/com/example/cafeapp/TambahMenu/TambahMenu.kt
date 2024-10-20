@@ -16,6 +16,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.Login_page
 import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.TambahMenuBinding
@@ -72,7 +73,23 @@ class TambahMenu : AppCompatActivity() {
         binding.btnTambahMenu.setOnClickListener {
             addMenu()
         }
+
+        binding.ivLogout.setOnClickListener {
+            keLoginPage()
+        }
+
+        binding.tvLogout.setOnClickListener {
+            keLoginPage()
+        }
     }
+
+    private fun keLoginPage() {
+        val intent = Intent(this, Login_page::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish() 
+    }
+
 
     private fun addMenu() {
         val nama = binding.inputNamaProduk.text.toString()

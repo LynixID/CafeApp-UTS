@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@drawable/bg_gradient"
     tools:context=".TentangKitaActivity">
 
     <!-- Tombol Back -->
@@ -25,6 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Tentang Kita"
+        android:fontFamily="@font/poppinsblack"
         android:textColor="@color/black"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -38,12 +40,13 @@
         android:layout_height="wrap_content"
         android:text="Ini adalah aplikasi menu Caffe GRID yang dibuat untuk memenuhi Tugas Praktik Ujian Tengah Semester Mata KuliahPemrograman Mobile 2. Yang dibuat oleh 4 anggota kelompok:"
         android:gravity="center"
+        android:fontFamily="@font/poppinslight"
         android:textColor="@color/black"
         android:textSize="16sp"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="5dp"/>
 
     <!-- Menggunakan GridLayout untuk menampilkan 2 anggota per baris -->
     <GridLayout
@@ -66,13 +69,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_columnWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:padding="16dp">
 
                 <ImageView
@@ -87,7 +91,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Bintang Raka Putra"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"
                     android:gravity="center" />
@@ -99,9 +103,7 @@
                     android:textSize="16sp"
                     android:layout_marginTop="4dp"
                     android:gravity="center" />
-
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <!-- Anggota 2 -->
@@ -110,13 +112,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_columnWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:padding="16dp">
 
                 <ImageView
@@ -131,7 +134,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Dirajati Kusumawardani"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"
                     android:gravity="center" />
@@ -144,7 +147,6 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center" />
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <!-- Anggota 3 -->
@@ -153,13 +155,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_columnWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:padding="16dp">
 
                 <ImageView
@@ -174,7 +177,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ilham Gading Pangestu"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"
                     android:gravity="center" />
@@ -187,7 +190,6 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center" />
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
 
         <!-- Anggota 4 -->
@@ -196,13 +198,14 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_columnWeight="1"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="4dp">
+            app:cardCornerRadius="12dp"
+            app:cardElevation="6dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:padding="16dp">
 
                 <ImageView
@@ -217,7 +220,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Ilma Ayu Putri Sasongko"
-                    android:textSize="18sp"
+                    android:textSize="17sp"
                     android:textStyle="bold"
                     android:layout_marginTop="8dp"
                     android:gravity="center" />
@@ -230,8 +233,7 @@
                     android:layout_marginTop="4dp"
                     android:gravity="center" />
             </LinearLayout>
-
         </androidx.cardview.widget.CardView>
-
     </GridLayout>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

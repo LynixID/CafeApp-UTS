@@ -58,7 +58,7 @@ class Login_page : AppCompatActivity() {
 
         // Menambahkan logika untuk tombol Daftar
         tombolDaftar.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java) // Ganti UserActivity sesuai nama kelas yang tepat
+            val intent = Intent(this, UserActivity::class.java)
             startActivity(intent)
         }
     }

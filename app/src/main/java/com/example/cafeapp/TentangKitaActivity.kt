@@ -14,7 +14,7 @@ class TentangKitaActivity : AppCompatActivity() {
         // Inisialisasi tombol kembali
         val backButton: ImageButton = findViewById(R.id.buttonBack)
         backButton.setOnClickListener {
-            finish() // Menutup aktivitas dan kembali ke aktivitas sebelumnya
+            finish()
         }
     }
 }

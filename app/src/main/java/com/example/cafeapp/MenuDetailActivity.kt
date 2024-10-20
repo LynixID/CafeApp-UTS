@@ -1,80 +1,81 @@
 package com.example.cafeapp
 
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
-import com.example.cafeapp.R
+import com.example.cafeapp.MakanDatabase.MakanViewModel
 
 class MenuDetailActivity : AppCompatActivity() {
 
-    // Menggunakan ViewModel
-    private val viewModel: MenuDetailViewModel by viewModels()
+    private lateinit var imageProduct: ImageView
+    private lateinit var nameFood: TextView
+    private lateinit var priceFood: TextView
+    private lateinit var addToCartButton: Button
+    private lateinit var backButton: ImageButton
+    private var quantity = 1
+
+    private val viewModel: MakanViewModel by viewModels() // Inisialisasi ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.menu_detail)
 
-        // Ambil data dari Intent dan pastikan untuk menangani nullability
-        val menuName = intent.getStringExtra("MENU_NAME") ?: "Nama Tidak Ditemukan"
-        val menuPrice = intent.getStringExtra("MENU_PRICE") ?: "Harga Tidak Ditemukan"
-        val menuDescription = intent.getStringExtra("MENU_DESCRIPTION") ?: "Deskripsi Tidak Ditemukan"
-        val menuImageResId = intent.getIntExtra("MENU_IMAGE_RES_ID", -1)
+        imageProduct = findViewById(R.id.fotofood)
+        nameFood = findViewById(R.id.namefood)
+        priceFood = findViewById(R.id.pricefood)
+        addToCartButton = findViewById(R.id.buttonAddToCart)
+        backButton = findViewById(R.id.buttonBackDetail)
 
-        // Logging untuk debugging
-        Log.d("MenuDetailActivity", "Menu Image Res ID: $menuImageResId")
+        // Ambil ID dari Intent
+        val makanId = intent.getIntExtra("MAKAN_ID", -1)
 
-        // Referensi ke view
-        val buttonBack: ImageButton = findViewById(R.id.buttonBackDetail)
-        val imageMenu: ImageView = findViewById(R.id.imageProduct)
-        val textMenuName: TextView = findViewById(R.id.textProductName)
-        val textMenuPrice: TextView = findViewById(R.id.textProductPrice)
-        val textMenuDescription: TextView = findViewById(R.id.textProductDescription)
-        val buttonAddToCart: Button = findViewById(R.id.buttonAddToCart)
-        val buttonBuyNow: Button = findViewById(R.id.buttonBuyNow)
+        // Memeriksa apakah ID valid
+        if (makanId != -1) {
+            viewModel.getMakanById(makanId).observe(this, Observer { makan ->
+                if (makan != null) {
+                    // Mengatur data produk
+                    nameFood.text = makan.name
+                    priceFood.text = "Rp ${makan.harga}"
+                    loadImage(makan.imagePath) // Fungsi untuk memuat gambar
+                }
+            })
+        }
 
-        // Set data ke ViewModel
-        viewModel.setMenuDetails(menuName, menuPrice, menuDescription, menuImageResId)
-
-        // Observe LiveData dari ViewModel dan update UI saat ada perubahan data
-        viewModel.menuName.observe(this, Observer { name ->
-            textMenuName.text = name
-        })
-
-        viewModel.menuPrice.observe(this, Observer { price ->
-            textMenuPrice.text = price
-        })
-
-        viewModel.menuDescription.observe(this, Observer { description ->
-            textMenuDescription.text = description
-        })
-
-        viewModel.menuImageResId.observe(this, Observer { imageResId ->
-            if (imageResId != -1) {
-                imageMenu.setImageResource(imageResId)
+        // Mengatur klik pada tombol Add to Cart
+        addToCartButton.setOnClickListener {
+            val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
+            val priceDouble = if (priceString.isNotEmpty()) {
+                priceString.toDouble()
             } else {
-                imageMenu.setImageResource(R.drawable.ic_launcher_background) // Ganti dengan gambar default
+                0.0 // Nilai default jika harga kosong
             }
-        })
 
-        // Tombol back untuk kembali ke halaman sebelumnya
-        buttonBack.setOnClickListener {
-            finish()
+            val cartItem = CartItem(
+                name = nameFood.text.toString(),
+                price = priceDouble.toString(), // Pastikan ini adalah string harga yang valid
+                imageResId = R.drawable.sample_image, // Ganti dengan ID gambar yang sesuai
+                quantity = quantity
+            )
+            CartManager.addItem(cartItem) // Tambahkan item ke keranjang
+            Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
         }
 
-        // Tombol Add to Cart
-        buttonAddToCart.setOnClickListener {
-            // Implementasikan logika menambahkan ke keranjang
+        // Mengatur klik pada tombol Back
+        backButton.setOnClickListener {
+            finish() // Kembali ke aktivitas sebelumnya
         }
+    }
 
-        // Tombol Buy Now
-        buttonBuyNow.setOnClickListener {
-            // Implementasikan logika untuk pembelian langsung
-        }
+    private fun loadImage(imagePath: String) {
+        // Di sini Anda dapat menggunakan Glide atau Picasso untuk memuat gambar
+        // Contoh menggunakan Glide:
+        // Glide.with(this).load(File(imagePath)).into(imageProduct)
+        imageProduct.setImageResource(R.drawable.sample_image) // Ganti dengan logika pemuatan gambar yang sesuai
     }
 }

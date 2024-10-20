@@ -10,26 +10,35 @@ import com.example.cafeapp.MakanDatabase.MakanViewModel
 
 class AllFoodActivity : AppCompatActivity() {
     private val makanViewModel: MakanViewModel by viewModels() // Get the MakanViewModel instance
+    private lateinit var makanAdapter: MakanAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_all_food)
 
+        // Inisialisasi RecyclerView
         val recyclerView = findViewById<RecyclerView>(R.id.allFoodRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, 2) // Vertical layout
+        recyclerView.layoutManager = GridLayoutManager(this, 2) // Layout grid dengan 2 kolom
 
-        // Observe the allMakans LiveData from the MakanViewModel
-        makanViewModel.getAllMakans().observe(this) { makanList ->
-            recyclerView.adapter = MakanAdapter(makanList) { selectedMakan ->
-                // Handle item click, e.g., show details or add to cart
-            } // Update the adapter with new data
+        // Inisialisasi adapter dengan data kosong
+        makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
+            // Handle item click, misalnya buka detail makanan atau tambahkan ke keranjang
         }
 
-        // Optionally, you can apply filters and sorting here if needed
+        // Set adapter ke RecyclerView
+        recyclerView.adapter = makanAdapter
+
+        // Observe the allMakans LiveData from the MakanViewModel
+        makanViewModel.allMakans.observe(this) { makanList ->
+            // Update adapter dengan daftar makanan baru
+            makanAdapter.updateData(makanList)
+        }
+
+        // Jika Anda ingin menerapkan filter dan sorting, panggil metode ini
         applyFiltersAndSort()
     }
 
     private fun applyFiltersAndSort() {
-        // This can be implemented if you want to filter or sort the data
+        // Implementasikan logika filter dan sorting di sini jika diperlukan
     }
 }

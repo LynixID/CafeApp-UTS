@@ -2,7 +2,8 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_margin="8dp"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginVertical="3dp"
     android:background="?attr/selectableItemBackground"
     android:elevation="4dp"
     android:padding="16dp">
@@ -28,14 +29,12 @@
             android:id="@+id/makan_nama"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Item Name"
             android:textColor="@color/black"
+            android:textSize="18sp"
             android:textStyle="bold"
-            android:textSize="16sp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
             app:layout_constraintStart_toEndOf="@id/makan_image"
-            app:layout_constraintEnd_toStartOf="@id/makan_btn_edit"
             app:layout_constraintTop_toTopOf="parent" />
 
         <!-- TextView for item price -->
@@ -43,13 +42,11 @@
             android:id="@+id/makan_harga"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="Rp 0"
             android:textColor="@color/black"
-            android:textSize="14sp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
+            android:textSize="12sp"
             app:layout_constraintStart_toEndOf="@id/makan_image"
-            app:layout_constraintEnd_toStartOf="@id/makan_btn_edit"
             app:layout_constraintTop_toBottomOf="@id/makan_nama" />
 
         <!-- TextView for item description -->
@@ -57,39 +54,29 @@
             android:id="@+id/makan_deskripsi"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="4dp"
             android:text="Deskripsi item"
             android:textColor="@color/black"
             android:textSize="12sp"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/makan_image"
-            app:layout_constraintEnd_toStartOf="@id/makan_btn_edit"
-            app:layout_constraintTop_toBottomOf="@id/makan_harga"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toBottomOf="@id/makan_harga" />
 
         <!-- Button edit -->
-        <ImageButton
-            android:id="@+id/makan_btn_edit"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:background="#E6EFEC"
-            android:src="@drawable/edit_icon"
-            android:contentDescription="Edit menu"
-            app:layout_constraintEnd_toStartOf="@id/makan_btn_hapus"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- Button hapus -->
-        <ImageButton
+        <ImageView
             android:id="@+id/makan_btn_hapus"
             android:layout_width="28dp"
             android:layout_height="28dp"
+            android:layout_marginEnd="8dp"
             android:background="#396330"
-            android:src="@drawable/delete_icon"
             android:contentDescription="Hapus menu"
+            android:src="@drawable/delete_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

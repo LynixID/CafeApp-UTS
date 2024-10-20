@@ -49,8 +49,16 @@
             android:name=".TambahMenu.MenuBaruActivity"
             android:exported="false"/>
         <activity
+            android:name=".TambahMenu.MinumItemsActivity"
+            android:exported="false">
+
+        </activity>
+
+        <activity
             android:name=".TambahMenu.MakanItemsActivity"
-            android:exported="false"/>
+            android:exported="false">
+
+        </activity>
 
         <activity android:name=".Login_page"
             android:exported="false">

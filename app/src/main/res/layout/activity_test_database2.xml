@@ -8,27 +8,25 @@
         android:layout_height="match_parent"
         tools:context=".HalamanKetiga">
 
-        <Button
-            android:id="@+id/back"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:text="Back"
-            android:textSize="10sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-        <!--        <androidx.constraintlayout.widget.Guideline-->
-        <!--            android:layout_width="match_parent"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:orientation="vertical"-->
-        <!--            app:layout_constraintGuide_percent="0.2"/>-->
 
-        <TextView
+        <ImageButton
+            android:id="@+id/btnBack"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
+            android:background="@null"
+            android:contentDescription="Kembali ke halaman sebelumnya"
+            android:src="@drawable/back_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/textView3"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
             android:text="Makanan"
-            android:textSize="30sp"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,12 +34,12 @@
             android:id="@+id/layoutMakan"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.35"
-            android:layout_marginTop="60dp"
             android:orientation="horizontal"
+
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHeight_percent="0.4"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/textView3">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView1"
@@ -52,14 +50,15 @@
 
         </LinearLayout>
 
+
         <TextView
             android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
             android:layout_marginTop="32dp"
             android:text="Minuman"
-            android:textSize="30sp"
+            android:textSize="22sp"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/layoutMakan" />
 
@@ -67,7 +66,7 @@
             android:id="@+id/layoutMinum"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            app:layout_constraintHeight_percent="0.35"
+            app:layout_constraintHeight_percent="0.4"
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

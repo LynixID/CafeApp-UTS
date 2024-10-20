@@ -4,6 +4,7 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -21,12 +22,11 @@ class MakanAdapter(
 //        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
 //        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
 //        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
-//        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
-//        val btnEdit: ImageButton = view.findViewById(R.id.makan_btn_edit)
-//        val btnHapus: ImageButton = view.findViewById(R.id.makan_btn_hapus)
-val namaMenu: TextView = view.findViewById(R.id.foodName)
-        val hargaMenu: TextView = view.findViewById(R.id.foodPrice)
-        val fotoMenu: ImageView = view.findViewById(R.id.food_image)
+        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
+        val btnHapus: ImageView = view.findViewById(R.id.makan_btn_hapus)
+        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
+        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
+        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
 //        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
 //        val btnEdit: ImageButton = view.findViewById(R.id.makan_btn_edit)
 //        val btnHapus: ImageButton = view.findViewById(R.id.makan_btn_hapus)
@@ -34,7 +34,7 @@ val namaMenu: TextView = view.findViewById(R.id.foodName)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_food, parent, false)
+            .inflate(R.layout.test_item_menu, parent, false)
         return MenuViewHolder(view)
     }
 
@@ -43,7 +43,8 @@ val namaMenu: TextView = view.findViewById(R.id.foodName)
 
         // Menampilkan nama dan harga makan
         holder.namaMenu.text = makan.name
-        holder.hargaMenu.text = "$${makan.harga}" // Menambahkan simbol mata uang
+        holder.hargaMenu.text = "Rp. ${makan.harga}" // Menambahkan simbol mata uang
+        holder.itemdescription.text = makan.deskripsi
 
         // Dapatkan path gambar dari direktori internal
         val context = holder.itemView.context
@@ -57,10 +58,10 @@ val namaMenu: TextView = view.findViewById(R.id.foodName)
             holder.fotoMenu.setImageResource(R.drawable.placeholder_image) // Ganti dengan placeholder yang sesuai
         }
 
-        // Set listener untuk klik item
-//        holder.itemView.setOnClickListener {
-//            onItemClick(makan)
-//        }
+//         Set listener untuk klik item
+        holder.btnHapus.setOnClickListener {
+            onItemClick(makan)
+        }
 //        holder.btnEdit.setOnClickListener { onEditClick(makan) }
 //        holder.btnHapus.setOnClickListener { onDeleteClick(makan) }
     }

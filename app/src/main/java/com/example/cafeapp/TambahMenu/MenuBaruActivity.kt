@@ -10,7 +10,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
-import com.example.cafeapp.MakanDatabase.TestDatabase1
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
@@ -49,10 +48,10 @@ class MenuBaruActivity : AppCompatActivity() {
             }
         })
 
-        binding.back.setOnClickListener(){
-            val intent = Intent(this, TestDatabase1::class.java)
-            startActivity(intent)
-        }
+//        binding.back.setOnClickListener(){
+//            val intent = Intent(this, TestDatabase1::class.java)
+//            startActivity(intent)
+//        }
     }
 
     private fun DialogKonfirmasi(item: Any, tabel: String) {

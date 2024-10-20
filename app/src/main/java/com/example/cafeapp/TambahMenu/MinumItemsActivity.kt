@@ -1,53 +1,50 @@
-package com.example.cafeapp.MakanDatabase
+package com.example.cafeapp.TambahMenu
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ImageButton
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.cafeapp.MakanDatabase.Makan
+import com.example.cafeapp.MakanDatabase.MakanAdapter
+import com.example.cafeapp.MakanDatabase.MakanViewModel
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
-import com.example.cafeapp.TambahMenu.TambahMenu
-import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
+import com.example.cafeapp.R
+import com.example.cafeapp.databinding.TestAllMenuBinding
+import com.example.cafeapp.databinding.TestAllMinumanBinding
 
-class TestDatabase2 : AppCompatActivity() {
-    private lateinit var binding: ActivityTestDatabase2Binding
+class MinumItemsActivity : AppCompatActivity() {
+    private lateinit var binding: TestAllMinumanBinding
     private val makanViewModel: MakanViewModel by viewModels()
     private val minumViewModel: MinumViewModel by viewModels()// Inisialisasi ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityTestDatabase2Binding.inflate(layoutInflater)
+        binding = TestAllMinumanBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Setup RecyclerView Makanan
-        binding.recyclerView1.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Observing data from ViewModel Makanan
-        makanViewModel.getAllMakans().observe(this, Observer { menus ->
+        minumViewModel.getAllMinums().observe(this, Observer { menus ->
             // Perbarui adapter ketika data berubah
-            binding.recyclerView1.adapter = MakanAdapter(menus) { menu ->
+            binding.recyclerView.adapter = MinumAdapter(menus) { menu ->
                 DialogKonfirmasi(menu, "makans")
             }
         })
 
-        // Setup RecyclerView Minuman
-        binding.recyclerView2.layoutManager = LinearLayoutManager(this)
-
-        // Observing data from ViewModel Minuman
-        minumViewModel.getAllMinums().observe(this, Observer { minums ->
-            // Perbarui adapter ketika data berubah
-            binding.recyclerView2.adapter = MinumAdapter(minums) { minum ->
-                DialogKonfirmasi(minum, "minums")
-            }
-        })
 
         binding.btnBack.setOnClickListener(){
-            finish()
+            val intent = Intent(this, MakanItemsActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -86,6 +83,4 @@ class TestDatabase2 : AppCompatActivity() {
         val dialog: AlertDialog = builder.create()
         dialog.show()
     }
-
-
 }

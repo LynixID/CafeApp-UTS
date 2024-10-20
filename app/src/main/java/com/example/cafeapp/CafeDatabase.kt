@@ -9,7 +9,7 @@ import com.example.cafeapp.MakanDatabase.MakanDAO
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumDAO
 
-@Database(entities = [Makan::class], version = 4)
+@Database(entities = [Makan::class, Minum::class], version = 4)
 abstract class CafeDatabase: RoomDatabase() {
     abstract fun makanDao(): MakanDAO
     abstract fun minumDao(): MinumDAO

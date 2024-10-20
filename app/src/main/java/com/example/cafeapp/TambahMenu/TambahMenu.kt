@@ -81,7 +81,11 @@ class TambahMenu : AppCompatActivity() {
         // Submit button logic
         binding.btnTambahMenu.setOnClickListener {
             addMenu()
-            val intent= Intent(this, TestDatabase2::class.java)
+
+        }
+
+        binding.btnNext.setOnClickListener(){
+            val intent = Intent(this, TestDatabase2::class.java)
             startActivity(intent)
         }
     }
@@ -100,33 +104,27 @@ class TambahMenu : AppCompatActivity() {
                         _id = 0,
                         name = nama,
                         harga = harga,
+                        deskripsi = deskripsi,
                         namaFoto = imagePath!!
                     )
                     makanViewModel.insertMakan(makan)
                 }
-//                "Minuman" -> {
-//                    // Create Minuman object and save to Minuman table
-//                    val minuman = Minum(
-//                        _id = 0,
-//                        name = nama,
-//                        harga = harga,
-//                        namaFoto = imagePath!!
-//                    )
-//                    minumViewModel.insertMinum(minuman)
-//                }
-//                "Snack" -> {
-//                    // Create Snack object and save to Snack table
-//                    val snack = Snack(
-//                        _id = 0,
-//                        name = nama,
-//                        harga = harga,
-//                        imagePath = imagePath!!
-//                    )
-//                    snackViewModel.insertSnack(snack)
-//                }
+                "Minuman" -> {
+                    // Create Minuman object and save to Minuman table
+                    val minuman = Minum(
+                        _id = 0,
+                        name = nama,
+                        harga = harga,
+                        deskripsi = deskripsi,
+                        namaFoto = imagePath!!
+                    )
+                    minumViewModel.insertMinum(minuman)
+                }
             }
 
             Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+            val intent= Intent(this, TestDatabase2::class.java)
+            startActivity(intent)
 
             // Clear input fields after saving
             clearInputFields()

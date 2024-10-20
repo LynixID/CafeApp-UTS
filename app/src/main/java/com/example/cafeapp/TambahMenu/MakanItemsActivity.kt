@@ -14,41 +14,37 @@ import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
 import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
+import com.example.cafeapp.databinding.TestAllMenuBinding
+import com.example.cafeapp.databinding.TestItemMenuBinding
 
 class MakanItemsActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityTestDatabase2Binding
+    private lateinit var binding: TestAllMenuBinding
     private val makanViewModel: MakanViewModel by viewModels()
     private val minumViewModel: MinumViewModel by viewModels()// Inisialisasi ViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityTestDatabase2Binding.inflate(layoutInflater)
+        binding = TestAllMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // Setup RecyclerView Makanan
-        binding.recyclerView1.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(this)
 
         // Observing data from ViewModel Makanan
         makanViewModel.getAllMakans().observe(this, Observer { menus ->
             // Perbarui adapter ketika data berubah
-            binding.recyclerView1.adapter = MakanAdapter(menus) { menu ->
+            binding.recyclerView.adapter = MakanAdapter(menus) { menu ->
                 DialogKonfirmasi(menu, "makans")
             }
         })
 
-        // Setup RecyclerView Minuman
-        binding.recyclerView2.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        // Observing data from ViewModel Minuman
-        minumViewModel.getAllMinums().observe(this, Observer { minums ->
-            // Perbarui adapter ketika data berubah
-            binding.recyclerView2.adapter = MinumAdapter(minums) { minum ->
-                DialogKonfirmasi(minum, "minums")
-            }
-        })
-
-        binding.back.setOnClickListener(){
+        binding.btnBack.setOnClickListener(){
+            val intent = Intent(this, TambahMenu::class.java)
+            startActivity(intent)
+        }
+        binding.btnNext.setOnClickListener(){
             val intent = Intent(this, TambahMenu::class.java)
             startActivity(intent)
         }

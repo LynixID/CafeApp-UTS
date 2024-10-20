@@ -33,7 +33,7 @@
                 android:id="@+id/recyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:listitem="@layout/test_item_menu" />
+                tools:listitem="@layout/item_food" />
 
         </LinearLayout>
 

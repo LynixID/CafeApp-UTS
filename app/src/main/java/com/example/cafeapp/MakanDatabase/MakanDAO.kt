@@ -11,9 +11,11 @@ interface MakanDAO {
     @Query("SELECT * FROM makans")
     fun getAll(): LiveData<List<Makan>>
 
+    @Query("SELECT * FROM makans WHERE _id = :id LIMIT 1")
+    fun getMakanById(id: Int): LiveData<Makan>
+
     @Insert
     suspend fun insert(color: Makan)
-
 
     @Query("SELECT * FROM makans WHERE name = :name")
     fun getMakanByName(name: String): LiveData<Makan>

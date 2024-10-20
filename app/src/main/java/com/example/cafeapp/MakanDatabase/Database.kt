@@ -9,6 +9,8 @@ import androidx.room.PrimaryKey
 data class Makan(
     @PrimaryKey(autoGenerate = true) val _id: Int,
     val name: String,
+    val kategori : String,
     val harga: Int,
+    val desk: String,
     @ColumnInfo(name = "image_path") val imagePath: String
 )

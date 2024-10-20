@@ -8,17 +8,12 @@ import android.widget.ImageView
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cafeapp.MakanDatabase.Makan
-import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
 import com.example.cafeapp.MinumDatabase.Minum
-import com.example.cafeapp.MinumDatabase.MinumAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
 import com.example.cafeapp.R
-import com.example.cafeapp.TambahMenu.MakanAdminAdapter
-import com.example.cafeapp.TambahMenu.MinumAdminAdapter
 import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
 import java.io.File
 

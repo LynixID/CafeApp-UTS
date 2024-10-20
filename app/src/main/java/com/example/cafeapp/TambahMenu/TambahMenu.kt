@@ -37,7 +37,7 @@ class TambahMenu : AppCompatActivity() {
         clearInputFields()
 
         // Set up Spinner for category selection
-        val kategoriList = arrayOf("Makanan", "Minuman")
+        val kategoriList = arrayOf("Makanan")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, kategoriList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerKategori.adapter = adapter
@@ -95,7 +95,7 @@ class TambahMenu : AppCompatActivity() {
 
             // Insert sesuai dengan kategori
             when (kategori) {
-                "Makanan", "Minuman" -> {
+                "Makanan" -> {
                     makanViewModel.insertMakan(makan)
                     println("Makan item inserted") // Debugging: Confirm insertion
                 }

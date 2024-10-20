@@ -8,12 +8,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cafeapp.Admin.TambahMenu
-import com.example.cafeapp.UserDatabase.UserDatabase
 import kotlinx.coroutines.launch
 
 class Login_page : AppCompatActivity() {
 
-    private lateinit var db: UserDatabase
+    private lateinit var db: CafeDatabase
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +24,7 @@ class Login_page : AppCompatActivity() {
         val tombolDaftar: Button = findViewById(R.id.BtnDaftar) // Inisialisasi tombol Daftar
 
         // Initialize the database
-        db = UserDatabase.getDatabase(this)
+        db = CafeDatabase.getInstance(this)
 
         tombolSubmit.setOnClickListener {
             val inputUser = inputUsername.text.toString()

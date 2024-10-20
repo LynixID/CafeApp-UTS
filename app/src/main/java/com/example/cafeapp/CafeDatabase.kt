@@ -8,11 +8,14 @@ import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MakanDatabase.MakanDAO
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumDAO
+import com.example.cafeapp.UserDatabase.User
+import com.example.cafeapp.UserDatabase.UserDao
 
-@Database(entities = [Makan::class, Minum::class], version = 4)
+@Database(entities = [Makan::class, Minum::class, User::class], version = 6)
 abstract class CafeDatabase: RoomDatabase() {
     abstract fun makanDao(): MakanDAO
     abstract fun minumDao(): MinumDAO
+    abstract fun userDao(): UserDao
 
     companion object{
         @Volatile

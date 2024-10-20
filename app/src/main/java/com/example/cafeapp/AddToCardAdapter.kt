@@ -1,5 +1,6 @@
 package com.example.cafeapp
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,7 +8,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import java.io.File
 
 class AddToCardAdapter(
     val items: MutableList<CartItem>,
@@ -43,11 +44,14 @@ class AddToCardAdapter(
         holder.itemPrice.text = "Rp ${item.price}"
         holder.itemQuantity.text = item.quantity.toString()
 
-        // Load image using Glide
-        if (item.imageResId != 0) {
-            holder.itemImage.setImageResource(item.imageResId)
+        // Load image using file path from internal storage
+        val context = holder.itemView.context
+        val imgPath = File(context.filesDir, "app_images/${item.imageResId}")
+
+        if (imgPath.exists()) {
+            holder.itemImage.setImageURI(Uri.fromFile(imgPath))
         } else {
-            holder.itemImage.setImageResource(R.drawable.sample_image) // Default image
+            holder.itemImage.setImageResource(R.drawable.placeholder_image) // Gambar default
         }
 
         // Handle minus button click
@@ -57,8 +61,6 @@ class AddToCardAdapter(
                     val newQuantity = item.quantity - 1
                     item.quantity = newQuantity
                     holder.itemQuantity.text = newQuantity.toString()
-//                    viewModel.updateItemQuantity(item.id, newQuantity)
-//                    notifyItemChanged(position)
                 } else {
                     // Remove item if quantity becomes 0
                     items.removeAt(position)
@@ -66,6 +68,7 @@ class AddToCardAdapter(
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, items.size)
                 }
+                // Update total price after quantity is reduced
                 totalPriceListener.onTotalPriceUpdated(calculateTotalPrice())
             }
         }
@@ -76,9 +79,9 @@ class AddToCardAdapter(
                 val newQuantity = item.quantity + 1
                 item.quantity = newQuantity
                 holder.itemQuantity.text = newQuantity.toString()
-//                viewModel.updateItemQuantity(item.id, newQuantity)
-//                notifyItemChanged(position)
-//                totalPriceListener.onTotalPriceUpdated(calculateTotalPrice())
+
+                // Update total price after quantity is increased
+                totalPriceListener.onTotalPriceUpdated(calculateTotalPrice())
             }
         }
     }

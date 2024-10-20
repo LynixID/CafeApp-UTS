@@ -25,11 +25,11 @@ class MakanAdapter(
 //        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
 //        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
 //        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
-        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
-        val btnHapus: ImageView = view.findViewById(R.id.makan_btn_hapus)
-        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
-        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
-        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
+        val itemdescription: TextView = view.findViewById(R.id.textViewFoodDescription)
+//        val btnHapus: ImageView = view.findViewById(R.id.makan_btn_hapus)
+        val namaMenu: TextView = view.findViewById(R.id.textViewFoodName)
+        val hargaMenu: TextView = view.findViewById(R.id.textViewFoodPrice)
+        val fotoMenu: ImageView = view.findViewById(R.id.imageViewFood)
 //        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
 //        val btnEdit: ImageButton = view.findViewById(R.id.makan_btn_edit)
 //        val btnHapus: ImageButton = view.findViewById(R.id.makan_btn_hapus)
@@ -37,7 +37,7 @@ class MakanAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.test_item_menu, parent, false)
+            .inflate(R.layout.item_recommended, parent, false)
         return MenuViewHolder(view)
     }
 
@@ -54,20 +54,15 @@ class MakanAdapter(
         val imgPath = File(context.filesDir, "app_images/${makan.namaFoto}")
 
         if (imgPath.exists()) {
-            // Jika file gambar ada, set gambar ke ImageView
             holder.fotoMenu.setImageURI(Uri.fromFile(imgPath))
         } else {
-            // Jika gambar tidak ditemukan, tampilkan gambar default atau kosongkan
-            holder.fotoMenu.setImageResource(R.drawable.placeholder_image) // Ganti dengan placeholder yang sesuai
+            holder.fotoMenu.setImageResource(R.drawable.placeholder_image)
         }
 
-//         Set listener untuk klik item
-        holder.btnHapus.setOnClickListener {
-            onItemClick(makan)
+        // Set listener untuk klik seluruh item
+        holder.itemView.setOnClickListener {
+            onItemClick(makan) // Trigger saat seluruh item diklik
         }
-
-//        holder.btnEdit.setOnClickListener { onEditClick(makan) }
-//        holder.btnHapus.setOnClickListener { onDeleteClick(makan) }
     }
 
     override fun getItemCount() = makanList.size

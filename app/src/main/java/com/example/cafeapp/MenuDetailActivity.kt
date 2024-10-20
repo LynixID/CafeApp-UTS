@@ -59,16 +59,21 @@ class MenuDetailActivity : AppCompatActivity() {
             finish()
         }
     }
+
     private fun setupProductDetails(makan: Makan) {
         nameFood.text = makan.name
         priceFood.text = "Rp ${makan.harga}"
-        descriptionFood.text = makan.desk
+        descriptionFood.text = makan.deskripsi
 
         // Ambil path gambar dari direktori internal
-        val imgPath = File(filesDir, "app_images/${makan.imagePath}")
+        val imgPath = File(filesDir, "app_images/${makan.namaFoto}")
 
         // Pastikan gambar yang dimuat benar
-        loadImage(Uri.fromFile(imgPath))
+        if (imgPath.exists()) {
+            loadImage(Uri.fromFile(imgPath))
+        } else {
+            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image")) // Gambar default jika tidak ada
+        }
 
         addToCartButton.setOnClickListener {
             addToCart(makan)
@@ -83,7 +88,6 @@ class MenuDetailActivity : AppCompatActivity() {
             .into(imageProduct)
     }
 
-
     private fun addToCart(makan: Makan) {
         val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
         val priceDouble = priceString.toDoubleOrNull() ?: 0.0
@@ -92,7 +96,7 @@ class MenuDetailActivity : AppCompatActivity() {
             id = makan._id, // Use the Makan ID as the cart item ID
             name = nameFood.text.toString(),
             price = priceDouble.toString(),
-            imageResId = R.drawable.sample_image,
+            imageResId = makan.namaFoto, // Menggunakan nama foto dari objek Makan
             quantity = 1  // Always start with quantity 1 when adding from menu
         )
 
@@ -110,5 +114,3 @@ class MenuDetailActivity : AppCompatActivity() {
         finish() // Menutup MenuDetailActivity setelah navigasi
     }
 }
-
-

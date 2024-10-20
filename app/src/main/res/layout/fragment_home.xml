@@ -83,14 +83,6 @@
                 android:contentDescription="Category Burger" />
 
             <ImageView
-                android:id="@+id/categoryPizza"
-                android:layout_width="120dp"
-                android:layout_height="60dp"
-                android:src="@drawable/bibimbap"
-                android:layout_marginEnd="8dp"
-                android:contentDescription="Category Pizza" />
-
-            <ImageView
                 android:id="@+id/categoryPasta"
                 android:layout_width="120dp"
                 android:layout_height="60dp"

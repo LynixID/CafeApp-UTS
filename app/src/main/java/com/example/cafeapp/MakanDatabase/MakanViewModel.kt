@@ -14,7 +14,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class MakanViewModel(application: Application): AndroidViewModel(application) {
-
     private val makanDao: MakanDAO
     private val allMakans: LiveData<List<Makan>>
 

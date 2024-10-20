@@ -134,8 +134,8 @@
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:text="Daftar"
-                android:textColor="@color/white"
-                android:backgroundTint="#355E3B"
+                android:textColor="@color/black"
+                android:backgroundTint="#90EE90"
                 app:cornerRadius="10dp" />
 
             <com.google.android.material.button.MaterialButton

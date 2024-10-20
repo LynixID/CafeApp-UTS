@@ -8,6 +8,29 @@
         android:layout_height="match_parent"
         android:background="@drawable/ijoo">
 
+        <ImageButton
+            android:id="@+id/btnNext"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="Kembali ke halaman sebelumnya"
+            android:rotation="180"
+            android:src="@drawable/back_icon"
+            android:layout_margin="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:contentDescription="Kembali ke halaman sebelumnya"
+            android:src="@drawable/back_icon"
+            android:layout_margin="10dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/cardViewTambahProduk"
             android:layout_width="0dp"
@@ -24,6 +47,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:padding="18dp">
+
+
 
                 <TextView
                     android:id="@+id/tvTambahMenu"

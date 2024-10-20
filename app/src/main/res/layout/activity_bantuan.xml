@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -6,7 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
+    android:background="@drawable/bg_gradient"
     tools:context=".BantuanActivity">
+
+
+    <ImageButton
+        android:id="@+id/buttonBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="?attr/selectableItemBackground"
+        android:src="@drawable/back_icon"
+        android:contentDescription="Kembali ke halaman sebelumnya"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="26dp" />
 
     <TextView
         android:id="@+id/titleTextView"
@@ -14,66 +26,141 @@
         android:layout_height="wrap_content"
         android:text="Bantuan"
         android:textColor="@color/black"
-        android:textSize="24sp"
+        android:textSize="28sp"
         android:textStyle="bold"
+        android:fontFamily="@font/poppinslight"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp"/>
 
     <TextView
         android:id="@+id/contentTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Apabila menemukan kendala, dapat menghubungi kontak berikut"
+        android:text="Jika ada masalah, hubungi kami melalui:"
         android:gravity="center"
         android:textColor="@color/black"
-        android:textSize="16sp"
+        android:textSize="18sp"
+        android:fontFamily="@font/poppinslight"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="40dp"/>
+        android:layout_marginTop="20dp"/>
 
-    <!-- Ikon 1 dan TextView 1 -->
-    <ImageView
-        android:id="@+id/icon1"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/wa"
-    app:layout_constraintTop_toBottomOf="@id/contentTextView"
-    app:layout_constraintStart_toStartOf="parent"
-    android:layout_marginTop="24dp"/>
-
-    <TextView
-        android:id="@+id/textView1"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewWA"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hubungi: 083845586939"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/icon1"
-        app:layout_constraintTop_toTopOf="@id/icon1"
-        android:layout_marginStart="8dp"/>
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/contentTextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="12dp"
+        android:padding="16dp">
 
-    <!-- Ikon 2 dan TextView 2 -->
-    <ImageView
-        android:id="@+id/icon2"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:src="@drawable/ig"
-    app:layout_constraintTop_toBottomOf="@id/contentTextView"
-    app:layout_constraintStart_toEndOf="@id/textView1"
-    android:layout_marginTop="24dp"
-    android:layout_marginStart="16dp"/>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/textView2"
+            <ImageView
+                android:id="@+id/icon1"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/wa"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hubungi WhatsApp:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppinslight"/>
+
+                <TextView
+                    android:id="@+id/waContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="083845586939"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppinslight"/>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewIG"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="DM: 987654321"
-        android:textColor="@color/black"
-        android:textSize="16sp"
-        app:layout_constraintStart_toEndOf="@id/icon2"
-        app:layout_constraintTop_toTopOf="@id/icon2"
-        android:layout_marginStart="8dp"/>
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintTop_toBottomOf="@id/cardViewWA"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="12dp"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/icon2"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:src="@drawable/ig"
+                android:layout_gravity="center_vertical"/>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="12dp">
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Hubungi Instagram:"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppinslight"/>
+
+                <TextView
+                    android:id="@+id/igContact"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="987654321"
+                    android:textColor="@color/black"
+                    android:textSize="16sp"
+                    android:fontFamily="@font/poppinslight"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/cardViewIG"
+        app:srcCompat="@drawable/grid" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

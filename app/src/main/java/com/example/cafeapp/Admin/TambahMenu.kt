@@ -93,7 +93,23 @@ class TambahMenu : AppCompatActivity() {
             val intent = Intent(this, ListDataMenu::class.java)
             startActivity(intent)
         }
+
+        binding.ivLogout.setOnClickListener {
+            keLoginPage()
+        }
+
+        binding.tvLogout.setOnClickListener {
+            keLoginPage()
+        }
     }
+
+    private fun keLoginPage() {
+        val intent = Intent(this, Login_page::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+        startActivity(intent)
+        finish() 
+    }
+
 
     private fun addMenu() {
         val nama = binding.inputNamaProduk.text.toString()

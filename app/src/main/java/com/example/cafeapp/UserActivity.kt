@@ -1,5 +1,6 @@
 package com.example.cafeapp
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
@@ -22,6 +23,7 @@ class UserActivity : AppCompatActivity() {
     private lateinit var editTextPassword: EditText
     private lateinit var spinnerRole: Spinner
     private lateinit var buttonAddUser: Button
+    private lateinit var btnBacktoLogin_page: Button
     private lateinit var listViewUsers: ListView
 
     private var usersList: MutableList<User> = mutableListOf()
@@ -40,6 +42,7 @@ class UserActivity : AppCompatActivity() {
         editTextPassword = findViewById(R.id.pw)
         spinnerRole = findViewById(R.id.role)
         buttonAddUser = findViewById(R.id.add)
+        btnBacktoLogin_page = findViewById(R.id.btnBacktoLogin)
         listViewUsers = findViewById(R.id.list)
 
         val roles = arrayOf("staff", "admin")
@@ -51,6 +54,13 @@ class UserActivity : AppCompatActivity() {
             } else {
                 addUser()
             }
+        }
+
+        btnBacktoLogin_page.setOnClickListener {
+            val intent = Intent(this, Login_page::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
         }
 
         listViewUsers.setOnItemClickListener { _, _, position, _ ->
@@ -78,6 +88,8 @@ class UserActivity : AppCompatActivity() {
             Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
             return
         }
+
+
 
         val user = User(username = username, password = password, role = role)
         lifecycleScope.launch {
@@ -122,7 +134,7 @@ class UserActivity : AppCompatActivity() {
     private fun loadUsers() {
         lifecycleScope.launch {
             usersList.clear()
-            usersList.addAll(userDao.getAllUsers())
+            usersList.addAll(userDao.getAllUsers()) // Memuat semua user dari database
 
             val userNames = usersList.map { "${it.username} (${it.role})" }
             adapter = ArrayAdapter(this@UserActivity, android.R.layout.simple_list_item_1, userNames)

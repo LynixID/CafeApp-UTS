@@ -49,14 +49,14 @@ class HomeFragment : Fragment() {
         }
         recyclerView.adapter = makanAdapter
 
-        val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
+    val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
         seeAllTextView.setOnClickListener {
             val intent = Intent(requireContext(), AllFoodActivity::class.java)
             startActivity(intent)
         }
 
         // Search functionality using SearchView
-        val searchView = view.findViewById<SearchView>(R.id.searchView) // Ensure SearchView exists in the layout
+        val searchView = view.findViewById<SearchView>(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { makanViewModel.searchItems(it) }

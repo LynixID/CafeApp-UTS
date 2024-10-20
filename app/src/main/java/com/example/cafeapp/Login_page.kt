@@ -7,7 +7,7 @@ import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.cafeapp.TambahMenu.TambahMenu
+import com.example.cafeapp.Admin.TambahMenu
 import com.example.cafeapp.UserDatabase.UserDatabase
 import kotlinx.coroutines.launch
 

@@ -7,15 +7,13 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cafeapp.Admin.TambahMenu
 import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
 import com.example.cafeapp.MinumDatabase.Minum
-import com.example.cafeapp.MinumDatabase.MinumAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
-import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
 import com.example.cafeapp.databinding.TestAllMenuBinding
-import com.example.cafeapp.databinding.TestItemMenuBinding
 
 class MakanItemsActivity : AppCompatActivity() {
     private lateinit var binding: TestAllMenuBinding

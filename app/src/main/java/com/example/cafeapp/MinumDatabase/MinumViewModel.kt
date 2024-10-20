@@ -38,6 +38,13 @@ class MinumViewModel(application: Application): AndroidViewModel(application) {
         }
     }
 
+    // Fungsi untuk update data Makan
+    fun updateMinum(id: Int, name: String, harga: Double, deskripsi: String, namaFoto: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            minumDao.updateMakan(id, name, harga, deskripsi, namaFoto)
+        }
+    }
+
 
     fun saveImageToInternalStorage(bitmap: Bitmap, imageName: String): String? {
         // Gunakan getApplication() untuk mengakses context

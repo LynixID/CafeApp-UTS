@@ -1,4 +1,4 @@
-package com.example.cafeapp.TambahMenu
+package com.example.cafeapp.Admin
 
 import com.example.cafeapp.MakanDatabase.MakanViewModel
 import android.content.Context
@@ -16,8 +16,8 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.Login_page
 import com.example.cafeapp.MakanDatabase.Makan
-import com.example.cafeapp.MakanDatabase.TestDatabase2
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumViewModel
 //import com.example.cafeapp.MinumDatabase.MinumViewModel
@@ -84,8 +84,13 @@ class TambahMenu : AppCompatActivity() {
 
         }
 
+        binding.btnBack.setOnClickListener(){
+            val intent = Intent(this, Login_page::class.java)
+            startActivity(intent)
+        }
+
         binding.btnNext.setOnClickListener(){
-            val intent = Intent(this, TestDatabase2::class.java)
+            val intent = Intent(this, ListDataMenu::class.java)
             startActivity(intent)
         }
     }
@@ -123,7 +128,7 @@ class TambahMenu : AppCompatActivity() {
             }
 
             Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-            val intent= Intent(this, TestDatabase2::class.java)
+            val intent= Intent(this, ListDataMenu::class.java)
             startActivity(intent)
 
             // Clear input fields after saving

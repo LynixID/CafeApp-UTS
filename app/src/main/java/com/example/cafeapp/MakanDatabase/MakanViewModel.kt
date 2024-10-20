@@ -4,6 +4,7 @@ import android.app.Application
 import android.graphics.Bitmap
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.cafeapp.CafeDatabase
 import kotlinx.coroutines.Dispatchers
@@ -17,10 +18,22 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
     private val makanDao: MakanDAO
     private val allMakans: LiveData<List<Makan>>
 
+    private val _filteredMakans = MutableLiveData<List<Makan>>() // Untuk hasil filter
+    val filteredMakans: LiveData<List<Makan>> get() = _filteredMakans
+
+    // Definisi urutan sorting
+    enum class SortOrder { A_TO_Z, Z_TO_A }
+
     init {
         val db = CafeDatabase.getInstance(application)
         makanDao = db.makanDao()
         allMakans = makanDao.getAll() // Mengambil semua data menu
+
+        // Observe allMakans untuk selalu update filteredMakans
+        allMakans.observeForever { makans ->
+            _filteredMakans.value = makans
+        }
+
     }
 
     fun getAllMakans(): LiveData<List<Makan>> {
@@ -38,7 +51,17 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
             makanDao.deleteById(id)
         }
     }
+    // Metode untuk mendapatkan makanan berdasarkan ID
+    fun getMakanById(id: Int): LiveData<Makan> {
+        return makanDao.getMakanById(id) // Metode ini perlu ditambahkan di DAO
+    }
 
+    // Fungsi untuk update data Makan
+    fun updateMakan(id: Int, name: String, harga: Double, deskripsi: String, namaFoto: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            makanDao.updateMakan(id, name, harga, deskripsi, namaFoto)
+        }
+    }
 
     fun saveImageToInternalStorage(bitmap: Bitmap, imageName: String): String? {
         // Gunakan getApplication() untuk mengakses context
@@ -59,6 +82,21 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
             e.printStackTrace()
             null
         }
+
+    }
+    fun searchItems(query: String) {
+        val filteredList = allMakans.value?.filter {
+            it.name.contains(query, ignoreCase = true)
+        } ?: emptyList() // Mengembalikan list kosong jika null
+        _filteredMakans.value = filteredList
     }
 
+    // Sort items A-Z or Z-A
+    fun sortItems(order: SortOrder) {
+        val sortedList = when (order) {
+            SortOrder.A_TO_Z -> _filteredMakans.value?.sortedBy { it.name }
+            SortOrder.Z_TO_A -> _filteredMakans.value?.sortedByDescending { it.name }
+        } ?: emptyList()
+        _filteredMakans.value = sortedList
+    }
 }

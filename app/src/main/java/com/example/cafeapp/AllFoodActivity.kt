@@ -29,7 +29,7 @@ class AllFoodActivity : AppCompatActivity() {
         recyclerView.adapter = makanAdapter
 
         // Observe the allMakans LiveData from the MakanViewModel
-        makanViewModel.allMakans.observe(this) { makanList ->
+        makanViewModel.getAllMakans().observe(this) { makanList ->
             // Update adapter dengan daftar makanan baru
             makanAdapter.updateData(makanList)
         }

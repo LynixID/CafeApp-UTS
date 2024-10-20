@@ -22,4 +22,7 @@ interface MinumDAO {
 
     @Query("DELETE FROM minums WHERE _id = :id")
     suspend fun deleteById(id: Int)
+
+    @Query("UPDATE minums SET name = :name, harga = :harga, deskripsi = :deskripsi,  image_path = :namaFoto WHERE _id = :id")
+    suspend fun updateMakan(id: Int, name: String, harga: Double, deskripsi: String, namaFoto: String?)
 }

@@ -80,7 +80,7 @@
             app:layout_constraintBottom_toBottomOf="parent" />
 
         <!-- Button hapus -->
-        <ImageButton
+        <ImageView
             android:id="@+id/minum_btn_hapus"
             android:layout_width="28dp"
             android:layout_height="28dp"

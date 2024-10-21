@@ -39,11 +39,12 @@ class BantuanActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 Toast.makeText(this, "Instagram tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
+        }
 
-            val backButton: ImageButton = findViewById(R.id.buttonBack)
-            backButton.setOnClickListener {
-                finish()
-            }
+        // Tombol Back
+        val backButton: ImageButton = findViewById(R.id.buttonBack)
+        backButton.setOnClickListener {
+            finish()
         }
     }
 }

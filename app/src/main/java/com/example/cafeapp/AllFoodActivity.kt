@@ -1,5 +1,6 @@
 package com.example.cafeapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -7,6 +8,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
+import com.example.cafeapp.MenuDetailActivity
 
 class AllFoodActivity : AppCompatActivity() {
     private val makanViewModel: MakanViewModel by viewModels() // Get the MakanViewModel instance
@@ -22,7 +24,11 @@ class AllFoodActivity : AppCompatActivity() {
 
         // Inisialisasi adapter dengan data kosong
         makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
-            // Handle item click, misalnya buka detail makanan atau tambahkan ke keranjang
+            // Handle item click
+            val intent = Intent(this, MenuDetailActivity::class.java).apply {
+                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
+            }
+            startActivity(intent) // Buka MenuDetailActivity untuk detail makanan
         }
 
         // Set adapter ke RecyclerView

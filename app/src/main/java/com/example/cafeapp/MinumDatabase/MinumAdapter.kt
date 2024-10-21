@@ -11,23 +11,20 @@ import com.example.cafeapp.R
 import java.io.File
 
 class MinumAdapter(
-    private val minumList: List<Minum>,
-    private val onItemClick: (Minum) -> Unit,
-//    private val onEditClick: (Minum) -> Unit,
-//    private val onDeleteClick: (Minum) -> Unit
-): RecyclerView.Adapter<MinumAdapter.MenuViewHolder>() {
+    private var minumList: List<Minum>, // Ubah menjadi var agar bisa di-update
+    private val onItemClick: (Minum) -> Unit
+) : RecyclerView.Adapter<MinumAdapter.MenuViewHolder>() {
+
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
-        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
-        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
-        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
-        val btnHapus: ImageView = view.findViewById(R.id.makan_btn_hapus)
-//        val btnHapus: ImageButton = view.findViewById(R.id.minum_btn_hapus)
+        val namaMenu: TextView = view.findViewById(R.id.textViewFoodName)
+        val hargaMenu: TextView = view.findViewById(R.id.textViewFoodPrice)
+        val fotoMenu: ImageView = view.findViewById(R.id.imageViewFood)
+        val itemdescription: TextView = view.findViewById(R.id.textViewFoodDescription)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.test_item_menu, parent, false)
+            .inflate(R.layout.item_recommended, parent, false)
         return MenuViewHolder(view)
     }
 
@@ -38,27 +35,28 @@ class MinumAdapter(
         holder.namaMenu.text = minum.name
         holder.hargaMenu.text = "Rp. ${minum.harga}"
         holder.itemdescription.text = minum.deskripsi
-//        holder.itemdescription.text = "Enak Banget Uyy"
 
         // Dapatkan path gambar dari direktori internal
         val context = holder.itemView.context
         val imgPath = File(context.filesDir, "app_images/${minum.namaFoto}")
 
         if (imgPath.exists()) {
-            // Jika file gambar ada, set gambar ke ImageView
-
+            holder.fotoMenu.setImageURI(Uri.fromFile(imgPath))
         } else {
-            // Jika gambar tidak ditemukan, tampilkan gambar default atau kosongkan
-            holder.fotoMenu.setImageResource(R.drawable.placeholder_image) // Ganti dengan placeholder yang sesuai
+            holder.fotoMenu.setImageResource(R.drawable.placeholder_image)
         }
 
-        // Set listener untuk klik item
-        holder.btnHapus.setOnClickListener {
-            onItemClick(minum)
+        // Set listener untuk klik seluruh item
+        holder.itemView.setOnClickListener {
+            onItemClick(minum) // Trigger saat seluruh item diklik
         }
-//        holder.btnEdit.setOnClickListener { onEditClick(minum) }
-//        holder.btnHapus.setOnClickListener { onDeleteClick(minum) }
     }
 
     override fun getItemCount() = minumList.size
+
+    // Fungsi untuk memperbarui data
+    fun updateData(newMinumList: List<Minum>) {
+        minumList = newMinumList
+        notifyDataSetChanged() // Beritahu adapter bahwa data telah berubah
+    }
 }

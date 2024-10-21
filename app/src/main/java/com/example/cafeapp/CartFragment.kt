@@ -34,9 +34,7 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener { // Implem
 
         // Observe changes in cart items
         viewModel.cartItems.observe(viewLifecycleOwner) { items ->
-            adapter.items.clear()
-            adapter.items.addAll(items)
-            adapter.notifyDataSetChanged()
+            adapter.updateItems(items) // Update items in adapter
             updateTotalPrice(items) // Update total price when items change
         }
 
@@ -52,14 +50,8 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener { // Implem
     private fun updateTotalPrice(items: List<CartItem>) {
         var totalPrice = 0.0
         for (item in items) {
-            // Pastikan harga item tidak kosong sebelum mengonversi
-            val itemPriceString = item.price.trim() // Ambil string harga dan trim whitespace
-            val itemPriceDouble = if (itemPriceString.isNotEmpty()) {
-                itemPriceString.toDouble()
-            } else {
-                0.0 // Nilai default jika harga kosong
-            }
-            totalPrice += itemPriceDouble * item.quantity // Calculate total price
+            val itemPrice = item.price.replace("Rp ", "").replace(",", "").trim().toDoubleOrNull() ?: 0.0
+            totalPrice += itemPrice * item.quantity // Calculate total price
         }
         totalPriceTextView.text = "Rp $totalPrice" // Display total price
     }

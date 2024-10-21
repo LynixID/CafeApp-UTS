@@ -33,12 +33,5 @@ class AllFoodActivity : AppCompatActivity() {
             // Update adapter dengan daftar makanan baru
             makanAdapter.updateData(makanList)
         }
-
-        // Jika Anda ingin menerapkan filter dan sorting, panggil metode ini
-        applyFiltersAndSort()
-    }
-
-    private fun applyFiltersAndSort() {
-        // Implementasikan logika filter dan sorting di sini jika diperlukan
     }
 }

@@ -43,10 +43,7 @@ class HomeFragment : Fragment() {
         makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
             // Handle item click event here
             val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-                putExtra("EXTRA_NAMA", selectedMakan.name)
-                putExtra("EXTRA_HARGA", selectedMakan.harga)
-                putExtra("EXTRA_FOTO", selectedMakan.namaFoto) // Ensure this is the correct path name
-                putExtra("EXTRA_DESKRIPSI", selectedMakan.deskripsi) // If you have a description in the Makan model
+                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
             }
             startActivity(intent) // Navigate to MenuDetailActivity
         }

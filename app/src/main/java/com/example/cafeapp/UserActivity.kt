@@ -19,6 +19,7 @@ import kotlinx.coroutines.launch
 
 class UserActivity : AppCompatActivity() {
 
+//    Persiapan Variabel
     private lateinit var userDao: UserDao // Corrected variable name
     private lateinit var editTextUsername: EditText
     private lateinit var editTextPassword: EditText

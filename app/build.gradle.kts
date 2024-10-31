@@ -18,8 +18,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         testInstrumentationRunnerArguments ["clearPackageData"] = "true"
-
-        //testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -58,7 +56,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.androidx.junit.ktx)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -79,8 +76,9 @@ dependencies {
 //    untuk ActivityResultLauncher
     implementation ("androidx.activity:activity-ktx:1.7.0" )// Versi terbaru dapat bervariasi, pastikan memeriksanya.
     implementation(kotlin("script-runtime"))
-    //testing
+
     testImplementation ("junit:junit:4.12")
     androidTestImplementation ("androidx.test.ext:junit:1.1.0")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.1.1")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
 }

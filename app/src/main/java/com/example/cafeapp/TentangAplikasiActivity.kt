@@ -1,18 +1,19 @@
 package com.example.cafeapp
 
-
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.databinding.ActivityTentangAplikasiBinding
 
 class TentangAplikasiActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityTentangAplikasiBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tentang_aplikasi)
+        binding = ActivityTentangAplikasiBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        val backButton: ImageButton = findViewById(R.id.buttonBack)
-        backButton.setOnClickListener {
+        binding.buttonBack.setOnClickListener {
             finish()
         }
     }

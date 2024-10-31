@@ -7,16 +7,19 @@ import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import com.example.cafeapp.databinding.ActivityBantuanBinding
 
 class BantuanActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityBantuanBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_bantuan)
+        binding = ActivityBantuanBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Tombol WhatsApp
-        val cardViewWA = findViewById<CardView>(R.id.cardViewWA)
-        cardViewWA.setOnClickListener {
+        binding.cardViewWA.setOnClickListener {
             val number = "6283845586939"
             val url = "https://api.whatsapp.com/send?phone=$number"
             val intent = Intent(Intent.ACTION_VIEW)
@@ -29,8 +32,7 @@ class BantuanActivity : AppCompatActivity() {
         }
 
         // Tombol Instagram
-        val cardViewIG = findViewById<CardView>(R.id.cardViewIG)
-        cardViewIG.setOnClickListener {
+        binding.cardViewIG.setOnClickListener {
             val instagramUrl = "https://www.instagram.com/inftechd"
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(instagramUrl)
@@ -40,8 +42,9 @@ class BantuanActivity : AppCompatActivity() {
                 Toast.makeText(this, "Instagram tidak ditemukan", Toast.LENGTH_SHORT).show()
             }
         }
-        val backButton: ImageButton = findViewById(R.id.buttonBack)
-        backButton.setOnClickListener {
+
+        // Tombol Back
+        binding.buttonBack.setOnClickListener {
             finish()
         }
     }

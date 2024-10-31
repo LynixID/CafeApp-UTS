@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.cafeapp.CafeDatabase
+import com.example.cafeapp.UserDatabase.CafeDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -97,5 +97,10 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
             SortOrder.Z_TO_A -> _filteredMinums.value?.sortedByDescending { it.name }
         } ?: emptyList()
         _filteredMinums.value = sortedList
+    }
+
+    fun filterByCategory(category: String) {
+        val filteredList = allMinums.value?.filter { it.category == category } ?: emptyList()
+        _filteredMinums.value = filteredList
     }
 }

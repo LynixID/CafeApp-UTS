@@ -94,13 +94,13 @@ class TambahMenu : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.ivLogout.setOnClickListener {
-            keLoginPage()
-        }
-
-        binding.tvLogout.setOnClickListener {
-            keLoginPage()
-        }
+//        binding.ivLogout.setOnClickListener {
+//            keLoginPage()
+//        }
+//
+//        binding.tvLogout.setOnClickListener {
+//            keLoginPage()
+//        }
     }
 
     private fun keLoginPage() {

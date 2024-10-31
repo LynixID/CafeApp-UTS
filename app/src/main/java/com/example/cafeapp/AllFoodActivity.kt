@@ -7,9 +7,13 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
+import com.example.cafeapp.MinumDatabase.MinumListAdapter
+import com.example.cafeapp.MinumDatabase.MinumViewModel
 
 class AllFoodActivity : AppCompatActivity() {
     private val makanViewModel: MakanViewModel by viewModels() // Get the MakanViewModel instance
+    private val minumViewModel: MinumViewModel by viewModels()
+    private lateinit var minumAdapter: MinumListAdapter
     private lateinit var makanAdapter: MakanAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +36,19 @@ class AllFoodActivity : AppCompatActivity() {
         makanViewModel.getAllMakans().observe(this) { makanList ->
             // Update adapter dengan daftar makanan baru
             makanAdapter.updateData(makanList)
+        }
+        // Inisialisasi RecyclerView untuk minuman
+        val recyclerViewMinum = findViewById<RecyclerView>(R.id.allMinumRecyclerView)
+        recyclerViewMinum.layoutManager = GridLayoutManager(this, 2)
+
+        minumAdapter = MinumListAdapter { selectedMinum ->
+            // Handle item click
+        }
+        recyclerViewMinum.adapter = minumAdapter
+
+        // Observe the allMinums LiveData
+        minumViewModel.getAllMinums().observe(this) { minumList ->
+            minumAdapter.submitList(minumList) // Menggunakan submitList untuk ListAdapter
         }
     }
 }

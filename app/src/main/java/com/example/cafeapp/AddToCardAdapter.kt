@@ -2,38 +2,36 @@ package com.example.cafeapp
 
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cafeapp.databinding.AddToCardBinding
 import java.io.File
 
 class AddToCardAdapter(
-    val items: MutableList<CartItem>,
+    private val items: MutableList<CartItem>,
     private val viewModel: CardViewModel,
     private val totalPriceListener: TotalPriceListener
 ) : RecyclerView.Adapter<AddToCardAdapter.CartViewHolder>() {
 
-    // Interface definition for total price updates
     interface TotalPriceListener {
         fun onTotalPriceUpdated(totalPrice: Double)
     }
 
-    class CartViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemImage: ImageView = view.findViewById(R.id.item_image)
-        val itemName: TextView = view.findViewById(R.id.item_name)
-        val itemPrice: TextView = view.findViewById(R.id.item_price)
-        val itemQuantity: TextView = view.findViewById(R.id.item_quantity)
-        val btnMinus: ImageButton = view.findViewById(R.id.btn_minus)
-        val btnPlus: ImageButton = view.findViewById(R.id.btn_plus)
+    class CartViewHolder(private val binding: AddToCardBinding) : RecyclerView.ViewHolder(binding.root) {
+        val itemImage: ImageView = binding.itemImage
+        val itemName: TextView = binding.itemName
+        val itemPrice: TextView = binding.itemPrice
+        val itemQuantity: TextView = binding.itemQuantity
+        val btnMinus: ImageButton = binding.btnMinus
+        val btnPlus: ImageButton = binding.btnPlus
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.add_to_card, parent, false)
-        return CartViewHolder(view)
+        val binding = AddToCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return CartViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: CartViewHolder, position: Int) {
@@ -56,7 +54,7 @@ class AddToCardAdapter(
 
         // Handle minus button click
         holder.btnMinus.setOnClickListener {
-            if (position != RecyclerView.NO_POSITION) { // Check if the position is still valid
+            if (position != RecyclerView.NO_POSITION) {
                 if (item.quantity > 1) {
                     val newQuantity = item.quantity - 1
                     item.quantity = newQuantity
@@ -75,7 +73,7 @@ class AddToCardAdapter(
 
         // Handle plus button click
         holder.btnPlus.setOnClickListener {
-            if (position != RecyclerView.NO_POSITION) { // Check if the position is still valid
+            if (position != RecyclerView.NO_POSITION) {
                 val newQuantity = item.quantity + 1
                 item.quantity = newQuantity
                 holder.itemQuantity.text = newQuantity.toString()
@@ -88,7 +86,6 @@ class AddToCardAdapter(
 
     override fun getItemCount() = items.size
 
-    // Calculate total price of all items in cart
     private fun calculateTotalPrice(): Double {
         return items.sumOf {
             try {
@@ -99,7 +96,6 @@ class AddToCardAdapter(
         }
     }
 
-    // Method to update items list
     fun updateItems(newItems: List<CartItem>) {
         items.clear()
         items.addAll(newItems)
@@ -107,7 +103,6 @@ class AddToCardAdapter(
         totalPriceListener.onTotalPriceUpdated(calculateTotalPrice())
     }
 
-    // Method to add single item
     fun addItem(item: CartItem) {
         val existingItemIndex = items.indexOfFirst { it.id == item.id }
         if (existingItemIndex != -1) {

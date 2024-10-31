@@ -13,8 +13,8 @@ interface UserDao {
     @Delete
     suspend fun delete(user: User)
 
-    @Query("SELECT * FROM users") // Tambahkan ini untuk mengambil semua pengguna
-    suspend fun getAllUsers(): List<User> // Mengembalikan daftar semua user
+    @Query("SELECT * FROM users")
+    suspend fun getAllUsers(): List<User> // Pastikan ini ada di dalam coroutine
 
     @Query("SELECT * FROM users WHERE username = :username AND password = :password LIMIT 1")
     suspend fun getUserByUsernameAndPassword(username: String, password: String): User?

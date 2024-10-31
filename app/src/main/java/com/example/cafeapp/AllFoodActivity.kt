@@ -5,25 +5,27 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.MakanDatabase.MakanAdapter
+import com.example.cafeapp.MakanDatabase.MakanListAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
-import com.example.cafeapp.MenuDetailActivity
+import com.example.cafeapp.databinding.ActivityAllFoodBinding
 
 class AllFoodActivity : AppCompatActivity() {
-    private val makanViewModel: MakanViewModel by viewModels() // Get the MakanViewModel instance
-    private lateinit var makanAdapter: MakanAdapter
+    private val makanViewModel: MakanViewModel by viewModels() // Mengambil instance MakanViewModel
+    private lateinit var makanAdapter: MakanListAdapter
+    private lateinit var binding: ActivityAllFoodBinding // Deklarasi binding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_all_food)
+
+        // Inisialisasi binding
+        binding = ActivityAllFoodBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Inisialisasi RecyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.allFoodRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, 2) // Layout grid dengan 2 kolom
+        binding.allFoodRecyclerView.layoutManager = GridLayoutManager(this, 2) // Layout grid dengan 2 kolom
 
         // Inisialisasi adapter dengan data kosong
-        makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
+        makanAdapter = MakanListAdapter { selectedMakan ->
             // Handle item click
             val intent = Intent(this, MenuDetailActivity::class.java).apply {
                 putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
@@ -32,12 +34,12 @@ class AllFoodActivity : AppCompatActivity() {
         }
 
         // Set adapter ke RecyclerView
-        recyclerView.adapter = makanAdapter
+        binding.allFoodRecyclerView.adapter = makanAdapter
 
-        // Observe the allMakans LiveData from the MakanViewModel
+        // Observe the allMakans LiveData dari MakanViewModel
         makanViewModel.getAllMakans().observe(this) { makanList ->
             // Update adapter dengan daftar makanan baru
-            makanAdapter.updateData(makanList)
+            makanAdapter.submitList(makanList) // Menggunakan submitList untuk ListAdapter
         }
     }
 }

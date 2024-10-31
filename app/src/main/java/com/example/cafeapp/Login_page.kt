@@ -8,27 +8,26 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cafeapp.Admin.TambahMenu
+import com.example.cafeapp.UserDatabase.CafeDatabase
+import com.example.cafeapp.databinding.LoginPageBinding // Import your generated binding class
 import kotlinx.coroutines.launch
 
 class Login_page : AppCompatActivity() {
 
     private lateinit var db: CafeDatabase
+    private lateinit var binding: LoginPageBinding // Declare the binding variable
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.login_page)
-
-        val inputUsername: EditText = findViewById(R.id.inputUser)
-        val inputPassword: EditText = findViewById(R.id.inputPassword)
-        val tombolSubmit: Button = findViewById(R.id.BtnSubmit)
-        val tombolDaftar: Button = findViewById(R.id.BtnDaftar) // Inisialisasi tombol Daftar
+        binding = LoginPageBinding.inflate(layoutInflater) // Inflate the binding
+        setContentView(binding.root) // Set the content view to the root of the binding
 
         // Initialize the database
         db = CafeDatabase.getInstance(this)
 
-        tombolSubmit.setOnClickListener {
-            val inputUser = inputUsername.text.toString()
-            val inputPass = inputPassword.text.toString()
+        binding.BtnSubmit.setOnClickListener {
+            val inputUser = binding.inputUser.text.toString()
+            val inputPass = binding.inputPassword.text.toString()
 
             // Check login in the database using a coroutine
             lifecycleScope.launch {
@@ -55,8 +54,8 @@ class Login_page : AppCompatActivity() {
             }
         }
 
-        // Menambahkan logika untuk tombol Daftar
-        tombolDaftar.setOnClickListener {
+        // Logic for the register button
+        binding.BtnDaftar.setOnClickListener {
             val intent = Intent(this, UserActivity::class.java)
             startActivity(intent)
         }

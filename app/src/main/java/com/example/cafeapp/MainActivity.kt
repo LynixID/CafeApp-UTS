@@ -3,18 +3,30 @@ package com.example.cafeapp
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.databinding.ActivityMainBinding // Import the generated binding class
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding // Declare the binding variable
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater) // Inflate the binding
+        setContentView(binding.root) // Set the content view to the root of the binding
 
         // Bottom Navigation Setup
-        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavigationView)
-        bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
+        setupBottomNavigation()
+
+        // Load default fragment
+        if (savedInstanceState == null) {
+            binding.bottomNavigationView.selectedItemId = R.id.nav_home // Set default selection
+        }
+    }
+
+    private fun setupBottomNavigation() {
+        binding.bottomNavigationView.setOnNavigationItemSelectedListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.nav_home -> {
                     // Navigate to Home Fragment
@@ -33,6 +45,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.cart -> {
+                    // Navigate to Cart Fragment
                     val cartFragment = CartFragment()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, cartFragment)
@@ -40,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.nav_profile -> {
+                    // Navigate to Profile Fragment
                     val profileFragment = ProfileFragment()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, profileFragment)
@@ -50,17 +64,13 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
+        // Handle navigation from intent
         if (intent.getBooleanExtra("NAVIGATE_TO_CART", false)) {
             val cartFragment = CartFragment()
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, cartFragment)
                 .commit()
-            bottomNavigationView.selectedItemId = R.id.cart
-        }
-
-        // Load default fragment
-        if (savedInstanceState == null) {
-            bottomNavigationView.selectedItemId = R.id.nav_home // Set default selection
+            binding.bottomNavigationView.selectedItemId = R.id.cart
         }
     }
 }

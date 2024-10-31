@@ -20,7 +20,7 @@ import java.io.File
 class ListDataMenu : AppCompatActivity() {
     private lateinit var binding: ActivityTestDatabase2Binding
     private val makanViewModel: MakanViewModel by viewModels()
-    private val minumViewModel: MinumViewModel by viewModels()// Inisialisasi ViewModel
+    private val minumViewModel: MinumViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,174 +28,139 @@ class ListDataMenu : AppCompatActivity() {
         binding = ActivityTestDatabase2Binding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Setup RecyclerView Makanan
-        binding.recyclerView1.layoutManager = LinearLayoutManager(this)
+        setupRecyclerViews()
+        observeViewModels()
 
-        // Observing data from ViewModel Makanan
-
-        makanViewModel.getAllMakans().observe(this) { menus ->
-            // Perbarui adapter ketika data berubah
-            binding.recyclerView1.adapter = MakanAdminAdapter(menus, object :
-                MakanAdminAdapter.OnItemClickListener {
-                override fun onEditClick(menu: Makan) {
-                    showEditDialogMakan(menu) // Panggil fungsi edit dialog
-                }
-
-                override fun onDeleteClick(menu: Makan) {
-                    DialogKonfirmasi(menu, "makans") // Panggil fungsi konfirmasi hapus
-                }
-            })
-        }
-
-        // Setup RecyclerView Minuman
-        binding.recyclerView2.layoutManager = LinearLayoutManager(this)
-
-        // Observing data from ViewModel Minuman
-        minumViewModel.getAllMinums().observe(this) { menus ->
-            // Perbarui adapter ketika data berubah
-            binding.recyclerView2.adapter = MinumAdminAdapter(menus, object :
-                MinumAdminAdapter.OnItemClickListener {
-                override fun onEditClick(menu: Minum) {
-                    showEditDialogMinum(menu) // Panggil fungsi edit dialog
-                }
-
-                override fun onDeleteClick(menu: Minum) {
-                    DialogKonfirmasi(menu, "minums") // Panggil fungsi konfirmasi hapus
-                }
-            })
-        }
-
-        binding.btnBack.setOnClickListener(){
+        binding.btnBack.setOnClickListener {
             finish()
         }
     }
 
-    private fun DialogKonfirmasi(item: Any, tabel: String) {
-        // Tentukan nama item berdasarkan tipe data
-        val itemName = when(item) {
+    private fun setupRecyclerViews() {
+        binding.recyclerView1.layoutManager = LinearLayoutManager(this)
+        binding.recyclerView2.layoutManager = LinearLayoutManager(this)
+    }
+
+    private fun observeViewModels() {
+        makanViewModel.getAllMakans().observe(this) { menus ->
+            binding.recyclerView1.adapter = MakanAdminAdapter(menus, object : MakanAdminAdapter.OnItemClickListener {
+                override fun onEditClick(menu: Makan) {
+                    showEditDialogMakan(menu)
+                }
+
+                override fun onDeleteClick(menu: Makan) {
+                    showConfirmationDialog(menu, "makans")
+                }
+            })
+        }
+
+        minumViewModel.getAllMinums().observe(this) { menus ->
+            binding.recyclerView2.adapter = MinumAdminAdapter(menus, object : MinumAdminAdapter.OnItemClickListener {
+                override fun onEditClick(menu: Minum) {
+                    showEditDialogMinum(menu)
+                }
+
+                override fun onDeleteClick(menu: Minum) {
+                    showConfirmationDialog(menu, "minums")
+                }
+            })
+        }
+    }
+
+    private fun showConfirmationDialog(item: Any, tabel: String) {
+        val itemName = when (item) {
             is Makan -> item.name
             is Minum -> item.name
             else -> "Unknown"
         }
 
-        // Dialog konfirmasi untuk menghapus item menu
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Pilih Tindakan")
-        builder.setMessage("Pilih tindakan yang akan diambil ${itemName}?")
-
-        builder.setPositiveButton("Ya") { _, _ ->
-            when (tabel) {
-                "makans" -> {
-                    if (item is Makan) {
-                        makanViewModel.deleteMakanById(item._id) // Hapus dari tabel Makan
+            .setMessage("Pilih tindakan yang akan diambil $itemName?")
+            .setPositiveButton("Ya") { _, _ ->
+                when (tabel) {
+                    "makans" -> if (item is Makan) {
+                        makanViewModel.deleteMakanById(item._id)
                     }
-                }
-                "minums" -> {
-                    if (item is Minum) {
-                        minumViewModel.deleteMinumById(item._id) // Hapus dari tabel Minum
+                    "minums" -> if (item is Minum) {
+                        minumViewModel.deleteMinumById(item._id)
                     }
                 }
             }
-        }
-
-        builder.setNegativeButton("Tidak") { dialog, _ ->
-
-        }
-
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
+            .setNegativeButton("Tidak", null)
+            .create()
+            .show()
     }
 
     private fun showEditDialogMakan(item: Makan) {
-
-        // Inflate layout dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.modal_edit_data, null)
-
         val editNama = dialogView.findViewById<EditText>(R.id.editNama)
         val editHarga = dialogView.findViewById<EditText>(R.id.editHarga)
         val editDeskripsi = dialogView.findViewById<EditText>(R.id.editDeskripsi)
         val editFoto = dialogView.findViewById<ImageView>(R.id.editFoto)
 
-        // Set nilai awal data
         editNama.setText(item.name)
         editHarga.setText(item.harga.toString())
         editDeskripsi.setText(item.deskripsi)
 
-        // Tampilkan foto jika ada
         val imgPath = File(filesDir, "app_images/${item.namaFoto}")
         if (imgPath.exists()) {
             editFoto.setImageURI(Uri.fromFile(imgPath))
         }
 
-        // Buat dialog
         AlertDialog.Builder(this)
             .setTitle("Edit Item")
             .setView(dialogView)
             .setPositiveButton("Simpan") { _, _ ->
-                // Ambil inputan dari pengguna
                 val updatedName = editNama.text.toString()
                 val updatedHarga = editHarga.text.toString().toDouble()
                 val updatedDeskripsi = editDeskripsi.text.toString()
 
-                // Lakukan update ke ViewModel
                 makanViewModel.updateMakan(
-                    id = item._id, // ID dari item Makan
-                    name = updatedName, // Nama baru
-                    harga = updatedHarga, // Harga baru
-                    deskripsi = updatedDeskripsi, // Deskripsi baru
-                    namaFoto = item.namaFoto // Nama foto tetap sama (jika tidak diubah)
+                    id = item._id,
+                    name = updatedName,
+                    harga = updatedHarga,
+                    deskripsi = updatedDeskripsi,
+                    namaFoto = item.namaFoto
                 )
-
-                // Jika perlu, panggil notifyDataSetChanged() di adapter
             }
             .setNegativeButton("Batal", null)
             .show()
     }
+
     private fun showEditDialogMinum(item: Minum) {
-
-        // Inflate layout dialog
         val dialogView = LayoutInflater.from(this).inflate(R.layout.modal_edit_data, null)
-
         val editNama = dialogView.findViewById<EditText>(R.id.editNama)
         val editHarga = dialogView.findViewById<EditText>(R.id.editHarga)
         val editDeskripsi = dialogView.findViewById<EditText>(R.id.editDeskripsi)
         val editFoto = dialogView.findViewById<ImageView>(R.id.editFoto)
 
-        // Set nilai awal data
         editNama.setText(item.name)
         editHarga.setText(item.harga.toString())
         editDeskripsi.setText(item.deskripsi)
 
-        // Tampilkan foto jika ada
         val imgPath = File(filesDir, "app_images/${item.namaFoto}")
         if (imgPath.exists()) {
             editFoto.setImageURI(Uri.fromFile(imgPath))
         }
 
-        // Buat dialog
         AlertDialog.Builder(this)
             .setTitle("Edit Item")
             .setView(dialogView)
             .setPositiveButton("Simpan") { _, _ ->
-                // Ambil inputan dari pengguna
                 val updatedName = editNama.text.toString()
                 val updatedHarga = editHarga.text.toString().toDouble()
                 val updatedDeskripsi = editDeskripsi.text.toString()
 
-                // Lakukan update ke ViewModel
                 minumViewModel.updateMinum(
-                    id = item._id, // ID dari item Makan
-                    name = updatedName, // Nama baru
-                    harga = updatedHarga, // Harga baru
-                    deskripsi = updatedDeskripsi, // Deskripsi baru
-                    namaFoto = item.namaFoto // Nama foto tetap sama (jika tidak diubah)
+                    id = item._id,
+                    name = updatedName,
+                    harga = updatedHarga,
+                    deskripsi = updatedDeskripsi,
+                    namaFoto = item.namaFoto
                 )
-
-                // Jika perlu, panggil notifyDataSetChanged() di adapter
             }
             .setNegativeButton("Batal", null)
             .show()
     }
-
-
 }

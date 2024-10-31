@@ -11,5 +11,6 @@ data class Makan(
     var name: String,
     var harga: Int,
     var deskripsi: String,
+    var category: String,
     @ColumnInfo(name = "image_path") val namaFoto: String
 )

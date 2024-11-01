@@ -48,7 +48,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -64,7 +63,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.0") // for load image
     annotationProcessor ("com.github.bumptech.glide:compiler:4.15.0") //for load image
     implementation ("de.hdodenhof:circleimageview:3.1.0")
-//Untuk ViewModel
+//  Untuk ViewModel
     implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.0")
     implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.6.0")
     implementation ("androidx.room:room-runtime:2.5.0")
@@ -73,7 +72,7 @@ dependencies {
     implementation ("androidx.room:room-ktx:2.5.0")
     // Test helpers
     testImplementation ("androidx.room:room-testing:2.5.0")
-//    untuk ActivityResultLauncher
+//   untuk ActivityResultLauncher
     implementation ("androidx.activity:activity-ktx:1.7.0" )// Versi terbaru dapat bervariasi, pastikan memeriksanya.
     implementation(kotlin("script-runtime"))
 

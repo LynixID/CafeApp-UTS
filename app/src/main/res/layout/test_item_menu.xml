@@ -1,83 +1,86 @@
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_marginHorizontal="8dp"
-    android:layout_marginVertical="3dp"
-    android:background="?attr/selectableItemBackground"
-    android:elevation="4dp"
-    android:padding="16dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <androidx.cardview.widget.CardView android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginVertical="3dp"
+        android:background="?attr/selectableItemBackground"
+        android:elevation="4dp"
+        android:padding="16dp">
 
-        <!-- ImageView for item image -->
-        <ImageView
-            android:id="@+id/makan_image"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginEnd="8dp"
-            android:src="@drawable/ic_launcher_background"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent" />
-
-        <!-- TextView for item name -->
-        <TextView
-            android:id="@+id/makan_nama"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Item Name"
-            android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toEndOf="@id/makan_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:padding="8dp">
 
-        <!-- TextView for item price -->
-        <TextView
-            android:id="@+id/makan_harga"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:text="Rp 0"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintStart_toEndOf="@id/makan_image"
-            app:layout_constraintTop_toBottomOf="@id/makan_nama" />
+            <!-- ImageView for item image -->
+            <ImageView
+                android:id="@+id/makan_image"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_launcher_background"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent" />
 
-        <!-- TextView for item description -->
-        <TextView
-            android:id="@+id/makan_deskripsi"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginBottom="4dp"
-            android:text="Deskripsi item"
-            android:textColor="@color/black"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/makan_image"
-            app:layout_constraintTop_toBottomOf="@id/makan_harga" />
+            <!-- TextView for item name -->
+            <TextView
+                android:id="@+id/makan_nama"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Item Name"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@id/makan_image"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Button edit -->
+            <!-- TextView for item price -->
+            <TextView
+                android:id="@+id/makan_harga"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Rp 0"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintStart_toEndOf="@id/makan_image"
+                app:layout_constraintTop_toBottomOf="@id/makan_nama" />
 
-        <!-- Button hapus -->
-        <ImageView
-            android:id="@+id/makan_btn_hapus"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="8dp"
-            android:background="#396330"
-            android:contentDescription="Hapus menu"
-            android:src="@drawable/delete_icon"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            <!-- TextView for item description -->
+            <TextView
+                android:id="@+id/makan_deskripsi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginBottom="4dp"
+                android:text="Deskripsi item"
+                android:textColor="@color/black"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/makan_image"
+                app:layout_constraintTop_toBottomOf="@id/makan_harga" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <!-- Button edit -->
 
-</androidx.cardview.widget.CardView>
+            <!-- Button hapus -->
+            <ImageView
+                android:id="@+id/makan_btn_hapus"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="8dp"
+                android:background="#396330"
+                android:contentDescription="Hapus menu"
+                android:src="@drawable/delete_icon"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

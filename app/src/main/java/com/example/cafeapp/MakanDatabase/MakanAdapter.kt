@@ -1,9 +1,13 @@
 package com.example.cafeapp.MakanDatabase
 
+import android.app.AlertDialog
+import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -20,6 +24,7 @@ class MakanAdapter(
         val namaMenu: TextView = view.findViewById(R.id.textViewFoodName)
         val hargaMenu: TextView = view.findViewById(R.id.textViewFoodPrice)
         val fotoMenu: ImageView = view.findViewById(R.id.imageViewFood)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
@@ -58,4 +63,6 @@ class MakanAdapter(
         makanList = newMakanList
         notifyDataSetChanged() // Beritahu adapter bahwa data telah berubah
     }
+
+
 }

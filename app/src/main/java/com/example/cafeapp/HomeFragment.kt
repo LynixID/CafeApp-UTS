@@ -2,63 +2,89 @@ package com.example.cafeapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.SearchView
+import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cafeapp.MakanDatabase.MakanListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
+import com.example.cafeapp.MenuDetailActivity
+import com.example.cafeapp.MinumDatabase.MinumAdapter
+import com.example.cafeapp.MinumDatabase.MinumListAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
-import com.example.cafeapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     private lateinit var makanViewModel: MakanViewModel
     private lateinit var minumViewModel: MinumViewModel
-    private lateinit var makanAdapter: MakanListAdapter
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+    private lateinit var makanAdapter: MakanAdapter
+    private lateinit var minumAdapter: MinumListAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the ViewModels
+        // Initialize the ViewModel here
         makanViewModel = ViewModelProvider(this).get(MakanViewModel::class.java)
-        minumViewModel = ViewModelProvider(this).get(MinumViewModel::class.java)
 
-        // Observe the filteredMakans LiveData
+        // Observe the filteredMakans LiveData after initialization
         makanViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
-            makanAdapter.submitList(makans)
+            makanAdapter.updateData(makans)
         }
 
-        // Setup RecyclerView
-        binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+//        Minum ViewModel
+        minumViewModel = ViewModelProvider(this).get(MinumViewModel::class.java)
 
-        // Initialize the adapter
-        makanAdapter = MakanListAdapter { selectedMakan ->
+        // Observe the filteredMakans LiveData after initialization
+        minumViewModel.filteredMinums.observe(viewLifecycleOwner) { minums ->
+            Log.d("HomeFragment", "Minums count: ${minums.size}")
+            minumAdapter.submitList(minums)
+        }
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.recommendedRecyclerView)
+        val recyclerViewMinum = view.findViewById<RecyclerView>(R.id.recommendedMinumRecyclerView)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewMinum.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+
+        // Initialize the adapter with an initial empty list
+        makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
+            // Handle item click event here
             val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-                putExtra("MAKAN_ID", selectedMakan._id.toString())
+                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
+            }
+            startActivity(intent) // Navigate to MenuDetailActivity
+        }
+        recyclerView.adapter = makanAdapter
+
+        // Initialize the adapter with an initial empty list
+        minumAdapter = MinumListAdapter { selectedMinum ->
+            val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
+                putExtra("MINUM_ID", selectedMinum._id.toString())
             }
             startActivity(intent)
         }
-        binding.recommendedRecyclerView.adapter = makanAdapter
+        recyclerViewMinum.adapter = minumAdapter
 
-        // Set up "See All" click listener
-        binding.seeAll.setOnClickListener {
+
+        val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
+        seeAllTextView.setOnClickListener {
             val intent = Intent(requireContext(), AllFoodActivity::class.java)
             startActivity(intent)
         }
 
         // Search functionality using SearchView
-        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        val searchView = view.findViewById<SearchView>(R.id.searchView)
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { makanViewModel.searchItems(it) }
                 return true
@@ -71,16 +97,8 @@ class HomeFragment : Fragment() {
         })
 
         // Filter and sort options
-        binding.filterIcon.setOnClickListener { showSortOptions() }
-
-        // Category click listeners
-        binding.categoryBurger.setOnClickListener {
-            makanViewModel.filterByCategory("makanan") // Ganti dengan kategori yang sesuai
-        }
-
-        binding.categoryPasta.setOnClickListener {
-            minumViewModel.filterByCategory("minuman") // Ganti dengan kategori yang sesuai
-        }
+        val filterIcon = view.findViewById<ImageView>(R.id.filterIcon)
+        filterIcon.setOnClickListener { showSortOptions() }
     }
 
     private fun showSortOptions() {
@@ -90,112 +108,11 @@ class HomeFragment : Fragment() {
         sortDialog.setTitle("Sort")
         sortDialog.setItems(sortOptions) { _, which ->
             when (which) {
-                0 -> makanViewModel.sortItems(MakanViewModel.SortOrder.A_TO_Z)
-                1 -> makanViewModel.sortItems(MakanViewModel.SortOrder.Z_TO_A)
+                0 -> makanViewModel.sortItems(MakanViewModel.SortOrder.A_TO_Z) // Sort A-Z
+                1 -> makanViewModel.sortItems(MakanViewModel.SortOrder.Z_TO_A) // Sort Z-A
             }
         }
         sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
         sortDialog.create().show()
     }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null // Clear binding reference to prevent memory leaks
-    }
 }
-
-//package com.example.cafeapp
-//
-//import android.content.Intent
-//import android.os.Bundle
-//import android.view.LayoutInflater
-//import android.view.View
-//import android.view.ViewGroup
-//import android.widget.SearchView
-//import androidx.appcompat.app.AlertDialog
-//import androidx.fragment.app.Fragment
-//import androidx.lifecycle.ViewModelProvider
-//import androidx.recyclerview.widget.LinearLayoutManager
-//import com.example.cafeapp.MakanDatabase.MakanListAdapter
-//import com.example.cafeapp.MakanDatabase.MakanViewModel
-//import com.example.cafeapp.databinding.FragmentHomeBinding
-//
-//class HomeFragment : Fragment() {
-//    private lateinit var makanViewModel: MakanViewModel
-//    private lateinit var makanAdapter: MakanListAdapter
-//    private var _binding: FragmentHomeBinding? = null
-//    private val binding get() = _binding!!
-//
-//    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-//        // Inflate the layout using View Binding
-//        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-//        return binding.root
-//    }
-//
-//    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        super.onViewCreated(view, savedInstanceState)
-//
-//        // Initialize the ViewModel
-//        makanViewModel = ViewModelProvider(this).get(MakanViewModel::class.java)
-//
-//        // Observe the filteredMakans LiveData after initialization
-//        makanViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
-//            makanAdapter.submitList(makans)
-//        }
-//
-//        // Setup RecyclerView
-//        binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-//
-//        // Initialize the adapter
-//        makanAdapter = MakanListAdapter { selectedMakan ->
-//            // Handle item click event here
-//            val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-//                putExtra("MAKAN_ID", selectedMakan._id.toString())
-//            }
-//            startActivity(intent)
-//        }
-//        binding.recommendedRecyclerView.adapter = makanAdapter
-//
-//        // Set up "See All" click listener
-//        binding.seeAll.setOnClickListener {
-//            val intent = Intent(requireContext(), AllFoodActivity::class.java)
-//            startActivity(intent)
-//        }
-//
-//        // Search functionality using SearchView
-//        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                query?.let { makanViewModel.searchItems(it) }
-//                return true
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                newText?.let { makanViewModel.searchItems(it) }
-//                return true
-//            }
-//        })
-//
-//        // Filter and sort options
-//        binding.filterIcon.setOnClickListener { showSortOptions() }
-//    }
-//
-//    private fun showSortOptions() {
-//        val sortOptions = arrayOf("A-Z", "Z-A")
-//
-//        val sortDialog = AlertDialog.Builder(requireContext())
-//        sortDialog.setTitle("Sort")
-//        sortDialog.setItems(sortOptions) { _, which ->
-//            when (which) {
-//                0 -> makanViewModel.sortItems(MakanViewModel.SortOrder.A_TO_Z)
-//                1 -> makanViewModel.sortItems(MakanViewModel.SortOrder.Z_TO_A)
-//            }
-//        }
-//        sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-//        sortDialog.create().show()
-//    }
-//
-//    override fun onDestroyView() {
-//        super.onDestroyView()
-//        _binding = null // Clear binding reference to prevent memory leaks
-//    }
-//}

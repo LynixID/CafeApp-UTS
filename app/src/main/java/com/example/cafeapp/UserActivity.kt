@@ -92,7 +92,6 @@ class UserActivity : AppCompatActivity() {
         }
 
 
-
         val user = User(username = username, password = password, role = role)
         lifecycleScope.launch {
             userDao.insert(user)

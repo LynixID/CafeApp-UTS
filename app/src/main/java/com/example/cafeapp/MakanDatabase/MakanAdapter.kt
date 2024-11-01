@@ -17,22 +17,17 @@ import java.io.File
 class MakanAdapter(
     private var makanList: List<Makan>,
     private val onItemClick: (Makan) -> Unit,
-//    private val onEditClick: (Makan) -> Unit,
-//    private val onDeleteClick: (Makan) -> Unit
+
 ) : RecyclerView.Adapter<MakanAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-//        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
-//        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
-//        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
+
         val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
         val btnHapus: ImageView = view.findViewById(R.id.makan_btn_hapus)
         val namaMenu: TextView = view.findViewById(R.id.makan_nama)
         val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
         val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
-//        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
-//        val btnEdit: ImageButton = view.findViewById(R.id.makan_btn_edit)
-//        val btnHapus: ImageButton = view.findViewById(R.id.makan_btn_hapus)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
@@ -66,8 +61,6 @@ class MakanAdapter(
             onItemClick(makan)
         }
 
-//        holder.btnEdit.setOnClickListener { onEditClick(makan) }
-//        holder.btnHapus.setOnClickListener { onDeleteClick(makan) }
     }
 
     override fun getItemCount() = makanList.size

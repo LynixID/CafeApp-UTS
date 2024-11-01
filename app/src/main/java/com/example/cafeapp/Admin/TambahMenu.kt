@@ -109,8 +109,6 @@ class TambahMenu : AppCompatActivity() {
         startActivity(intent)
         finish() 
     }
-
-
     private fun addMenu() {
         val nama = binding.inputNamaProduk.text.toString()
         val harga = binding.inputHargaProduk.text.toString().toIntOrNull() ?: 0
@@ -142,7 +140,6 @@ class TambahMenu : AppCompatActivity() {
                     minumViewModel.insertMinum(minuman)
                 }
             }
-
             Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             val intent= Intent(this, ListDataMenu::class.java)
             startActivity(intent)

@@ -11,8 +11,11 @@ interface MakanDAO {
     @Query("SELECT * FROM makans")
     fun getAll(): LiveData<List<Makan>>
 
+    @Query("SELECT * FROM makans")
+    fun getAllData(): List<Makan>
+
     @Insert
-    suspend fun insert(menu: Makan)
+    fun insert(vararg menu: Makan)
 
     @Query("SELECT * FROM makans WHERE name = :name")
     fun getMakanByName(name: String): LiveData<Makan>

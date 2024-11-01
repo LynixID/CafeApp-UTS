@@ -35,8 +35,8 @@ class ListDataMenu : AppCompatActivity() {
 
         makanViewModel.getAllMakans().observe(this) { menus ->
             // Perbarui adapter ketika data berubah
-            binding.recyclerView1.adapter = MakanAdminAdapter(menus, object :
-                MakanAdminAdapter.OnItemClickListener {
+            binding.recyclerView1.adapter = MakanAdminListAdapter(menus, object :
+                MakanAdminListAdapter.OnItemClickListener {
                 override fun onEditClick(menu: Makan) {
                     showEditDialogMakan(menu) // Panggil fungsi edit dialog
                 }

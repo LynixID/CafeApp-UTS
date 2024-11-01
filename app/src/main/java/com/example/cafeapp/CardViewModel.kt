@@ -9,18 +9,20 @@ class CardViewModel : ViewModel() {
     val cartItems: LiveData<MutableList<CartItem>> = _cartItems
 
     init {
-        // Mengambil item dari CartManager
+        refreshItems()
+    }
+
+    fun refreshItems() {
         _cartItems.value = CartManager.getItems().toMutableList()
     }
 
     fun addItem(item: CartItem) {
         CartManager.addItem(item)
-        _cartItems.value = CartManager.getItems().toMutableList() // Update LiveData
+        refreshItems()
     }
 
-    fun removeItem(item: CartItem) {
-        CartManager.removeItem(item) // Menghapus item dari CartManager
-        _cartItems.value = CartManager.getItems().toMutableList() // Update LiveData
+    fun removeItem(itemId: Int) {
+        CartManager.removeItem(itemId)
+        refreshItems()
     }
 }
-

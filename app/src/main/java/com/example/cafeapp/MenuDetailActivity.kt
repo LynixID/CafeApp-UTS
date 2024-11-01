@@ -1,6 +1,9 @@
 package com.example.cafeapp
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.view.View
 import android.widget.Button
 import android.widget.ImageButton
 import android.widget.ImageView
@@ -8,74 +11,162 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
+import com.bumptech.glide.Glide
+import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MakanDatabase.MakanViewModel
+import com.example.cafeapp.MinumDatabase.Minum
+import com.example.cafeapp.MinumDatabase.MinumViewModel
+import java.io.File
 
 class MenuDetailActivity : AppCompatActivity() {
 
     private lateinit var imageProduct: ImageView
     private lateinit var nameFood: TextView
     private lateinit var priceFood: TextView
+    private lateinit var descriptionFood: TextView
     private lateinit var addToCartButton: Button
     private lateinit var backButton: ImageButton
     private var quantity = 1
 
-    private val viewModel: MakanViewModel by viewModels() // Inisialisasi ViewModel
+    private val cardViewModel: CardViewModel by viewModels()
+    private val viewModel: MakanViewModel by viewModels()
+    private val minumViewModel: MinumViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.menu_detail)
 
+        // Inisialisasi UI
         imageProduct = findViewById(R.id.fotofood)
         nameFood = findViewById(R.id.namefood)
         priceFood = findViewById(R.id.pricefood)
+        descriptionFood = findViewById(R.id.deskfood)
         addToCartButton = findViewById(R.id.buttonAddToCart)
         backButton = findViewById(R.id.buttonBackDetail)
 
         // Ambil ID dari Intent
-        val makanId = intent.getIntExtra("MAKAN_ID", -1)
+        val makanIdString = intent.getStringExtra("MAKAN_ID")
+        val minumIdString = intent.getStringExtra("MINUM_ID")
 
-        // Memeriksa apakah ID valid
-        if (makanId != -1) {
-            viewModel.getMakanById(makanId).observe(this, Observer { makan ->
-                if (makan != null) {
-                    // Mengatur data produk
-                    nameFood.text = makan.name
-                    priceFood.text = "Rp ${makan.harga}"
-                    loadImage(makan.namaFoto) // Fungsi untuk memuat gambar
+        // Mengonversi ID ke Int jika makanIdString tidak null
+        makanIdString?.let { id ->
+            val makanId = id.toIntOrNull()
+            makanId?.let { id ->
+                viewModel.getMakanById(id).observe(this) { makan ->
+                    makan?.let {
+                        setupProductDetails(it)
+                    }
                 }
-            })
-        }
-
-        // Mengatur klik pada tombol Add to Cart
-        addToCartButton.setOnClickListener {
-            val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
-            val priceDouble = if (priceString.isNotEmpty()) {
-                priceString.toDouble()
-            } else {
-                0.0 // Nilai default jika harga kosong
             }
-
-            val cartItem = CartItem(
-                name = nameFood.text.toString(),
-                price = priceDouble.toString(), // Pastikan ini adalah string harga yang valid
-                imageResId = R.drawable.sample_image, // Ganti dengan ID gambar yang sesuai
-                quantity = quantity
-            )
-            CartManager.addItem(cartItem) // Tambahkan item ke keranjang
-            Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
         }
 
-        // Mengatur klik pada tombol Back
+        // Mengonversi ID ke Int jika minumIdString tidak null
+        minumIdString?.let { id ->
+            val minumId = id.toIntOrNull()
+            minumId?.let { id ->
+                minumViewModel.getMinumById(id).observe(this) { minum ->
+                    minum?.let {
+                        setupProductDetails(it)
+                    }
+                }
+            }
+        }
+
         backButton.setOnClickListener {
-            finish() // Kembali ke aktivitas sebelumnya
+            finish()
         }
     }
 
-    private fun loadImage(imagePath: String) {
-        // Di sini Anda dapat menggunakan Glide atau Picasso untuk memuat gambar
-        // Contoh menggunakan Glide:
-        // Glide.with(this).load(File(imagePath)).into(imageProduct)
-        imageProduct.setImageResource(R.drawable.sample_image) // Ganti dengan logika pemuatan gambar yang sesuai
+    private fun setupProductDetails(makan: Makan) {
+        nameFood.text = makan.name
+        priceFood.text = "Rp ${makan.harga}"
+        descriptionFood.text = makan.deskripsi
+
+        // Ambil path gambar dari direktori internal
+        val imgPath = File(filesDir, "app_images/${makan.namaFoto}")
+
+        // Pastikan gambar yang dimuat benar
+        if (imgPath.exists()) {
+            loadImage(Uri.fromFile(imgPath))
+        } else {
+            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image")) // Gambar default jika tidak ada
+        }
+
+        addToCartButton.setOnClickListener {
+            addToCart(makan)
+        }
+    }
+
+    private fun setupProductDetails(minum: Minum) {
+        nameFood.text = minum.name
+        priceFood.text = "Rp ${minum.harga}"
+        descriptionFood.text = minum.deskripsi
+
+        // Ambil path gambar dari direktori internal
+        val imgPath = File(filesDir, "app_images/${minum.namaFoto}")
+
+        // Pastikan gambar yang dimuat benar
+        if (imgPath.exists()) {
+            loadImage(Uri.fromFile(imgPath))
+        } else {
+            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image")) // Gambar default jika tidak ada
+        }
+
+        addToCartButton.setOnClickListener {
+            addToCart(minum)
+        }
+    }
+
+    private fun loadImage(imageUri: Uri) {
+        // Menggunakan Glide untuk memuat gambar
+        Glide.with(this)
+            .load(imageUri)
+            .placeholder(R.drawable.sample_image) // Placeholder jika gambar belum tersedia
+            .into(imageProduct)
+    }
+
+    private fun addToCart(makan: Makan) {
+        val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
+        val priceDouble = priceString.toDoubleOrNull() ?: 0.0
+
+        val cartItem = CartItem(
+            id = makan._id, // Use the Makan ID as the cart item ID
+            name = nameFood.text.toString(),
+            price = priceDouble.toString(),
+            imageResId = makan.namaFoto, // Menggunakan nama foto dari objek Makan
+            quantity = 1  // Always start with quantity 1 when adding from menu
+        )
+
+        cardViewModel.addItem(cartItem)
+        Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
+
+        // Navigate to CartFragment
+        navigateToCart()
+    }
+
+    private fun addToCart(minum: Minum) {
+        val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
+        val priceDouble = priceString.toDoubleOrNull() ?: 0.0
+
+        val cartItem = CartItem(
+            id = minum._id, // Use the Minum ID as the cart item ID
+            name = nameFood.text.toString(),
+            price = priceDouble.toString(),
+            imageResId = minum.namaFoto, // Menggunakan nama foto dari objek Minum
+            quantity = 1  // Always start with quantity 1 when adding from menu
+        )
+
+        cardViewModel.addItem(cartItem)
+        Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
+
+        // Navigate to CartFragment
+        navigateToCart()
+    }
+
+    private fun navigateToCart() {
+        val intent = Intent(this, MainActivity::class.java)
+        intent.putExtra("NAVIGATE_TO_CART", true) // Optional: Kirim data untuk navigasi otomatis
+        startActivity(intent)
+        finish() // Menutup MenuDetailActivity setelah navigasi
     }
 }

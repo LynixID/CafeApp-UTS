@@ -1,4 +1,4 @@
-package com.example.cafeapp
+package com.example.cafeapp.UserDatabase
 
 import android.content.Context
 import androidx.room.Database
@@ -8,10 +8,8 @@ import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MakanDatabase.MakanDAO
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumDAO
-import com.example.cafeapp.UserDatabase.User
-import com.example.cafeapp.UserDatabase.UserDao
 
-@Database(entities = [Makan::class, Minum::class, User::class], version = 6)
+@Database(entities = [Makan::class, Minum::class, User::class], version = 7, exportSchema = false)
 abstract class CafeDatabase: RoomDatabase() {
     abstract fun makanDao(): MakanDAO
     abstract fun minumDao(): MinumDAO

@@ -2,6 +2,7 @@ package com.example.cafeapp
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,10 +17,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
 import com.example.cafeapp.MenuDetailActivity
+import com.example.cafeapp.MinumDatabase.MinumAdapter
+import com.example.cafeapp.MinumDatabase.MinumListAdapter
+import com.example.cafeapp.MinumDatabase.MinumViewModel
 
 class HomeFragment : Fragment() {
     private lateinit var makanViewModel: MakanViewModel
+    private lateinit var minumViewModel: MinumViewModel
     private lateinit var makanAdapter: MakanAdapter
+    private lateinit var minumAdapter: MinumListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -36,23 +42,41 @@ class HomeFragment : Fragment() {
             makanAdapter.updateData(makans)
         }
 
+//        Minum ViewModel
+        minumViewModel = ViewModelProvider(this).get(MinumViewModel::class.java)
+
+        // Observe the filteredMakans LiveData after initialization
+        minumViewModel.filteredMinums.observe(viewLifecycleOwner) { minums ->
+            Log.d("HomeFragment", "Minums count: ${minums.size}")
+            minumAdapter.submitList(minums)
+        }
+
         val recyclerView = view.findViewById<RecyclerView>(R.id.recommendedRecyclerView)
+        val recyclerViewMinum = view.findViewById<RecyclerView>(R.id.recommendedMinumRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewMinum.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         // Initialize the adapter with an initial empty list
         makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
             // Handle item click event here
             val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-                putExtra("EXTRA_NAMA", selectedMakan.name)
-                putExtra("EXTRA_HARGA", selectedMakan.harga)
-                putExtra("EXTRA_FOTO", selectedMakan.namaFoto) // Ensure this is the correct path name
-                putExtra("EXTRA_DESKRIPSI", selectedMakan.deskripsi) // If you have a description in the Makan model
+                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
             }
             startActivity(intent) // Navigate to MenuDetailActivity
         }
         recyclerView.adapter = makanAdapter
 
-    val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
+        // Initialize the adapter with an initial empty list
+        minumAdapter = MinumListAdapter { selectedMinum ->
+            val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
+                putExtra("MINUM_ID", selectedMinum._id.toString())
+            }
+            startActivity(intent)
+        }
+        recyclerViewMinum.adapter = minumAdapter
+
+
+        val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
         seeAllTextView.setOnClickListener {
             val intent = Intent(requireContext(), AllFoodActivity::class.java)
             startActivity(intent)

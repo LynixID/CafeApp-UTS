@@ -2,55 +2,37 @@ package com.example.cafeapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
 import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ListView
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.UserDatabase.User
-
 import com.example.cafeapp.UserDatabase.UserDao
-
+import com.example.cafeapp.databinding.ActivityUserBinding
 import kotlinx.coroutines.launch
 
 class UserActivity : AppCompatActivity() {
 
-//    Persiapan Variabel
-    private lateinit var userDao: UserDao // Corrected variable name
-    private lateinit var editTextUsername: EditText
-    private lateinit var editTextPassword: EditText
-    private lateinit var spinnerRole: Spinner
-    private lateinit var buttonAddUser: Button
-    private lateinit var btnBacktoLogin_page: Button
-    private lateinit var listViewUsers: ListView
-
+    private lateinit var binding: ActivityUserBinding
+    private lateinit var userDao: UserDao
     private var usersList: MutableList<User> = mutableListOf()
     private lateinit var adapter: ArrayAdapter<String>
     private var selectedUser: User? = null // Variable to keep track of selected user for editing
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_user)
+        binding = ActivityUserBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
         // Initialize database
         val db = CafeDatabase.getInstance(applicationContext)
         userDao = db.userDao()
 
-        editTextUsername = findViewById(R.id.user)
-        editTextPassword = findViewById(R.id.pw)
-        spinnerRole = findViewById(R.id.role)
-        buttonAddUser = findViewById(R.id.add)
-        btnBacktoLogin_page = findViewById(R.id.btnBacktoLogin)
-        listViewUsers = findViewById(R.id.list)
-
         val roles = arrayOf("staff", "admin")
-        spinnerRole.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
+        binding.role.adapter = ArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item, roles)
 
-        buttonAddUser.setOnClickListener {
+        binding.add.setOnClickListener {
             if (selectedUser != null) {
                 updateUser()
             } else {
@@ -58,21 +40,21 @@ class UserActivity : AppCompatActivity() {
             }
         }
 
-        btnBacktoLogin_page.setOnClickListener {
+        binding.btnBacktoLogin.setOnClickListener {
             val intent = Intent(this, Login_page::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
             startActivity(intent)
             finish()
         }
 
-        listViewUsers.setOnItemClickListener { _, _, position, _ ->
+        binding.list.setOnItemClickListener { _, _, position, _ ->
             selectedUser = usersList[position]
-            editTextUsername.setText(selectedUser?.username)
-            editTextPassword.setText(selectedUser?.password)
-            spinnerRole.setSelection(if (selectedUser?.role == "admin") 1 else 0)
+            binding.user.setText(selectedUser?.username)
+            binding.pw.setText(selectedUser?.password)
+            binding.role.setSelection(if (selectedUser?.role == "admin") 1 else 0)
         }
 
-        listViewUsers.setOnItemLongClickListener { _, _, position, _ ->
+        binding.list.setOnItemLongClickListener { _, _, position, _ ->
             val userToDelete = usersList[position]
             deleteUser(userToDelete)
             true
@@ -82,15 +64,14 @@ class UserActivity : AppCompatActivity() {
     }
 
     private fun addUser() {
-        val username = editTextUsername.text.toString()
-        val password = editTextPassword.text.toString()
-        val role = spinnerRole.selectedItem.toString()
+        val username = binding.user.text.toString()
+        val password = binding.pw.text.toString()
+        val role = binding.role.selectedItem.toString()
 
         if (username.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
             return
         }
-
 
         val user = User(username = username, password = password, role = role)
         lifecycleScope.launch {
@@ -103,9 +84,9 @@ class UserActivity : AppCompatActivity() {
 
     private fun updateUser() {
         selectedUser?.let { user ->
-            val updatedUsername = editTextUsername.text.toString()
-            val updatedPassword = editTextPassword.text.toString()
-            val updatedRole = spinnerRole.selectedItem.toString()
+            val updatedUsername = binding.user.text.toString()
+            val updatedPassword = binding.pw.text.toString()
+            val updatedRole = binding.role.selectedItem.toString()
 
             if (updatedUsername.isEmpty() || updatedPassword.isEmpty()) {
                 Toast.makeText(this, "Please enter username and password", Toast.LENGTH_SHORT).show()
@@ -135,17 +116,17 @@ class UserActivity : AppCompatActivity() {
     private fun loadUsers() {
         lifecycleScope.launch {
             usersList.clear()
-            usersList.addAll(userDao.getAllUsers()) // Memuat semua user dari database
+            usersList.addAll(userDao.getAllUsers()) // Load all users from the database
 
             val userNames = usersList.map { "${it.username} (${it.role})" }
             adapter = ArrayAdapter(this@UserActivity, android.R.layout.simple_list_item_1, userNames)
-            listViewUsers.adapter = adapter
+            binding.list.adapter = adapter
         }
     }
 
     private fun clearInputs() {
-        editTextUsername.text.clear()
-        editTextPassword.text.clear()
-        spinnerRole.setSelection(0)
+        binding.user.text.clear()
+        binding.pw.text.clear()
+        binding.role.setSelection(0)
     }
 }

@@ -20,11 +20,6 @@ import com.example.cafeapp.Login_page
 import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumViewModel
-//import com.example.cafeapp.MinumDatabase.MinumViewModel
-//import com.example.cafeapp.MinumanDatabase.MinumanViewModel
-//import com.example.cafeapp.SnackDatabase.SnackViewModel
-//import com.example.cafeapp.MinumanDatabase.Minuman
-//import com.example.cafeapp.SnackDatabase.Snack
 import com.example.cafeapp.databinding.TambahMenuBinding
 import java.io.IOException
 
@@ -93,14 +88,6 @@ class TambahMenu : AppCompatActivity() {
             val intent = Intent(this, ListDataMenu::class.java)
             startActivity(intent)
         }
-
-        binding.ivLogout.setOnClickListener {
-            keLoginPage()
-        }
-
-        binding.tvLogout.setOnClickListener {
-            keLoginPage()
-        }
     }
 
     private fun keLoginPage() {
@@ -124,6 +111,7 @@ class TambahMenu : AppCompatActivity() {
                         name = nama,
                         harga = harga,
                         deskripsi = deskripsi,
+                        category = kategori,
                         namaFoto = imagePath!!
                     )
                     makanViewModel.insertMakan(makan)
@@ -135,6 +123,7 @@ class TambahMenu : AppCompatActivity() {
                         name = nama,
                         harga = harga,
                         deskripsi = deskripsi,
+                        category = kategori,
                         namaFoto = imagePath!!
                     )
                     minumViewModel.insertMinum(minuman)

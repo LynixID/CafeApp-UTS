@@ -1,19 +1,20 @@
 package com.example.cafeapp
 
-
 import android.os.Bundle
-import android.widget.ImageButton
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.databinding.ActivityTentangKitaBinding
 
 class TentangKitaActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityTentangKitaBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_tentang_kita)
+        binding = ActivityTentangKitaBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Inisialisasi tombol kembali
-        val backButton: ImageButton = findViewById(R.id.buttonBack)
-        backButton.setOnClickListener {
+        // Set up back button
+        binding.buttonBack.setOnClickListener {
             finish()
         }
     }

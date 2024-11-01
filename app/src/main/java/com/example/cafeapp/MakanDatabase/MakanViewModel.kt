@@ -6,7 +6,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.cafeapp.CafeDatabase
+import com.example.cafeapp.UserDatabase.CafeDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.io.File
@@ -14,7 +14,6 @@ import java.io.FileOutputStream
 import java.io.IOException
 
 class MakanViewModel(application: Application): AndroidViewModel(application) {
-
     private val makanDao: MakanDAO
     private val allMakans: LiveData<List<Makan>>
 
@@ -33,7 +32,6 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
         allMakans.observeForever { makans ->
             _filteredMakans.value = makans
         }
-
     }
 
     fun getAllMakans(): LiveData<List<Makan>> {
@@ -98,5 +96,10 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
             SortOrder.Z_TO_A -> _filteredMakans.value?.sortedByDescending { it.name }
         } ?: emptyList()
         _filteredMakans.value = sortedList
+    }
+
+    fun filterByCategory(category: String) {
+        val filteredList = allMakans.value?.filter { it.category == category } ?: emptyList()
+        _filteredMakans.value = filteredList
     }
 }

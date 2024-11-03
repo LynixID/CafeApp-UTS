@@ -6,6 +6,7 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.cafeapp.MinumDatabase.MinumDAO
 import com.example.cafeapp.MinumDatabase.Minum
+import com.example.cafeapp.UserDatabase.CafeDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -17,8 +18,8 @@ class TestDatabaseMinum {
     private lateinit var DaoMInum: MinumDAO
     private lateinit var db: CafeDatabase
 
-    val esJeruk = Minum(_id = 1, name = "Es Jeyuk", harga = 5000, deskripsi = "Jeruk asam menyegarkan", namaFoto = "jeruk.png")
-    val esTeh = Minum(_id = 2, name = "Es Teh", harga = 3000, deskripsi = "Teh Kota temani anda", namaFoto = "teh.png")
+    val esJeruk = Minum(_id = 1, name = "Es Jeyuk", harga = 5000, deskripsi = "Jeruk asam menyegarkan", namaFoto = "jeruk.png", category = "Minuman")
+    val esTeh = Minum(_id = 2, name = "Es Teh", harga = 3000, deskripsi = "Teh Kota temani anda", namaFoto = "teh.png", category = "Minuman")
 
 
     @Before

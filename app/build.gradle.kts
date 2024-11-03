@@ -16,7 +16,10 @@ android {
         versionCode = 1
         versionName = "1.0"
 
+
+
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments["clearPackageData"]= "true"
     }
 
     buildTypes {
@@ -75,4 +78,7 @@ dependencies {
 //    untuk ActivityResultLauncher
     implementation ("androidx.activity:activity-ktx:1.7.0" )// Versi terbaru dapat bervariasi, pastikan memeriksanya.
     implementation(kotlin("script-runtime"))
+    testImplementation ("junit:junit:4.12")
+    androidTestImplementation ("androidx.test.ext:junit:1.1.0")
+    androidTestImplementation ("androidx.test.espresso:espresso-core:3.1.1")
 }

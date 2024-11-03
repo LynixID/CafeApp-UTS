@@ -32,7 +32,6 @@ class TambahMenu : AppCompatActivity() {
     private val makanViewModel: MakanViewModel by viewModels()
     private val minumViewModel: MinumViewModel by viewModels()
     private var imagePath: String? = null
-
     private lateinit var getImageLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {

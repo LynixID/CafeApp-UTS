@@ -34,6 +34,8 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+
+
     fun getAllMinums(): LiveData<List<Minum>> {
         return allMinums
     }

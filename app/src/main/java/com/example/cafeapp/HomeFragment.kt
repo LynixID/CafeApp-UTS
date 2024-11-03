@@ -49,7 +49,7 @@ class HomeFragment : Fragment() {
         }
         recyclerView.adapter = makanAdapter
 
-    val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
+        val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
         seeAllTextView.setOnClickListener {
             val intent = Intent(requireContext(), AllFoodActivity::class.java)
             startActivity(intent)
@@ -89,3 +89,5 @@ class HomeFragment : Fragment() {
         sortDialog.create().show()
     }
 }
+
+

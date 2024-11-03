@@ -10,6 +10,7 @@ data class Minum(
     val name: String,
     val harga: Int,
     val deskripsi: String,
+    var category: String,
     @ColumnInfo(name = "image_path") val namaFoto: String
 
 )

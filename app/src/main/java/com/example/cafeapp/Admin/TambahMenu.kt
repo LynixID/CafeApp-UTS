@@ -20,13 +20,11 @@ import com.example.cafeapp.Login_page
 import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumViewModel
-//import com.example.cafeapp.MinumDatabase.MinumViewModel
-//import com.example.cafeapp.MinumanDatabase.MinumanViewModel
-//import com.example.cafeapp.MinumanDatabase.Minuman
 import com.example.cafeapp.databinding.TambahMenuBinding
 import java.io.IOException
 
 class TambahMenu : AppCompatActivity() {
+
 
     private lateinit var binding: TambahMenuBinding
     private val makanViewModel: MakanViewModel by viewModels()
@@ -97,8 +95,6 @@ class TambahMenu : AppCompatActivity() {
         startActivity(intent)
         finish() 
     }
-
-
     private fun addMenu() {
         val nama = binding.inputNamaProduk.text.toString()
         val harga = binding.inputHargaProduk.text.toString().toIntOrNull() ?: 0
@@ -114,6 +110,7 @@ class TambahMenu : AppCompatActivity() {
                         name = nama,
                         harga = harga,
                         deskripsi = deskripsi,
+                        category = kategori,
                         namaFoto = imagePath!!
                     )
                     makanViewModel.insertMakan(makan)
@@ -125,12 +122,12 @@ class TambahMenu : AppCompatActivity() {
                         name = nama,
                         harga = harga,
                         deskripsi = deskripsi,
+                        category = kategori,
                         namaFoto = imagePath!!
                     )
                     minumViewModel.insertMinum(minuman)
                 }
             }
-
             Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
             val intent= Intent(this, ListDataMenu::class.java)
             startActivity(intent)

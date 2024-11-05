@@ -21,6 +21,8 @@ class ListDataMenu : AppCompatActivity() {
     private lateinit var binding: ActivityTestDatabase2Binding
     private val makanViewModel: MakanViewModel by viewModels()
     private val minumViewModel: MinumViewModel by viewModels()
+    private lateinit var makanAdapter: MakanAdminListAdapter
+    private lateinit var minumAdapter: MinumAdminListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,33 +39,44 @@ class ListDataMenu : AppCompatActivity() {
     }
 
     private fun setupRecyclerViews() {
-        binding.recyclerView1.layoutManager = LinearLayoutManager(this)
-        binding.recyclerView2.layoutManager = LinearLayoutManager(this)
+        makanAdapter = MakanAdminListAdapter(emptyList(), object : MakanAdminListAdapter.OnItemClickListener {
+            override fun onEditClick(menu: Makan) {
+                showEditDialogMakan(menu)
+            }
+
+            override fun onDeleteClick(menu: Makan) {
+                showConfirmationDialog(menu, "makans")
+            }
+        })
+
+        minumAdapter = MinumAdminListAdapter(emptyList(), object : MinumAdminListAdapter.OnItemClickListener {
+            override fun onEditClick(menu: Minum) {
+                showEditDialogMinum(menu)
+            }
+
+            override fun onDeleteClick(menu: Minum) {
+                showConfirmationDialog(menu, "minums")
+            }
+        })
+
+        binding.recyclerView1.apply {
+            layoutManager = LinearLayoutManager(this@ListDataMenu)
+            adapter = makanAdapter
+        }
+
+        binding.recyclerView2.apply {
+            layoutManager = LinearLayoutManager(this@ListDataMenu)
+            adapter = minumAdapter
+        }
     }
 
     private fun observeViewModels() {
         makanViewModel.getAllMakans().observe(this) { menus ->
-            binding.recyclerView1.adapter = MakanAdminAdapter(menus, object : MakanAdminAdapter.OnItemClickListener {
-                override fun onEditClick(menu: Makan) {
-                    showEditDialogMakan(menu)
-                }
-
-                override fun onDeleteClick(menu: Makan) {
-                    showConfirmationDialog(menu, "makans")
-                }
-            })
+            makanAdapter.updateData(menus)
         }
 
         minumViewModel.getAllMinums().observe(this) { menus ->
-            binding.recyclerView2.adapter = MinumAdminAdapter(menus, object : MinumAdminAdapter.OnItemClickListener {
-                override fun onEditClick(menu: Minum) {
-                    showEditDialogMinum(menu)
-                }
-
-                override fun onDeleteClick(menu: Minum) {
-                    showConfirmationDialog(menu, "minums")
-                }
-            })
+            minumAdapter.updateData(menus)
         }
     }
 

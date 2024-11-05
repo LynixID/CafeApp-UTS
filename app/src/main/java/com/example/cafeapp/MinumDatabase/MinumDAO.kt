@@ -12,8 +12,11 @@ interface MinumDAO {
     @Query("SELECT * FROM minums")
     fun getAll(): LiveData<List<Minum>>
 
+    @Query("SELECT * FROM minums")
+    fun getAllData(): List<Minum>
     @Insert
-    suspend fun insert(menu: Minum)
+//    suspend fun insert(menu: Minum)
+    fun insert(vararg menu: Minum)
 
     @Query("SELECT * FROM minums WHERE name = :name")
     fun getMinumByName(name: String): LiveData<Minum>

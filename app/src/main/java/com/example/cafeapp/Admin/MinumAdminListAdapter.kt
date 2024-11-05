@@ -4,19 +4,19 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.MakanDatabase.Makan
+import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.TestItemMenuBinding
 import java.io.File
 
-class MakanAdminListAdapter(
-    private var makanList: List<Makan>,
+class MinumAdminListAdapter(
+    private var minumList: List<Minum>,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<MakanAdminListAdapter.MenuViewHolder>() {
+) : RecyclerView.Adapter<MinumAdminListAdapter.MenuViewHolder>() {
 
     interface OnItemClickListener {
-        fun onEditClick(item: Makan)
-        fun onDeleteClick(item: Makan)
+        fun onEditClick(item: Minum)
+        fun onDeleteClick(item: Minum)
     }
 
     class MenuViewHolder(val binding: TestItemMenuBinding) : RecyclerView.ViewHolder(binding.root)
@@ -28,14 +28,15 @@ class MakanAdminListAdapter(
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        val makan = makanList[position]
+        val minum = minumList[position]
         holder.binding.apply {
-            makanNama.text = makan.name
-            makanHarga.text = "Rp. ${makan.harga}"
-            makanDeskripsi.text = makan.deskripsi
+            makanNama.text = minum.name
+            makanHarga.text = "Rp. ${minum.harga}"
+            makanDeskripsi.text = minum.deskripsi
 
+            // Dapatkan path gambar dari direktori internal
             val context = holder.itemView.context
-            val imgPath = File(context.filesDir, "app_images/${makan.namaFoto}")
+            val imgPath = File(context.filesDir, "app_images/${minum.namaFoto}")
 
             if (imgPath.exists()) {
                 makanImage.setImageURI(Uri.fromFile(imgPath))
@@ -43,15 +44,16 @@ class MakanAdminListAdapter(
                 makanImage.setImageResource(R.drawable.placeholder_image)
             }
 
-            makanBtnHapus.setOnClickListener { listener.onDeleteClick(makan) }
-            root.setOnClickListener { listener.onEditClick(makan) }
+            // Set listener untuk tombol hapus dan item klik
+            makanBtnHapus.setOnClickListener { listener.onDeleteClick(minum) }
+            root.setOnClickListener { listener.onEditClick(minum) }
         }
     }
 
-    override fun getItemCount() = makanList.size
+    override fun getItemCount() = minumList.size
 
-    fun updateData(newMenus: List<Makan>) {
-        makanList = newMenus
+    fun updateData(newMinumList: List<Minum>) {
+        minumList = newMinumList
         notifyDataSetChanged()
     }
 }

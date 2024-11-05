@@ -16,13 +16,25 @@ class CardViewModel : ViewModel() {
         _cartItems.value = CartManager.getItems().toMutableList()
     }
 
-    fun addItem(item: CartItem) {
-        CartManager.addItem(item)
-        refreshItems()
+    fun addItem(cartItem: CartItem) {
+        val currentList = _cartItems.value?.toMutableList() ?: mutableListOf()
+
+        // Cek jika item sudah ada
+        val existingItem = currentList.find { it.id == cartItem.id && it.category == cartItem.category }
+
+        if (existingItem != null) {
+            // Jika ada, tingkatkan kuantitas
+            existingItem.quantity += 1
+        } else {
+            // Jika tidak ada, tambahkan item baru
+            currentList.add(cartItem)
+        }
+
+        _cartItems.value = currentList
     }
 
-    fun removeItem(itemId: Int) {
-        CartManager.removeItem(itemId)
+    fun removeItem(itemId: Int, category: String) {
+        CartManager.removeItem(itemId, category)
         refreshItems()
     }
 }

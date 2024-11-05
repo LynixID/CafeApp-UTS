@@ -2,6 +2,7 @@ package com.example.cafeapp.MinumDatabase
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -30,7 +31,7 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
 
         // Observe allMinums untuk selalu update filteredMinums
         allMinums.observeForever { minums ->
-            _filteredMinums.value = minums
+            _filteredMinums.value = minums // Mengupdate list yang ditampilkan
         }
     }
 
@@ -40,6 +41,10 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
 
     fun getAllMinums(): LiveData<List<Minum>> {
         return allMinums
+    }
+
+    fun loadAllItems() {
+        _filteredMinums.value = allMinums.value // Reset filtered list to show all items
     }
 
     fun insertMinum(menu: Minum) {
@@ -54,12 +59,10 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // Metode untuk mendapatkan minum berdasarkan ID
     fun getMinumById(id: Int): LiveData<Minum> {
         return minumDao.getMinumById(id) // Metode ini perlu ditambahkan di DAO
     }
 
-    // Fungsi untuk update data Minum
     fun updateMinum(id: Int, name: String, harga: Double, deskripsi: String, namaFoto: String?) {
         viewModelScope.launch(Dispatchers.IO) {
             minumDao.updateMinum(id, name, harga, deskripsi, namaFoto)
@@ -67,7 +70,6 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun saveImageToInternalStorage(bitmap: Bitmap, imageName: String): String? {
-        // Gunakan getApplication() untuk mengakses context
         val context = getApplication<Application>().applicationContext
         val directory = File(context.filesDir, "app_images")
 
@@ -89,8 +91,8 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
 
     fun searchItems(query: String) {
         val filteredList = allMinums.value?.filter {
-            it.name.contains(query, ignoreCase = true)
-        } ?: emptyList() // Mengembalikan list kosong jika null
+            it.name.contains(query, ignoreCase = true) // Filter by name
+        } ?: emptyList()
         _filteredMinums.value = filteredList
     }
 
@@ -105,6 +107,7 @@ class MinumViewModel(application: Application) : AndroidViewModel(application) {
 
     fun filterByCategory(category: String) {
         val filteredList = allMinums.value?.filter { it.category == category } ?: emptyList()
+        Log.d("FilterCategory", "Filtered Minum: $filteredList")
         _filteredMinums.value = filteredList
     }
 }

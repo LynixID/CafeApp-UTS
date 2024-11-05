@@ -2,6 +2,7 @@ package com.example.cafeapp.MakanDatabase
 
 import android.app.Application
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -84,8 +85,8 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
     }
     fun searchItems(query: String) {
         val filteredList = allMakans.value?.filter {
-            it.name.contains(query, ignoreCase = true)
-        } ?: emptyList() // Mengembalikan list kosong jika null
+            it.name.contains(query, ignoreCase = true) // Filter by name
+        } ?: emptyList()
         _filteredMakans.value = filteredList
     }
 
@@ -98,8 +99,13 @@ class MakanViewModel(application: Application): AndroidViewModel(application) {
         _filteredMakans.value = sortedList
     }
 
+    fun loadAllItems() {
+        _filteredMakans.value = allMakans.value // Reset filtered list to show all items
+    }
+
     fun filterByCategory(category: String) {
         val filteredList = allMakans.value?.filter { it.category == category } ?: emptyList()
+        Log.d("MakanViewModel", "Filtering by category: $category, result: $filteredList")
         _filteredMakans.value = filteredList
     }
 }

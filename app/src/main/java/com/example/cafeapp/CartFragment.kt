@@ -22,7 +22,7 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener {
         // Inflate the layout using View Binding
         binding = FragmentCartBinding.inflate(inflater, container, false)
 
-        viewModel = ViewModelProvider(this).get(CardViewModel::class.java)
+        viewModel = ViewModelProvider(requireActivity()).get(CardViewModel::class.java)
 
         // Initialize RecyclerView with the adapter
         adapter = AddToCardAdapter(mutableListOf(), viewModel, this) // Pass the listener
@@ -36,6 +36,11 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener {
         }
 
         return binding.root // Return the root view from binding
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.refreshItems()
     }
 
     // Implement TotalPriceListener method

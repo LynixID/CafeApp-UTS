@@ -1,50 +1,56 @@
 package com.example.cafeapp
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MakanDatabase.MakanAdapter
 import com.example.cafeapp.MakanDatabase.MakanViewModel
 import com.example.cafeapp.MinumDatabase.MinumListAdapter
 import com.example.cafeapp.MinumDatabase.MinumViewModel
+import com.example.cafeapp.databinding.ActivityAllFoodBinding
 
 class AllFoodActivity : AppCompatActivity() {
-    private val makanViewModel: MakanViewModel by viewModels() // Get the MakanViewModel instance
+    private lateinit var binding: ActivityAllFoodBinding
+    private val makanViewModel: MakanViewModel by viewModels()
     private val minumViewModel: MinumViewModel by viewModels()
     private lateinit var minumAdapter: MinumListAdapter
     private lateinit var makanAdapter: MakanAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_all_food)
+        binding = ActivityAllFoodBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Inisialisasi RecyclerView
-        val recyclerView = findViewById<RecyclerView>(R.id.allFoodRecyclerView)
-        recyclerView.layoutManager = GridLayoutManager(this, 2) // Layout grid dengan 2 kolom
+        // Inisialisasi RecyclerView untuk Makanan
+        binding.allFoodRecyclerView.layoutManager = GridLayoutManager(this, 2)
 
-        // Inisialisasi adapter dengan data kosong
         makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
-            // Handle item click, misalnya buka detail makanan atau tambahkan ke keranjang
+            val intent = Intent(this, MenuDetailActivity::class.java).apply {
+                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengonversi ID ke String
+            }
+            startActivity(intent)
         }
 
-        // Set adapter ke RecyclerView
-        recyclerView.adapter = makanAdapter
+        binding.allFoodRecyclerView.adapter = makanAdapter
 
-        // Observe the allMakans LiveData from the MakanViewModel
+        // Observe the allMakans LiveData
         makanViewModel.getAllMakans().observe(this) { makanList ->
-            // Update adapter dengan daftar makanan baru
             makanAdapter.updateData(makanList)
         }
-        // Inisialisasi RecyclerView untuk minuman
-        val recyclerViewMinum = findViewById<RecyclerView>(R.id.allMinumRecyclerView)
-        recyclerViewMinum.layoutManager = GridLayoutManager(this, 2)
+
+        // Inisialisasi RecyclerView untuk Minuman
+        binding.allMinumRecyclerView.layoutManager = GridLayoutManager(this, 2)
 
         minumAdapter = MinumListAdapter { selectedMinum ->
-            // Handle item click
+            val intent = Intent(this, MenuDetailActivity::class.java).apply {
+                putExtra("MINUM_ID", selectedMinum._id.toString()) // Mengonversi ID ke String
+            }
+            startActivity(intent)
         }
-        recyclerViewMinum.adapter = minumAdapter
+
+        binding.allMinumRecyclerView.adapter = minumAdapter
 
         // Observe the allMinums LiveData
         minumViewModel.getAllMinums().observe(this) { minumList ->

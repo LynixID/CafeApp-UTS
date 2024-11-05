@@ -3,170 +3,134 @@ package com.example.cafeapp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.example.cafeapp.MakanDatabase.Makan
 import com.example.cafeapp.MakanDatabase.MakanViewModel
 import com.example.cafeapp.MinumDatabase.Minum
 import com.example.cafeapp.MinumDatabase.MinumViewModel
+import com.example.cafeapp.databinding.MenuDetailBinding
 import java.io.File
 
 class MenuDetailActivity : AppCompatActivity() {
+        private lateinit var binding: MenuDetailBinding
+        private lateinit var cardViewModel: CardViewModel  // Change to lateinit
+        private val viewModel: MakanViewModel by viewModels()
+        private val minumViewModel: MinumViewModel by viewModels()
 
-    private lateinit var imageProduct: ImageView
-    private lateinit var nameFood: TextView
-    private lateinit var priceFood: TextView
-    private lateinit var descriptionFood: TextView
-    private lateinit var addToCartButton: Button
-    private lateinit var backButton: ImageButton
-    private var quantity = 1
+        override fun onCreate(savedInstanceState: Bundle?) {
+            super.onCreate(savedInstanceState)
+            binding = MenuDetailBinding.inflate(layoutInflater)
+            setContentView(binding.root)
 
-    private val cardViewModel: CardViewModel by viewModels()
-    private val viewModel: MakanViewModel by viewModels()
-    private val minumViewModel: MinumViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.menu_detail)
-
-        // Inisialisasi UI
-        imageProduct = findViewById(R.id.fotofood)
-        nameFood = findViewById(R.id.namefood)
-        priceFood = findViewById(R.id.pricefood)
-        descriptionFood = findViewById(R.id.deskfood)
-        addToCartButton = findViewById(R.id.buttonAddToCart)
-        backButton = findViewById(R.id.buttonBackDetail)
+            // Initialize cardViewModel dengan activity scope
+            cardViewModel = ViewModelProvider(this)[CardViewModel::class.java]
 
         // Ambil ID dari Intent
         val makanIdString = intent.getStringExtra("MAKAN_ID")
         val minumIdString = intent.getStringExtra("MINUM_ID")
 
+        if (makanIdString == null && minumIdString == null) {
+            Toast.makeText(this, "ID tidak ditemukan", Toast.LENGTH_SHORT).show()
+            finish() // Keluar dari Activity jika tidak ada ID
+        }
+
         // Mengonversi ID ke Int jika makanIdString tidak null
-        makanIdString?.let { id ->
-            val makanId = id.toIntOrNull()
-            makanId?.let { id ->
-                viewModel.getMakanById(id).observe(this) { makan ->
-                    makan?.let {
-                        setupProductDetails(it)
-                    }
-                }
+        makanIdString?.toIntOrNull()?.let { makanId ->
+            viewModel.getMakanById(makanId).observe(this) { makan ->
+                makan?.let { setupProductDetails(it) }
             }
         }
 
         // Mengonversi ID ke Int jika minumIdString tidak null
-        minumIdString?.let { id ->
-            val minumId = id.toIntOrNull()
-            minumId?.let { id ->
-                minumViewModel.getMinumById(id).observe(this) { minum ->
-                    minum?.let {
-                        setupProductDetails(it)
-                    }
-                }
+        minumIdString?.toIntOrNull()?.let { minumId ->
+            minumViewModel.getMinumById(minumId).observe(this) { minum ->
+                minum?.let { setupProductDetails(it) }
             }
         }
 
-        backButton.setOnClickListener {
+        binding.buttonBackDetail.setOnClickListener {
             finish()
         }
     }
 
-    private fun setupProductDetails(makan: Makan) {
-        nameFood.text = makan.name
-        priceFood.text = "Rp ${makan.harga}"
-        descriptionFood.text = makan.deskripsi
-
-        // Ambil path gambar dari direktori internal
-        val imgPath = File(filesDir, "app_images/${makan.namaFoto}")
-
-        // Pastikan gambar yang dimuat benar
-        if (imgPath.exists()) {
-            loadImage(Uri.fromFile(imgPath))
-        } else {
-            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image")) // Gambar default jika tidak ada
-        }
-
-        addToCartButton.setOnClickListener {
-            addToCart(makan)
+    private fun setupProductDetails(item: Any) {
+        binding.buttonAddToCart.setOnClickListener { addToCart(item) }
+        when (item) {
+            is Makan -> {
+                binding.namefood.text = item.name
+                binding.pricefood.text = "Rp ${item.harga}"
+                binding.deskfood.text = item.deskripsi
+                loadImageFromFile(item.namaFoto)
+            }
+            is Minum -> {
+                binding.namefood.text = item.name
+                binding.pricefood.text = "Rp ${item.harga}"
+                binding.deskfood.text = item.deskripsi
+                loadImageFromFile(item.namaFoto)
+            }
         }
     }
 
-    private fun setupProductDetails(minum: Minum) {
-        nameFood.text = minum.name
-        priceFood.text = "Rp ${minum.harga}"
-        descriptionFood.text = minum.deskripsi
-
-        // Ambil path gambar dari direktori internal
-        val imgPath = File(filesDir, "app_images/${minum.namaFoto}")
-
-        // Pastikan gambar yang dimuat benar
-        if (imgPath.exists()) {
-            loadImage(Uri.fromFile(imgPath))
+    private fun loadImageFromFile(namaFoto: String) {
+        val imgPath = File(filesDir, "app_images/$namaFoto")
+        val imageUri = if (imgPath.exists()) {
+            Uri.fromFile(imgPath)
         } else {
-            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image")) // Gambar default jika tidak ada
+            Uri.parse("android.resource://${packageName}/drawable/sample_image") // Gambar default
         }
-
-        addToCartButton.setOnClickListener {
-            addToCart(minum)
-        }
+        loadImage(imageUri)
     }
 
     private fun loadImage(imageUri: Uri) {
-        // Menggunakan Glide untuk memuat gambar
         Glide.with(this)
             .load(imageUri)
             .placeholder(R.drawable.sample_image) // Placeholder jika gambar belum tersedia
-            .into(imageProduct)
+            .into(binding.fotofood)
     }
 
-    private fun addToCart(makan: Makan) {
-        val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
+    private fun addToCart(item: Any) {
+        val priceString = binding.pricefood.text.toString().replace("Rp ", "").replace(".", "").trim()
         val priceDouble = priceString.toDoubleOrNull() ?: 0.0
 
-        val cartItem = CartItem(
-            id = makan._id, // Use the Makan ID as the cart item ID
-            name = nameFood.text.toString(),
-            price = priceDouble.toString(),
-            imageResId = makan.namaFoto, // Menggunakan nama foto dari objek Makan
-            quantity = 1  // Always start with quantity 1 when adding from menu
-        )
+        val cartItem = when (item) {
+            is Makan -> CartItem(
+                id = item._id,
+                name = item.name,
+                price = priceDouble.toString(),
+                imageResId = item.namaFoto,
+                quantity = 1,
+                category = "Makan"
+            )
+            is Minum -> CartItem(
+                id = item._id,
+                name = item.name,
+                price = priceDouble.toString(),
+                imageResId = item.namaFoto,
+                quantity = 1,
+                category = "Minum"
+            )
+            else -> return
+        }
 
-        cardViewModel.addItem(cartItem)
+        // Tambahkan item ke CartManager
+        CartManager.addItem(cartItem)
+        // Refresh ViewModel
+        cardViewModel.refreshItems()
+
         Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
-
-        // Navigate to CartFragment
-        navigateToCart()
-    }
-
-    private fun addToCart(minum: Minum) {
-        val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
-        val priceDouble = priceString.toDoubleOrNull() ?: 0.0
-
-        val cartItem = CartItem(
-            id = minum._id, // Use the Minum ID as the cart item ID
-            name = nameFood.text.toString(),
-            price = priceDouble.toString(),
-            imageResId = minum.namaFoto, // Menggunakan nama foto dari objek Minum
-            quantity = 1  // Always start with quantity 1 when adding from menu
-        )
-
-        cardViewModel.addItem(cartItem)
-        Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
-
-        // Navigate to CartFragment
         navigateToCart()
     }
 
     private fun navigateToCart() {
-        val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("NAVIGATE_TO_CART", true) // Optional: Kirim data untuk navigasi otomatis
+        val intent = Intent(this, MainActivity::class.java).apply {
+            putExtra("NAVIGATE_TO_CART", true)
+            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        }
         startActivity(intent)
-        finish() // Menutup MenuDetailActivity setelah navigasi
+        finish()
     }
 }

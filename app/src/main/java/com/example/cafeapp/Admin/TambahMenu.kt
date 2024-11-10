@@ -1,6 +1,6 @@
 package com.example.cafeapp.Admin
 
-import com.example.cafeapp.MakanDatabase.MakanViewModel
+import com.example.cafeapp.MenuDatabase.MenuViewModel
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -17,9 +17,8 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafeapp.Login_page
-import com.example.cafeapp.MakanDatabase.Makan
-import com.example.cafeapp.MinumDatabase.Minum
-import com.example.cafeapp.MinumDatabase.MinumViewModel
+import com.example.cafeapp.MenuDatabase.Kategori
+import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.databinding.TambahMenuBinding
 import java.io.IOException
 
@@ -27,8 +26,7 @@ class TambahMenu : AppCompatActivity() {
 
 
     private lateinit var binding: TambahMenuBinding
-    private val makanViewModel: MakanViewModel by viewModels()
-    private val minumViewModel: MinumViewModel by viewModels()
+    private val menuViewModel: MenuViewModel by viewModels()
     private var imagePath: String? = null
     private lateinit var getImageLauncher: ActivityResultLauncher<Intent>
 
@@ -57,7 +55,7 @@ class TambahMenu : AppCompatActivity() {
                     val bitmap = getBitmapFromUri(this, uri)
                     if (bitmap != null) {
                         val imageName = "menu_${System.currentTimeMillis()}" // Unique file name
-                        makanViewModel.saveImageToInternalStorage(bitmap, imageName)?.let { savedImageName ->
+                        menuViewModel.saveImageToInternalStorage(bitmap, imageName)?.let { savedImageName ->
                             imagePath = savedImageName // Save image file name
                         }
                     }
@@ -102,42 +100,39 @@ class TambahMenu : AppCompatActivity() {
         val kategori = binding.spinnerKategori.selectedItem.toString() // Get selected category
 
         if (nama.isNotEmpty() && harga >= 0 && imagePath != null) {
-            when (kategori) {
-                "Makanan" -> {
-                    // Create Makan object and save to Makan table
-                    val makan = Makan(
-                        _id = 0,
-                        name = nama,
-                        harga = harga,
-                        deskripsi = deskripsi,
-                        category = kategori,
-                        namaFoto = imagePath!!
-                    )
-                    makanViewModel.insertMakan(makan)
-                }
-                "Minuman" -> {
-                    // Create Minuman object and save to Minuman table
-                    val minuman = Minum(
-                        _id = 0,
-                        name = nama,
-                        harga = harga,
-                        deskripsi = deskripsi,
-                        category = kategori,
-                        namaFoto = imagePath!!
-                    )
-                    minumViewModel.insertMinum(minuman)
-                }
+            // Convert kategori from String to Category enum
+            val categoryEnum = when (kategori) {
+                "Makanan" -> Kategori.MAKAN
+                "Minuman" -> Kategori.MINUM
+                else -> null
             }
-            Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-            val intent= Intent(this, ListDataMenu::class.java)
-            startActivity(intent)
 
-            // Clear input fields after saving
-            clearInputFields()
+            if (categoryEnum != null) {
+                // Create Makan object and save to Makan table
+                val menu = Menu(
+                    _id = 0,
+                    nama = nama,
+                    harga = harga,
+                    deskripsi = deskripsi,
+                    kategori = categoryEnum,
+                    namaFoto = imagePath!!
+                )
+                menuViewModel.insertMakan(menu)
+
+                Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this, ListDataMenu::class.java)
+                startActivity(intent)
+
+                // Clear input fields after saving
+                clearInputFields()
+            } else {
+                Toast.makeText(this, "Kategori tidak valid", Toast.LENGTH_SHORT).show()
+            }
         } else {
             Toast.makeText(this, "Mohon lengkapi semua field", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun clearInputFields() {
         binding.inputNamaProduk.text?.clear()

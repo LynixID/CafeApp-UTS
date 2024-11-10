@@ -1,4 +1,4 @@
-package com.example.cafeapp.MakanDatabase
+package com.example.cafeapp.MenuDatabase
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -10,19 +10,19 @@ import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ItemRecommendedBinding
 import java.io.File
 
-class MakanListAdapter(
-    private val onItemClick: (Makan) -> Unit
-) : ListAdapter<Makan, MakanListAdapter.MenuViewHolder>(MakanDiffCallback()) {
+class MenuListAdapter(
+    private val onItemClick: (Menu) -> Unit
+) : ListAdapter<Menu, MenuListAdapter.MenuViewHolder>(MakanDiffCallback()) {
 
     class MenuViewHolder(private val binding: ItemRecommendedBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(makan: Makan, onItemClick: (Makan) -> Unit) {
-            binding.textViewFoodName.text = makan.name
-            binding.textViewFoodPrice.text = "Rp. ${makan.harga}"
-            binding.textViewFoodDescription.text = makan.deskripsi
+        fun bind(menu: Menu, onItemClick: (Menu) -> Unit) {
+            binding.textViewFoodName.text = menu.nama
+            binding.textViewFoodPrice.text = "Rp. ${menu.harga}"
+            binding.textViewFoodDescription.text = menu.deskripsi
 
             // Dapatkan path gambar dari direktori internal
             val context = binding.root.context
-            val imgPath = File(context.filesDir, "app_images/${makan.namaFoto}")
+            val imgPath = File(context.filesDir, "app_images/${menu.namaFoto}")
 
             if (imgPath.exists()) {
                 binding.imageViewFood.setImageURI(Uri.fromFile(imgPath))
@@ -32,7 +32,7 @@ class MakanListAdapter(
 
             // Set listener untuk klik seluruh item
             binding.root.setOnClickListener {
-                onItemClick(makan)
+                onItemClick(menu)
             }
         }
     }
@@ -48,18 +48,18 @@ class MakanListAdapter(
     }
 
     // Kelas DiffUtil untuk membandingkan item
-    class MakanDiffCallback : DiffUtil.ItemCallback<Makan>() {
-        override fun areItemsTheSame(oldItem: Makan, newItem: Makan): Boolean {
+    class MakanDiffCallback : DiffUtil.ItemCallback<Menu>() {
+        override fun areItemsTheSame(oldItem: Menu, newItem: Menu): Boolean {
             return oldItem._id == newItem._id
         }
 
-        override fun areContentsTheSame(oldItem: Makan, newItem: Makan): Boolean {
+        override fun areContentsTheSame(oldItem: Menu, newItem: Menu): Boolean {
             return oldItem == newItem
         }
     }
 
     // Fungsi untuk memperbarui data
-    fun updateData(newMakanList: List<Makan>) {
-        submitList(newMakanList) // Gunakan submitList untuk memperbarui data dengan efisien
+    fun updateData(newMenuList: List<Menu>) {
+        submitList(newMenuList) // Gunakan submitList untuk memperbarui data dengan efisien
     }
 }

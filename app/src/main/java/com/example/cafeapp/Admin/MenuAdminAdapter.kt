@@ -4,31 +4,31 @@ import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.MakanDatabase.Makan
+import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.TestItemMenuBinding
 import java.io.File
 
-class MakanAdminAdapter(
-    private var makanList: List<Makan>,
+class MenuAdminAdapter(
+    private var menuList: List<Menu>,
     private val listener: OnItemClickListener
-) : RecyclerView.Adapter<MakanAdminAdapter.MenuViewHolder>() {
+) : RecyclerView.Adapter<MenuAdminAdapter.MenuViewHolder>() {
 
     interface OnItemClickListener {
-        fun onEditClick(item: Makan)
-        fun onDeleteClick(item: Makan)
+        fun onEditClick(item: Menu)
+        fun onDeleteClick(item: Menu)
     }
 
     class MenuViewHolder(private val binding: TestItemMenuBinding) : RecyclerView.ViewHolder(binding.root) {
-        fun bind(makan: Makan, listener: OnItemClickListener) {
+        fun bind(menu: Menu, listener: OnItemClickListener) {
             // Menampilkan nama dan harga makan
-            binding.makanNama.text = makan.name
-            binding.makanHarga.text = "Rp. ${makan.harga}" // Menambahkan simbol mata uang
-            binding.makanDeskripsi.text = makan.deskripsi
+            binding.makanNama.text = menu.nama
+            binding.makanHarga.text = "Rp. ${menu.harga}" // Menambahkan simbol mata uang
+            binding.makanDeskripsi.text = menu.deskripsi
 
             // Dapatkan path gambar dari direktori internal
             val context = binding.root.context
-            val imgPath = File(context.filesDir, "app_images/${makan.namaFoto}")
+            val imgPath = File(context.filesDir, "app_images/${menu.namaFoto}")
 
             if (imgPath.exists()) {
                 // Jika file gambar ada, set gambar ke ImageView
@@ -40,10 +40,10 @@ class MakanAdminAdapter(
 
             // Set listener untuk klik item
             binding.makanBtnHapus.setOnClickListener {
-                listener.onDeleteClick(makan)
+                listener.onDeleteClick(menu)
             }
             binding.root.setOnClickListener {
-                listener.onEditClick(makan) // Panggil callback saat item diklik
+                listener.onEditClick(menu) // Panggil callback saat item diklik
             }
         }
     }
@@ -54,14 +54,14 @@ class MakanAdminAdapter(
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        val makan = makanList[position]
+        val makan = menuList[position]
         holder.bind(makan, listener)
     }
 
-    override fun getItemCount() = makanList.size
+    override fun getItemCount() = menuList.size
 
-    fun updateData(newMakanList: List<Makan>) {
-        makanList = newMakanList
+    fun updateData(newMenuList: List<Menu>) {
+        menuList = newMenuList
         notifyDataSetChanged() // Beritahu adapter bahwa data telah berubah
     }
 }

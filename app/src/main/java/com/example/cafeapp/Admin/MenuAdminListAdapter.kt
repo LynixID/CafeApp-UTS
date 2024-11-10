@@ -2,25 +2,22 @@ package com.example.cafeapp.Admin
 
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.MakanDatabase.Makan
+import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.TestItemMenuBinding
 import java.io.File
 
-class MakanAdminListAdapter(
-    private var makanList: List<Makan>, // Sama seperti sebelumnya
+class MenuAdminListAdapter(
+    private var menuList: List<Menu>, // Sama seperti sebelumnya
     private val listener: OnItemClickListener
 
-) : RecyclerView.Adapter<MakanAdminListAdapter.MenuViewHolder>() {
+) : RecyclerView.Adapter<MenuAdminListAdapter.MenuViewHolder>() {
 
     interface OnItemClickListener { // Interface tetap didefinisikan di sini
-        fun onEditClick(item: Makan)
-        fun onDeleteClick(item: Makan)
+        fun onEditClick(item: Menu)
+        fun onDeleteClick(item: Menu)
     }
 
     // Mengganti nama class ViewHolder sesuai dengan konvensi NumberListAdapter sebelumnya
@@ -41,9 +38,9 @@ class MakanAdminListAdapter(
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) { // Parameter holder jadi tipe MenuViewHolder
-        val makan = makanList[position]
+        val makan = menuList[position]
         holder.binding.apply {
-            makanNama.text = makan.name
+            makanNama.text = makan.nama
             makanHarga.text = "Rp. ${makan.harga}"
             makanDeskripsi.text = makan.deskripsi
 
@@ -63,5 +60,5 @@ class MakanAdminListAdapter(
         }
     }
 
-    override fun getItemCount() = makanList.size
+    override fun getItemCount() = menuList.size
 }

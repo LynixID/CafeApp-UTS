@@ -3,6 +3,7 @@ package com.example.cafeapp
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.cafeapp.MenuDatabase.Kategori
 
 class CardViewModel : ViewModel() {
     private val _cartItems = MutableLiveData<MutableList<CartItem>>()
@@ -33,7 +34,7 @@ class CardViewModel : ViewModel() {
         _cartItems.value = currentList
     }
 
-    fun removeItem(itemId: Int, category: String) {
+    fun removeItem(itemId: Int, category: Kategori) {
         CartManager.removeItem(itemId, category)
         refreshItems()
     }

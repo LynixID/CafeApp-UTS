@@ -20,16 +20,7 @@ class MenuAdminListAdapter(
         fun onDeleteClick(item: Menu)
     }
 
-    // Mengganti nama class ViewHolder sesuai dengan konvensi NumberListAdapter sebelumnya
-//    class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) { // Ganti MenuViewHolder ke MenuViewHolder
-//        val itemdescription: TextView = view.findViewById(R.id.makan_deskripsi)
-//        val btnHapus: ImageView = view.findViewById(R.id.makan_btn_hapus)
-//        val namaMenu: TextView = view.findViewById(R.id.makan_nama)
-//        val hargaMenu: TextView = view.findViewById(R.id.makan_harga)
-//        val fotoMenu: ImageView = view.findViewById(R.id.makan_image)
-//    }
     class MenuViewHolder(val binding: TestItemMenuBinding) : RecyclerView.ViewHolder(binding.root)
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)

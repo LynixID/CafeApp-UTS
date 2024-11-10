@@ -2,65 +2,97 @@ package com.example.cafeapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MenuDatabase.MenuAdapter
 import com.example.cafeapp.MenuDatabase.MenuViewModel
+import com.example.cafeapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
     private lateinit var menuViewModel: MenuViewModel
     private lateinit var menuAdapter: MenuAdapter
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the ViewModel here
         menuViewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
 
-        // Observe the filteredMakans LiveData after initialization
+        // Observe filteredMakans LiveData to update UI
         menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
             menuAdapter.updateData(makans)
         }
 
+        binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(
+            requireContext(), LinearLayoutManager.HORIZONTAL, false
+        )
 
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recommendedRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        // Initialize the adapter with an initial empty list
+        // Initialize the adapter with click listener for each item
         menuAdapter = MenuAdapter(emptyList()) { selectedMakan ->
-            // Handle item click event here
+            // Handle item click event to navigate to MenuDetailActivity
             val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
+                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Pass the selected item's ID
             }
             startActivity(intent) // Navigate to MenuDetailActivity
         }
-        recyclerView.adapter = menuAdapter
+        binding.recommendedRecyclerView.adapter = menuAdapter
 
+        setupCategoryClickListeners()
+        setupUIComponents()
 
-
-        val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
-        seeAllTextView.setOnClickListener {
+        binding.seeAll.setOnClickListener {
+            // Tindakan saat tombol See All diklik
             val intent = Intent(requireContext(), AllFoodActivity::class.java)
-            startActivity(intent)
+            startActivity(intent) // Mulai AllFoodActivity
+        }
+    }
+
+    // Setup listeners for category filtering
+    private fun setupCategoryClickListeners() {
+        binding.categoryBurger.setOnClickListener {
+            toggleCategoryFilter("Makanan")
         }
 
-        // Search functionality using SearchView
-        val searchView = view.findViewById<SearchView>(R.id.searchView)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.categoryPasta.setOnClickListener {
+            toggleCategoryFilter("Minuman")
+        }
+    }
+
+    private var currentCategory: String? = null
+
+    private fun toggleCategoryFilter(category: String) {
+        if (currentCategory == category) {
+            currentCategory = null
+            menuViewModel.loadAllItems()
+        } else {
+            currentCategory = category
+            menuViewModel.filterByCategory(category)
+        }
+        updateCategoryIconStates()
+    }
+
+    private fun updateCategoryIconStates() {
+        binding.categoryBurger.alpha = if (currentCategory == "Makanan") 1.0f else 0.5f
+        binding.categoryPasta.alpha = if (currentCategory == "Minuman") 1.0f else 0.5f
+    }
+
+    private fun setupUIComponents() {
+        // Search functionality
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 query?.let { menuViewModel.searchItems(it) }
                 return true
@@ -72,9 +104,8 @@ class HomeFragment : Fragment() {
             }
         })
 
-        // Filter and sort options
-        val filterIcon = view.findViewById<ImageView>(R.id.filterIcon)
-        filterIcon.setOnClickListener { showSortOptions() }
+        // Filter and sorting icon listener
+        binding.filterIcon.setOnClickListener { showSortOptions() }
     }
 
     private fun showSortOptions() {
@@ -90,5 +121,10 @@ class HomeFragment : Fragment() {
         }
         sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
         sortDialog.create().show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

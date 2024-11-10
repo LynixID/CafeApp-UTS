@@ -2,63 +2,56 @@ package com.example.cafeapp.MenuDatabase
 
 import android.net.Uri
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
+import com.example.cafeapp.databinding.ItemRecommendedBinding
 import java.io.File
 
 class MenuAdapter(
     private var menuList: List<Menu>,
-    private val onItemClick: (Menu) -> Unit,
+    private val onItemClick: (Menu) -> Unit
 ) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
-    class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemdescription: TextView = view.findViewById(R.id.textViewFoodDescription)
-        val namaMenu: TextView = view.findViewById(R.id.textViewFoodName)
-        val hargaMenu: TextView = view.findViewById(R.id.textViewFoodPrice)
-        val fotoMenu: ImageView = view.findViewById(R.id.imageViewFood)
+    // ViewHolder using ViewBinding
+    class MenuViewHolder(private val binding: ItemRecommendedBinding) : RecyclerView.ViewHolder(binding.root) {
+        // Direct access to views via binding
+        fun bind(menu: Menu, onItemClick: (Menu) -> Unit) {
+            binding.textViewFoodName.text = menu.nama
+            binding.textViewFoodPrice.text = "Rp. ${menu.harga}"
+            binding.textViewFoodDescription.text = menu.deskripsi
 
+            // Get the image path from internal storage
+            val context = binding.root.context
+            val imgPath = File(context.filesDir, "app_images/${menu.namaFoto}")
+
+            if (imgPath.exists()) {
+                binding.imageViewFood.setImageURI(Uri.fromFile(imgPath))
+            } else {
+                binding.imageViewFood.setImageResource(R.drawable.placeholder_image)
+            }
+
+            // Set listener for item click
+            binding.root.setOnClickListener {
+                onItemClick(menu) // Trigger click action
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recommended, parent, false)
-        return MenuViewHolder(view)
+        val binding = ItemRecommendedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return MenuViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
         val makan = menuList[position]
-
-        // Menampilkan nama dan harga makan
-        holder.namaMenu.text = makan.nama
-        holder.hargaMenu.text = "Rp. ${makan.harga}" // Menambahkan simbol mata uang
-        holder.itemdescription.text = makan.deskripsi
-
-        // Dapatkan path gambar dari direktori internal
-        val context = holder.itemView.context
-        val imgPath = File(context.filesDir, "app_images/${makan.namaFoto}")
-
-        if (imgPath.exists()) {
-            holder.fotoMenu.setImageURI(Uri.fromFile(imgPath))
-        } else {
-            holder.fotoMenu.setImageResource(R.drawable.placeholder_image)
-        }
-
-        // Set listener untuk klik seluruh item
-        holder.itemView.setOnClickListener {
-            onItemClick(makan) // Trigger saat seluruh item diklik
-        }
+        holder.bind(makan, onItemClick) // Bind data to the ViewHolder
     }
 
     override fun getItemCount() = menuList.size
 
     fun updateData(newMenuList: List<Menu>) {
         menuList = newMenuList
-        notifyDataSetChanged() // Beritahu adapter bahwa data telah berubah
+        notifyDataSetChanged() // Notify adapter that data has changed
     }
-
-
 }

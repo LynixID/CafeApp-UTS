@@ -4,29 +4,32 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.example.cafeapp.MakanDatabase.Makan
-import com.example.cafeapp.MakanDatabase.MakanDAO
-import com.example.cafeapp.MinumDatabase.Minum
-import com.example.cafeapp.MinumDatabase.MinumDAO
+import androidx.room.TypeConverters
+import com.example.cafeapp.MenuDatabase.KategoriConverter
+import com.example.cafeapp.MenuDatabase.Menu
+import com.example.cafeapp.MenuDatabase.MenuDAO
 
-@Database(entities = [Makan::class, Minum::class, User::class], version = 7, exportSchema = false)
-abstract class CafeDatabase: RoomDatabase() {
-    abstract fun makanDao(): MakanDAO
-    abstract fun minumDao(): MinumDAO
+@Database(entities = [Menu::class, User::class], version = 8, exportSchema = false)
+@TypeConverters(KategoriConverter::class)
+abstract class CafeDatabase : RoomDatabase() {
+    abstract fun menuDao(): MenuDAO
     abstract fun userDao(): UserDao
 
-    companion object{
+    companion object {
         @Volatile
         private var INSTANCE: CafeDatabase? = null
 
         fun getInstance(context: Context): CafeDatabase {
-            return INSTANCE ?: synchronized(this){
-                INSTANCE ?: Room.databaseBuilder(
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
-                    CafeDatabase::class.java, "cafe_database"
+                    CafeDatabase::class.java,
+                    "cafe_database"
                 )
-                    .fallbackToDestructiveMigration().build()
-                    .also { INSTANCE = it }
+                    .fallbackToDestructiveMigration()
+                    .build()
+                INSTANCE = instance
+                instance
             }
         }
     }

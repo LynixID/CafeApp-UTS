@@ -14,18 +14,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.MakanDatabase.MakanAdapter
-import com.example.cafeapp.MakanDatabase.MakanViewModel
-import com.example.cafeapp.MenuDetailActivity
-import com.example.cafeapp.MinumDatabase.MinumAdapter
-import com.example.cafeapp.MinumDatabase.MinumListAdapter
-import com.example.cafeapp.MinumDatabase.MinumViewModel
+import com.example.cafeapp.MenuDatabase.MenuAdapter
+import com.example.cafeapp.MenuDatabase.MenuViewModel
 
 class HomeFragment : Fragment() {
-    private lateinit var makanViewModel: MakanViewModel
-    private lateinit var minumViewModel: MinumViewModel
-    private lateinit var makanAdapter: MakanAdapter
-    private lateinit var minumAdapter: MinumListAdapter
+    private lateinit var menuViewModel: MenuViewModel
+    private lateinit var menuAdapter: MenuAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_home, container, false)
@@ -35,45 +29,27 @@ class HomeFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // Initialize the ViewModel here
-        makanViewModel = ViewModelProvider(this).get(MakanViewModel::class.java)
+        menuViewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
 
         // Observe the filteredMakans LiveData after initialization
-        makanViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
-            makanAdapter.updateData(makans)
+        menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
+            menuAdapter.updateData(makans)
         }
 
-//        Minum ViewModel
-        minumViewModel = ViewModelProvider(this).get(MinumViewModel::class.java)
-
-        // Observe the filteredMakans LiveData after initialization
-        minumViewModel.filteredMinums.observe(viewLifecycleOwner) { minums ->
-            Log.d("HomeFragment", "Minums count: ${minums.size}")
-            minumAdapter.submitList(minums)
-        }
 
         val recyclerView = view.findViewById<RecyclerView>(R.id.recommendedRecyclerView)
-        val recyclerViewMinum = view.findViewById<RecyclerView>(R.id.recommendedMinumRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        recyclerViewMinum.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
 
         // Initialize the adapter with an initial empty list
-        makanAdapter = MakanAdapter(emptyList()) { selectedMakan ->
+        menuAdapter = MenuAdapter(emptyList()) { selectedMakan ->
             // Handle item click event here
             val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
                 putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
             }
             startActivity(intent) // Navigate to MenuDetailActivity
         }
-        recyclerView.adapter = makanAdapter
+        recyclerView.adapter = menuAdapter
 
-        // Initialize the adapter with an initial empty list
-        minumAdapter = MinumListAdapter { selectedMinum ->
-            val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-                putExtra("MINUM_ID", selectedMinum._id.toString())
-            }
-            startActivity(intent)
-        }
-        recyclerViewMinum.adapter = minumAdapter
 
 
         val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
@@ -86,12 +62,12 @@ class HomeFragment : Fragment() {
         val searchView = view.findViewById<SearchView>(R.id.searchView)
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { makanViewModel.searchItems(it) }
+                query?.let { menuViewModel.searchItems(it) }
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { makanViewModel.searchItems(it) }
+                newText?.let { menuViewModel.searchItems(it) }
                 return true
             }
         })
@@ -108,8 +84,8 @@ class HomeFragment : Fragment() {
         sortDialog.setTitle("Sort")
         sortDialog.setItems(sortOptions) { _, which ->
             when (which) {
-                0 -> makanViewModel.sortItems(MakanViewModel.SortOrder.A_TO_Z) // Sort A-Z
-                1 -> makanViewModel.sortItems(MakanViewModel.SortOrder.Z_TO_A) // Sort Z-A
+                0 -> menuViewModel.sortItems(MenuViewModel.SortOrder.A_TO_Z) // Sort A-Z
+                1 -> menuViewModel.sortItems(MenuViewModel.SortOrder.Z_TO_A) // Sort Z-A
             }
         }
         sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }

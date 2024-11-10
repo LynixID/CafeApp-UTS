@@ -1,23 +1,19 @@
-package com.example.cafeapp.MakanDatabase
+package com.example.cafeapp.MenuDatabase
 
-import android.app.AlertDialog
-import android.content.Context
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
 import java.io.File
 
-class MakanAdapter(
-    private var makanList: List<Makan>,
-    private val onItemClick: (Makan) -> Unit,
-) : RecyclerView.Adapter<MakanAdapter.MenuViewHolder>() {
+class MenuAdapter(
+    private var menuList: List<Menu>,
+    private val onItemClick: (Menu) -> Unit,
+) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
 
     class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val itemdescription: TextView = view.findViewById(R.id.textViewFoodDescription)
@@ -34,10 +30,10 @@ class MakanAdapter(
     }
 
     override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        val makan = makanList[position]
+        val makan = menuList[position]
 
         // Menampilkan nama dan harga makan
-        holder.namaMenu.text = makan.name
+        holder.namaMenu.text = makan.nama
         holder.hargaMenu.text = "Rp. ${makan.harga}" // Menambahkan simbol mata uang
         holder.itemdescription.text = makan.deskripsi
 
@@ -57,10 +53,10 @@ class MakanAdapter(
         }
     }
 
-    override fun getItemCount() = makanList.size
+    override fun getItemCount() = menuList.size
 
-    fun updateData(newMakanList: List<Makan>) {
-        makanList = newMakanList
+    fun updateData(newMenuList: List<Menu>) {
+        menuList = newMenuList
         notifyDataSetChanged() // Beritahu adapter bahwa data telah berubah
     }
 

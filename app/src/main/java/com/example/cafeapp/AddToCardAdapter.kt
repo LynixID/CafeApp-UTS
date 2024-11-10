@@ -62,7 +62,7 @@ class AddToCardAdapter(
                 } else {
                     // Remove item if quantity becomes 0
                     items.removeAt(position)
-                    viewModel.removeItem(item.id)
+                    viewModel.removeItem(item.id, item.category)
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, items.size)
                 }

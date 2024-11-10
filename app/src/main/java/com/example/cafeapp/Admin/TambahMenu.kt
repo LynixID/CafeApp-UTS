@@ -28,7 +28,6 @@ class TambahMenu : AppCompatActivity() {
     private lateinit var binding: TambahMenuBinding
     private val menuViewModel: MenuViewModel by viewModels()
     private var imagePath: String? = null
-
     private lateinit var getImageLauncher: ActivityResultLauncher<Intent>
 
     override fun onCreate(savedInstanceState: Bundle?) {

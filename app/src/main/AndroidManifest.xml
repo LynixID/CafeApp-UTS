@@ -18,57 +18,48 @@
 
         <activity
             android:name=".Admin.ListDataMenu"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".TentangAplikasiActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".TentangKitaActivity"
-            android:exported="false"/>
+            android:exported="false" />
         <activity
             android:name=".BantuanActivity"
-            android:exported="false"/>
+            android:exported="false" />
 
         <activity
             android:name=".MenuDetailActivity"
-            android:exported="false">
+            android:exported="false" />
 
-        </activity>
-        <activity
-            android:name=".AllFoodActivity"
-            android:exported="false"/>
         <activity
             android:name=".MainActivity"
-            android:exported="false"/>
-        <activity
-            android:name=".TambahMenu.MenuBaruActivity"
-            android:exported="false"/>
-        <activity
-            android:name=".TambahMenu.MinumItemsActivity"
-            android:exported="false">
-
-        </activity>
+            android:exported="false" />
 
         <activity
-            android:name=".TambahMenu.MakanItemsActivity"
-            android:exported="false">
-        </activity>
-        <activity
-        android:name=".UserActivity"
-        android:exported="false"/>
+            android:name=".UserActivity"
+            android:exported="false" />
 
-        <activity android:name=".Login_page"
+        <activity
+            android:name=".welcome_logo_page"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Admin.TambahMenu"
-            android:exported="false">
 
-        </activity>
+        <!-- Login Page activity -->
+        <activity
+            android:name=".Login_page"
+            android:exported="true" />
+
+        <activity
+            android:name=".Admin.TambahMenu"
+            android:exported="false" />
+
     </application>
 
 </manifest>

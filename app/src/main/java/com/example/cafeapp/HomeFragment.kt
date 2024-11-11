@@ -9,16 +9,18 @@ import android.widget.SearchView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.cafeapp.MenuDatabase.Kategori
+import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuAdapter
 import com.example.cafeapp.MenuDatabase.MenuViewModel
 import com.example.cafeapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
-    private lateinit var menuViewModel: MenuViewModel
-    private lateinit var menuAdapter: MenuAdapter
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
+    private lateinit var menuViewModel: MenuViewModel
+    private lateinit var menuAdapter: MenuAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -32,99 +34,84 @@ class HomeFragment : Fragment() {
 
         menuViewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
 
-        // Observe filteredMakans LiveData to update UI
-        menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
-            menuAdapter.updateData(makans)
-        }
-
-        binding.recommendedRecyclerView.layoutManager = LinearLayoutManager(
-            requireContext(), LinearLayoutManager.HORIZONTAL, false
-        )
-
-        // Initialize the adapter with click listener for each item
-        menuAdapter = MenuAdapter(emptyList()) { selectedMakan ->
-            // Handle item click event to navigate to MenuDetailActivity
-            val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Pass the selected item's ID
+        menuAdapter = MenuAdapter(emptyList()) { selectedMenu ->
+            if (selectedMenu._id != 0) { // Pastikan bukan header
+                val intent = Intent(requireContext(), MenuDetailActivity::class.java)
+                intent.putExtra("MAKAN_ID", selectedMenu._id.toString())
+                startActivity(intent)
             }
-            startActivity(intent) // Navigate to MenuDetailActivity
         }
-        binding.recommendedRecyclerView.adapter = menuAdapter
 
-        setupCategoryClickListeners()
+        val layoutManager = GridLayoutManager(requireContext(), 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                val menu = menuAdapter.getMenuList().getOrNull(position)
+                return if (menu?.nama == "Makanan" || menu?.nama == "Minuman") {
+                    2
+                } else {
+                    1
+                }
+            }
+        }
+
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = menuAdapter
+
+        menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
+            val items = mutableListOf<Menu>()
+
+            items.add(Menu(_id = 0, nama = "Makanan", harga = 0, deskripsi = "", kategori = Kategori.MAKAN, namaFoto = ""))
+            items.addAll(makans.filter { it.kategori == Kategori.MAKAN })
+
+            items.add(Menu(_id = 0, nama = "Minuman", harga = 0, deskripsi = "", kategori = Kategori.MINUM, namaFoto = ""))
+            items.addAll(makans.filter { it.kategori == Kategori.MINUM })
+
+            menuAdapter.updateData(items)
+        }
+
         setupUIComponents()
-
-        binding.seeAll.setOnClickListener {
-            // Tindakan saat tombol See All diklik
-            val intent = Intent(requireContext(), AllFoodActivity::class.java)
-            startActivity(intent) // Mulai AllFoodActivity
-        }
     }
 
-    // Setup listeners for category filtering
-    private fun setupCategoryClickListeners() {
-        binding.categoryBurger.setOnClickListener {
-            toggleCategoryFilter("Makanan")
-        }
-
-        binding.categoryPasta.setOnClickListener {
-            toggleCategoryFilter("Minuman")
-        }
-    }
-
-    private var currentCategory: String? = null
-
-    private fun toggleCategoryFilter(category: String) {
-        if (currentCategory == category) {
-            currentCategory = null
-            menuViewModel.loadAllItems()
-        } else {
-            currentCategory = category
-            menuViewModel.filterByCategory(category)
-        }
-        updateCategoryIconStates()
-    }
-
-    private fun updateCategoryIconStates() {
-        binding.categoryBurger.alpha = if (currentCategory == "Makanan") 1.0f else 0.5f
-        binding.categoryPasta.alpha = if (currentCategory == "Minuman") 1.0f else 0.5f
-    }
-
+    // Fungsi untuk menyiapkan komponen UI, seperti listener untuk pencarian dan filter
     private fun setupUIComponents() {
-        // Search functionality
+        // Menambahkan listener pada SearchView untuk pencarian menu
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            // Fungsi ini dipanggil saat teks pencarian dikirim
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { menuViewModel.searchItems(it) }
+                query?.let { menuViewModel.searchItems(it) } // Memanggil fungsi pencarian pada ViewModel
                 return true
             }
 
+            // Fungsi ini dipanggil saat teks pencarian berubah
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { menuViewModel.searchItems(it) }
+                newText?.let { menuViewModel.searchItems(it) } // Memanggil fungsi pencarian saat teks berubah
                 return true
             }
         })
 
-        // Filter and sorting icon listener
+        // Menambahkan listener untuk ikon filter (untuk memilih opsi sortir)
         binding.filterIcon.setOnClickListener { showSortOptions() }
     }
 
+    // Fungsi untuk menampilkan dialog opsi sortir (A-Z, Z-A)
     private fun showSortOptions() {
-        val sortOptions = arrayOf("A-Z", "Z-A")
-
+        val sortOptions = arrayOf("A-Z", "Z-A") // Opsi sortir yang tersedia
         val sortDialog = AlertDialog.Builder(requireContext())
-        sortDialog.setTitle("Sort")
+        sortDialog.setTitle("Sort") // Judul dialog
         sortDialog.setItems(sortOptions) { _, which ->
+            // Menangani pemilihan opsi sortir
             when (which) {
-                0 -> menuViewModel.sortItems(MenuViewModel.SortOrder.A_TO_Z) // Sort A-Z
-                1 -> menuViewModel.sortItems(MenuViewModel.SortOrder.Z_TO_A) // Sort Z-A
+                0 -> menuViewModel.sortItems(MenuViewModel.SortOrder.A_TO_Z) // Urutkan A-Z
+                1 -> menuViewModel.sortItems(MenuViewModel.SortOrder.Z_TO_A) // Urutkan Z-A
             }
         }
-        sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-        sortDialog.create().show()
+        sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() } // Tombol batal
+        sortDialog.create().show() // Menampilkan dialog sortir
     }
 
+    // Fungsi ini dipanggil saat fragment dihancurkan untuk membersihkan referensi binding
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null
+        _binding = null // Melepas binding agar tidak terjadi kebocoran memori
     }
 }

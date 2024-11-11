@@ -10,7 +10,3 @@ data class CartItem(
     var quantity: Int = 1,
     var category: Kategori
 )
-
-enum class Kategori {
-    MAKAN, MINUM
-}

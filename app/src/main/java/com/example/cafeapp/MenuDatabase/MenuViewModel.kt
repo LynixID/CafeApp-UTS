@@ -48,25 +48,6 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
         _filteredMakans.value = allMakans.value // Mengambil data dari allMakans dan memperbarui _filteredMakans
     }
 
-    // Fungsi untuk filter berdasarkan kategori
-    fun filterByCategory(category: String) {
-        // Memetakan string kategori ke enum yang sesuai
-        val validCategory = when (category.lowercase()) {
-            "makanan", "makan" -> Kategori.MAKAN
-            "minuman", "minum" -> Kategori.MINUM
-            else -> null // Kategori tidak valid
-        }
-
-        validCategory?.let {
-            // Filter berdasarkan kategori yang valid
-            val filteredList = allMakans.value?.filter { it.kategori == validCategory } ?: emptyList()
-            _filteredMakans.value = filteredList
-        } ?: run {
-            // Jika kategori tidak valid, set hasil kosong
-            _filteredMakans.value = emptyList()
-        }
-    }
-
 
     // Fungsi untuk pencarian item
     fun searchItems(query: String) {

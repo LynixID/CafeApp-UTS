@@ -41,6 +41,8 @@
         <activity
             android:name=".MainActivity"
             android:exported="false"/>
+
+
         <activity
             android:name=".TambahMenu.MenuBaruActivity"
             android:exported="false"/>

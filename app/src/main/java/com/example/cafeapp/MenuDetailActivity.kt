@@ -14,7 +14,7 @@ import java.io.File
 
 class MenuDetailActivity : AppCompatActivity() {
 
-    private lateinit var binding: MenuDetailBinding // Declare binding object
+    private lateinit var binding: MenuDetailBinding
     private var quantity = 1
 
     private val cardViewModel: CardViewModel by viewModels()
@@ -22,14 +22,12 @@ class MenuDetailActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = MenuDetailBinding.inflate(layoutInflater) // Initialize the binding
-        setContentView(binding.root) // Set the root view using the binding
+        binding = MenuDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Ambil ID dari Intent
         val makanIdString = intent.getStringExtra("MAKAN_ID")
-        val makanId = makanIdString?.toIntOrNull() // Mengonversi string kembali ke Int
+        val makanId = makanIdString?.toIntOrNull()
 
-        // Mengonversi ID ke Int jika makanIdString tidak null
         makanIdString?.let { id ->
             val makanId = id.toIntOrNull()
             makanId?.let { id ->
@@ -41,26 +39,23 @@ class MenuDetailActivity : AppCompatActivity() {
             }
         }
 
-        // Set back button listener
+
         binding.buttonBackDetail.setOnClickListener {
             finish()
         }
     }
 
     private fun setupProductDetails(menu: Menu) {
-        // Use ViewBinding to set the values
         binding.namefood.text = menu.nama
         binding.pricefood.text = "Rp ${menu.harga}"
         binding.deskfood.text = menu.deskripsi
 
-        // Ambil path gambar dari direktori internal
         val imgPath = File(filesDir, "app_images/${menu.namaFoto}")
 
-        // Pastikan gambar yang dimuat benar
         if (imgPath.exists()) {
             loadImage(Uri.fromFile(imgPath))
         } else {
-            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image")) // Gambar default jika tidak ada
+            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image"))
         }
 
         binding.buttonAddToCart.setOnClickListener {
@@ -69,10 +64,9 @@ class MenuDetailActivity : AppCompatActivity() {
     }
 
     private fun loadImage(imageUri: Uri) {
-        // Menggunakan Glide untuk memuat gambar
         Glide.with(this)
             .load(imageUri)
-            .placeholder(R.drawable.sample_image) // Placeholder jika gambar belum tersedia
+            .placeholder(R.drawable.sample_image)
             .into(binding.fotofood)
     }
 
@@ -81,26 +75,24 @@ class MenuDetailActivity : AppCompatActivity() {
         val priceDouble = priceString.toDoubleOrNull() ?: 0.0
 
         val cartItem = CartItem(
-            id = menu._id,                  // Use the Makan ID as the cart item ID
+            id = menu._id,
             name = binding.namefood.text.toString(),
             price = priceDouble.toString(),
-            imageResId = menu.namaFoto,     // Use the photo name from the Menu object
-            quantity = 1,                   // Start with quantity 1 when adding from the menu
-            category = menu.kategori         // Pass the category from the Menu object
+            imageResId = menu.namaFoto,
+            quantity = 1,
+            category = menu.kategori
         )
 
-        // Add item to cart using CartManager
         CartManager.addItem(cartItem)
         Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
 
-        // Navigate to CartFragment
         navigateToHome()
     }
 
     private fun navigateToHome() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("NAVIGATE_TO_CART", true) // Optional: Kirim data untuk navigasi otomatis
+        intent.putExtra("NAVIGATE_TO_CART", true)
         startActivity(intent)
-        finish() // Menutup MenuDetailActivity setelah navigasi
+        finish()
     }
 }

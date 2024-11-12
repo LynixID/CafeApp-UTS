@@ -7,7 +7,7 @@ import androidx.room.Query
 @Dao
 interface TransaksiDAO {
     @Insert
-    suspend fun insert(transaksi: Transaksi)
+    suspend fun insertTransaksi(transaksi: Transaksi)
 
     @Query("SELECT * FROM transaksi")
     suspend fun getAllTransaksi(): List<Transaksi>

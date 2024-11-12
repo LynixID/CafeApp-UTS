@@ -7,14 +7,14 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
-import com.example.cafeapp.databinding.ItemRecommendedBinding
+import com.example.cafeapp.databinding.MenuItemBinding
 import java.io.File
 
 class MenuListAdapter(
     private val onItemClick: (Menu) -> Unit
 ) : ListAdapter<Menu, MenuListAdapter.MenuViewHolder>(MakanDiffCallback()) {
 
-    class MenuViewHolder(private val binding: ItemRecommendedBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MenuViewHolder(private val binding: MenuItemBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(menu: Menu, onItemClick: (Menu) -> Unit) {
             binding.textViewFoodName.text = menu.nama
             binding.textViewFoodPrice.text = "Rp. ${menu.harga}"
@@ -38,7 +38,7 @@ class MenuListAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
-        val binding = ItemRecommendedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = MenuItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MenuViewHolder(binding)
     }
 

@@ -60,14 +60,26 @@ class HomeFragment : Fragment() {
         menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
             val items = mutableListOf<Menu>()
 
-            items.add(Menu(_id = 0, nama = "Makanan", harga = 0, deskripsi = "", kategori = Kategori.MAKAN, namaFoto = ""))
-            items.addAll(makans.filter { it.kategori == Kategori.MAKAN })
+            // Cek apakah ada item dengan kategori MAKAN
+            if (makans.any { it.kategori == Kategori.MAKAN }) {
+                // Tambahkan header untuk kategori MAKAN
+                items.add(Menu(_id = 0, nama = "Makanan", harga = 0, deskripsi = "", kategori = Kategori.MAKAN, namaFoto = ""))
+                // Tambahkan semua item dengan kategori MAKAN
+                items.addAll(makans.filter { it.kategori == Kategori.MAKAN })
+            }
 
-            items.add(Menu(_id = 0, nama = "Minuman", harga = 0, deskripsi = "", kategori = Kategori.MINUM, namaFoto = ""))
-            items.addAll(makans.filter { it.kategori == Kategori.MINUM })
+            // Cek apakah ada item dengan kategori MINUM
+            if (makans.any { it.kategori == Kategori.MINUM }) {
+                // Tambahkan header untuk kategori MINUM
+                items.add(Menu(_id = 0, nama = "Minuman", harga = 0, deskripsi = "", kategori = Kategori.MINUM, namaFoto = ""))
+                // Tambahkan semua item dengan kategori MINUM
+                items.addAll(makans.filter { it.kategori == Kategori.MINUM })
+            }
 
+            // Update adapter dengan data yang telah diolah
             menuAdapter.updateData(items)
         }
+
 
         setupUIComponents()
     }

@@ -1,4 +1,4 @@
-package com.example.cafeapp.Admin
+package com.example.cafeapp.AdminMenu
 
 import com.example.cafeapp.MenuDatabase.MenuViewModel
 import android.content.Context

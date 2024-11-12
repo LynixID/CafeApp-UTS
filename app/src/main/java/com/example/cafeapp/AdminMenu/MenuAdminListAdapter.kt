@@ -1,4 +1,4 @@
-package com.example.cafeapp.Admin
+package com.example.cafeapp.AdminMenu
 
 import android.net.Uri
 import android.view.LayoutInflater

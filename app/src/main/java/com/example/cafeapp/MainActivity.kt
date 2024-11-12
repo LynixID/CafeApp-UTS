@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 R.id.nav_favorites -> {
                     // Navigate to Favorites Fragment
-                    val favoritesFragment = FavoritesFragment()
+                    val favoritesFragment = TransaksiFragment()
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, favoritesFragment)
                         .commit()

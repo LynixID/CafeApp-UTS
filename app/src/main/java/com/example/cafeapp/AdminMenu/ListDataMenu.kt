@@ -17,7 +17,7 @@ import java.io.File
 
 class ListDataMenu : AppCompatActivity() {
     private lateinit var binding: ActivityTestDatabase2Binding
-    private val menuViewModel: MenuViewModel by viewModels()
+    private val menuViewModel: MenuViewModel by viewModels() // Jangan ulangi ViewModelProvider
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +26,8 @@ class ListDataMenu : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.recyclerView1.layoutManager = LinearLayoutManager(this)
+
+        // Observe LiveData dengan benar
         menuViewModel.getAllMakans().observe(this) { menus ->
             binding.recyclerView1.adapter = MenuAdminAdapter(menus, object : MenuAdminAdapter.OnItemClickListener {
                 override fun onEditClick(menu: Menu) {
@@ -66,28 +68,29 @@ class ListDataMenu : AppCompatActivity() {
 
     private fun showEditDialogMakan(item: Menu) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.modal_edit_data, null)
-        val editNama = dialogView.findViewById<EditText>(R.id.editNama)
-        val editHarga = dialogView.findViewById<EditText>(R.id.editHarga)
-        val editDeskripsi = dialogView.findViewById<EditText>(R.id.editDeskripsi)
-        val editFoto = dialogView.findViewById<ImageView>(R.id.editFoto)
 
-        editNama.setText(item.nama)
-        editHarga.setText(item.harga.toString())
-        editDeskripsi.setText(item.deskripsi)
+        // Use view binding for dialog views
+        val dialogBinding = com.example.cafeapp.databinding.ModalEditDataBinding.bind(dialogView)
+
+        // Menampilkan data item pada EditText dan ImageView
+        dialogBinding.editNama.setText(item.nama)
+        dialogBinding.editHarga.setText(item.harga.toString())
+        dialogBinding.editDeskripsi.setText(item.deskripsi)
 
         val imgPath = File(filesDir, "app_images/${item.namaFoto}")
         if (imgPath.exists()) {
-            editFoto.setImageURI(Uri.fromFile(imgPath))
+            dialogBinding.editFoto.setImageURI(Uri.fromFile(imgPath))
         }
 
         AlertDialog.Builder(this)
             .setTitle("Edit Item")
             .setView(dialogView)
             .setPositiveButton("Simpan") { _, _ ->
-                val updatedName = editNama.text.toString()
-                val updatedHarga = editHarga.text.toString().toInt()
-                val updatedDeskripsi = editDeskripsi.text.toString()
+                val updatedName = dialogBinding.editNama.text.toString()
+                val updatedHarga = dialogBinding.editHarga.text.toString().toInt()
+                val updatedDeskripsi = dialogBinding.editDeskripsi.text.toString()
 
+                // Update data menggunakan ViewModel
                 menuViewModel.updateMakan(
                     id = item._id,
                     name = updatedName,
@@ -99,5 +102,4 @@ class ListDataMenu : AppCompatActivity() {
             .setNegativeButton("Batal", null)
             .show()
     }
-
 }

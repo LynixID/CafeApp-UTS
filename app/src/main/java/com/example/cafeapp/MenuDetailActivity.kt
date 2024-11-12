@@ -3,115 +3,99 @@ package com.example.cafeapp
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuViewModel
+import com.example.cafeapp.databinding.MenuDetailBinding
 import java.io.File
 
 class MenuDetailActivity : AppCompatActivity() {
-
-    private lateinit var imageProduct: ImageView
-    private lateinit var nameFood: TextView
-    private lateinit var priceFood: TextView
-    private lateinit var descriptionFood: TextView
-    private lateinit var addToCartButton: Button
-    private lateinit var backButton: ImageButton
+    private lateinit var binding: MenuDetailBinding
     private var quantity = 1
-
     private val cardViewModel: CardViewModel by viewModels()
     private val viewModel: MenuViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.menu_detail)
+        binding = MenuDetailBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Inisialisasi UI
-        imageProduct = findViewById(R.id.fotofood)
-        nameFood = findViewById(R.id.namefood)
-        priceFood = findViewById(R.id.pricefood)
-        descriptionFood = findViewById(R.id.deskfood)
-        addToCartButton = findViewById(R.id.buttonAddToCart)
-        backButton = findViewById(R.id.buttonBackDetail)
-
-        // Ambil ID dari Intent
-        val makanIdString = intent.getStringExtra("MAKAN_ID")
-
-        // Mengonversi ID ke Int jika makanIdString tidak null
-        makanIdString?.let { id ->
-            val makanId = id.toIntOrNull()
-            makanId?.let { id ->
-                viewModel.getMakanById(id).observe(this) { makan ->
-                    makan?.let {
-                        setupProductDetails(it)
-                    }
-                }
-            }
+        // Menambahkan listener untuk tombol back
+        binding.buttonBackDetail.setOnClickListener {
+            onBackPressed() // Akan memanggil fungsi default untuk kembali
         }
 
-        backButton.setOnClickListener {
+        val makanId = intent.getStringExtra("MAKAN_ID")?.toIntOrNull()
+
+        if (makanId != null && makanId != 0) {
+            viewModel.getMakanById(makanId).observe(this) { makan ->
+                if (makan != null) {
+                    setupProductDetails(makan)
+                } else {
+                    Toast.makeText(this, "Menu tidak ditemukan", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+        } else {
+            Toast.makeText(this, "ID menu tidak valid", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
 
     private fun setupProductDetails(menu: Menu) {
-        nameFood.text = menu.nama
-        priceFood.text = "Rp ${menu.harga}"
-        descriptionFood.text = menu.deskripsi
+        binding.namefood.text = menu.nama
+        binding.pricefood.text = "Rp ${menu.harga}"
+        binding.deskfood.text = menu.deskripsi
 
-        // Ambil path gambar dari direktori internal
         val imgPath = File(filesDir, "app_images/${menu.namaFoto}")
-
-        // Pastikan gambar yang dimuat benar
         if (imgPath.exists()) {
             loadImage(Uri.fromFile(imgPath))
         } else {
-            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image")) // Gambar default jika tidak ada
+            loadImage(Uri.parse("android.resource://${packageName}/drawable/sample_image"))
         }
 
-        addToCartButton.setOnClickListener {
+        binding.buttonAddToCart.setOnClickListener {
             addToCart(menu)
         }
     }
 
     private fun loadImage(imageUri: Uri) {
-        // Menggunakan Glide untuk memuat gambar
         Glide.with(this)
             .load(imageUri)
-            .placeholder(R.drawable.sample_image) // Placeholder jika gambar belum tersedia
-            .into(imageProduct)
+            .placeholder(R.drawable.sample_image)
+            .into(binding.fotofood)
     }
 
     private fun addToCart(menu: Menu) {
-        val priceString = priceFood.text.toString().replace("Rp ", "").replace(".", "").trim()
+        val priceString = binding.pricefood.text.toString().replace("Rp ", "").replace(".", "").trim()
         val priceDouble = priceString.toDoubleOrNull() ?: 0.0
 
         val cartItem = CartItem(
-            id = menu._id, // Use the Makan ID as the cart item ID
-            name = nameFood.text.toString(),
+            id = menu._id,
+            name = binding.namefood.text.toString(),
             price = priceDouble.toString(),
-            imageResId = menu.namaFoto, // Menggunakan nama foto dari objek Makan
+            imageResId = menu.namaFoto,
             quantity = 1,
-            category = menu.kategori.toString()// Always start with quantity 1 when adding from menu
+            category = menu.kategori
         )
 
-        cardViewModel.addItem(cartItem)
+        CartManager.addItem(cartItem)
         Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
-
-        // Navigate to CartFragment
-        navigateToCart()
+        navigateToHome()
     }
 
-    private fun navigateToCart() {
+    private fun navigateToHome() {
         val intent = Intent(this, MainActivity::class.java)
-        intent.putExtra("NAVIGATE_TO_CART", true) // Optional: Kirim data untuk navigasi otomatis
+        intent.putExtra("NAVIGATE_TO_CART", true)
         startActivity(intent)
-        finish() // Menutup MenuDetailActivity setelah navigasi
+        finish()
+    }
+
+    // Override fungsi onBackPressed untuk menangani tombol back sistem Android
+    override fun onBackPressed() {
+        super.onBackPressed() // Ini akan menutup activity dan kembali ke screen sebelumnya
     }
 }

@@ -22,7 +22,6 @@ class MenuAdminListAdapter(
 
     class MenuViewHolder(val binding: TestItemMenuBinding) : RecyclerView.ViewHolder(binding.root)
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
         val binding = TestItemMenuBinding.inflate(layoutInflater, parent, false)

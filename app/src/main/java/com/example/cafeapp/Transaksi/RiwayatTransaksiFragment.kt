@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
@@ -28,7 +29,7 @@ class RiwayatTransaksiFragment : Fragment() {
 
         // Inisialisasi RecyclerView
         recyclerView = view.findViewById(R.id.recyclerViewRiwayatTransaksi)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
         transaksiDao = TransaksiDatabase.getInstance(requireContext()).transaksiDao()
 

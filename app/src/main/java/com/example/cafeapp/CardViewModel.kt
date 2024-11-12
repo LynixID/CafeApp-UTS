@@ -34,8 +34,8 @@ class CardViewModel : ViewModel() {
         _cartItems.value = currentList
     }
 
-    fun removeItem(itemId: Int, category: Kategori) {
-        CartManager.removeItem(itemId, category)
+    fun removeItem(itemId: Int) {
+        CartManager.removeItem(itemId)  // Remove only using itemId
         refreshItems()
     }
 }

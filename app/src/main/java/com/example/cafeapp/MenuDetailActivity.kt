@@ -13,10 +13,8 @@ import com.example.cafeapp.databinding.MenuDetailBinding
 import java.io.File
 
 class MenuDetailActivity : AppCompatActivity() {
-
     private lateinit var binding: MenuDetailBinding
     private var quantity = 1
-
     private val cardViewModel: CardViewModel by viewModels()
     private val viewModel: MenuViewModel by viewModels()
 
@@ -25,22 +23,24 @@ class MenuDetailActivity : AppCompatActivity() {
         binding = MenuDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val makanIdString = intent.getStringExtra("MAKAN_ID")
-        val makanId = makanIdString?.toIntOrNull()
-
-        makanIdString?.let { id ->
-            val makanId = id.toIntOrNull()
-            makanId?.let { id ->
-                viewModel.getMakanById(id).observe(this) { makan ->
-                    makan?.let {
-                        setupProductDetails(it)
-                    }
-                }
-            }
+        // Menambahkan listener untuk tombol back
+        binding.buttonBackDetail.setOnClickListener {
+            onBackPressed() // Akan memanggil fungsi default untuk kembali
         }
 
+        val makanId = intent.getStringExtra("MAKAN_ID")?.toIntOrNull()
 
-        binding.buttonBackDetail.setOnClickListener {
+        if (makanId != null && makanId != 0) {
+            viewModel.getMakanById(makanId).observe(this) { makan ->
+                if (makan != null) {
+                    setupProductDetails(makan)
+                } else {
+                    Toast.makeText(this, "Menu tidak ditemukan", Toast.LENGTH_SHORT).show()
+                    finish()
+                }
+            }
+        } else {
+            Toast.makeText(this, "ID menu tidak valid", Toast.LENGTH_SHORT).show()
             finish()
         }
     }
@@ -51,7 +51,6 @@ class MenuDetailActivity : AppCompatActivity() {
         binding.deskfood.text = menu.deskripsi
 
         val imgPath = File(filesDir, "app_images/${menu.namaFoto}")
-
         if (imgPath.exists()) {
             loadImage(Uri.fromFile(imgPath))
         } else {
@@ -85,7 +84,6 @@ class MenuDetailActivity : AppCompatActivity() {
 
         CartManager.addItem(cartItem)
         Toast.makeText(this, "Item ditambahkan ke keranjang!", Toast.LENGTH_SHORT).show()
-
         navigateToHome()
     }
 
@@ -94,5 +92,10 @@ class MenuDetailActivity : AppCompatActivity() {
         intent.putExtra("NAVIGATE_TO_CART", true)
         startActivity(intent)
         finish()
+    }
+
+    // Override fungsi onBackPressed untuk menangani tombol back sistem Android
+    override fun onBackPressed() {
+        super.onBackPressed() // Ini akan menutup activity dan kembali ke screen sebelumnya
     }
 }

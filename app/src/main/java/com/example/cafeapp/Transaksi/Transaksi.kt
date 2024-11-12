@@ -7,11 +7,12 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "transaksi")
 data class Transaksi(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val id: Int,
     val namaMenu: String,
     val harga: Int,
-    val jumlahTransaksi: Int,
+    val pembayaran: Int,
+    val kembalian: Int,
     val tanggalTransaksi: String,
-    val jamTransaksi: String
+    val jamTransaksi: String,
+    val jumlahTransaksi: Int
 )
-

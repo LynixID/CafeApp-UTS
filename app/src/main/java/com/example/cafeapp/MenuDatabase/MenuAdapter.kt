@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
-import com.example.cafeapp.databinding.ItemRecommendedBinding
+import com.example.cafeapp.databinding.MenuItemBinding
 import com.example.cafeapp.databinding.ItemHeaderBinding
 
 class MenuAdapter(
@@ -38,7 +38,7 @@ class MenuAdapter(
                 HeaderViewHolder(binding)
             }
             else -> {
-                val binding = ItemRecommendedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = MenuItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 ItemViewHolder(binding)
             }
         }
@@ -71,7 +71,7 @@ class MenuAdapter(
         }
     }
 
-    class ItemViewHolder(private val binding: ItemRecommendedBinding) : RecyclerView.ViewHolder(binding.root) {
+    class ItemViewHolder(private val binding: MenuItemBinding) : RecyclerView.ViewHolder(binding.root) {
         private val context = binding.root.context
 
         fun bind(menu: Menu, clickListener: (Menu) -> Unit) {

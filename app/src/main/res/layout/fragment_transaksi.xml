@@ -1,13 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
-    android:gravity="center">
+    android:padding="16dp"
+    android:background="@android:color/white"
+    android:gravity="center_horizontal">
 
+    <!-- Judul Halaman -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Favorites Fragment"
-        android:textSize="24sp" />
+        android:text="Transaksi Pembelian"
+        android:textSize="20sp"
+        android:textColor="@android:color/black"
+        android:layout_marginBottom="24dp"
+        android:textStyle="bold" />
+
+    <!-- Spinner untuk Memilih Menu -->
+    <Spinner
+        android:id="@+id/spinnerMenu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/spinner_background2"
+        android:layout_marginBottom="16dp"
+        android:padding="12dp"/>
+
+    <!-- Input Jumlah Pesanan -->
+    <EditText
+        android:id="@+id/etJumlahPesanan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Jumlah Pesanan"
+        android:inputType="number"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Input Jumlah Pembayaran -->
+    <EditText
+        android:id="@+id/etPembayaran"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Jumlah Pembayaran"
+        android:inputType="numberDecimal"
+        android:padding="12dp"
+        android:background="@drawable/edit_text_background"
+        android:textColor="#000000"
+        android:textColorHint="#888888"
+        android:layout_marginBottom="24dp"/>
+
+    <!-- Tombol untuk Menyelesaikan Transaksi -->
+    <Button
+        android:id="@+id/buttonTransaksi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Selesaikan Transaksi"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"
+        android:padding="16dp"
+        android:textSize="16sp"
+        android:layout_marginBottom="16dp"/>
+
+    <!-- Placeholder untuk Menampilkan Hasil Transaksi (Kembalian) -->
+    <TextView
+        android:id="@+id/textViewKembalian"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kembalian: Rp0"
+        android:visibility="gone"
+        android:textSize="18sp"
+        android:textColor="@android:color/holo_green_dark"
+        android:layout_marginTop="16dp"/>
+
+    <Button
+        android:id="@+id/buttonRiwayatTransaksi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Lihat Riwayat Transaksi"
+        android:layout_marginTop="16dp"
+        android:layout_gravity="center" />
+
 </LinearLayout>

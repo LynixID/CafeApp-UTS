@@ -2,93 +2,116 @@ package com.example.cafeapp
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.cafeapp.MenuDatabase.Kategori
+import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuAdapter
 import com.example.cafeapp.MenuDatabase.MenuViewModel
+import com.example.cafeapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
+    private var _binding: FragmentHomeBinding? = null
+    private val binding get() = _binding!!
     private lateinit var menuViewModel: MenuViewModel
     private lateinit var menuAdapter: MenuAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.fragment_home, container, false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        // Initialize the ViewModel here
         menuViewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
 
-        // Observe the filteredMakans LiveData after initialization
-        menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
-            menuAdapter.updateData(makans)
-        }
-
-
-        val recyclerView = view.findViewById<RecyclerView>(R.id.recommendedRecyclerView)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-
-        // Initialize the adapter with an initial empty list
-        menuAdapter = MenuAdapter(emptyList()) { selectedMakan ->
-            // Handle item click event here
-            val intent = Intent(requireContext(), MenuDetailActivity::class.java).apply {
-                putExtra("MAKAN_ID", selectedMakan._id.toString()) // Mengirim ID makanan yang dipilih sebagai String
+        menuAdapter = MenuAdapter(emptyList()) { selectedMenu ->
+            if (selectedMenu._id != 0) { // Pastikan bukan header
+                val intent = Intent(requireContext(), MenuDetailActivity::class.java)
+                intent.putExtra("MAKAN_ID", selectedMenu._id.toString())
+                startActivity(intent)
             }
-            startActivity(intent) // Navigate to MenuDetailActivity
-        }
-        recyclerView.adapter = menuAdapter
-
-
-
-        val seeAllTextView = view.findViewById<TextView>(R.id.seeAll)
-        seeAllTextView.setOnClickListener {
-            val intent = Intent(requireContext(), AllFoodActivity::class.java)
-            startActivity(intent)
         }
 
-        // Search functionality using SearchView
-        val searchView = view.findViewById<SearchView>(R.id.searchView)
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        val layoutManager = GridLayoutManager(requireContext(), 2)
+        layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+            override fun getSpanSize(position: Int): Int {
+                val menu = menuAdapter.getMenuList().getOrNull(position)
+                return if (menu?.nama == "Makanan" || menu?.nama == "Minuman") {
+                    2
+                } else {
+                    1
+                }
+            }
+        }
+
+        binding.recyclerView.layoutManager = layoutManager
+        binding.recyclerView.adapter = menuAdapter
+
+        menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
+            val items = mutableListOf<Menu>()
+
+            items.add(Menu(_id = 0, nama = "Makanan", harga = 0, deskripsi = "", kategori = Kategori.MAKAN, namaFoto = ""))
+            items.addAll(makans.filter { it.kategori == Kategori.MAKAN })
+
+            items.add(Menu(_id = 0, nama = "Minuman", harga = 0, deskripsi = "", kategori = Kategori.MINUM, namaFoto = ""))
+            items.addAll(makans.filter { it.kategori == Kategori.MINUM })
+
+            menuAdapter.updateData(items)
+        }
+
+        setupUIComponents()
+    }
+
+    // Fungsi untuk menyiapkan komponen UI, seperti listener untuk pencarian dan filter
+    private fun setupUIComponents() {
+        // Menambahkan listener pada SearchView untuk pencarian menu
+        binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            // Fungsi ini dipanggil saat teks pencarian dikirim
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { menuViewModel.searchItems(it) }
+                query?.let { menuViewModel.searchItems(it) } // Memanggil fungsi pencarian pada ViewModel
                 return true
             }
 
+            // Fungsi ini dipanggil saat teks pencarian berubah
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { menuViewModel.searchItems(it) }
+                newText?.let { menuViewModel.searchItems(it) } // Memanggil fungsi pencarian saat teks berubah
                 return true
             }
         })
 
-        // Filter and sort options
-        val filterIcon = view.findViewById<ImageView>(R.id.filterIcon)
-        filterIcon.setOnClickListener { showSortOptions() }
+        // Menambahkan listener untuk ikon filter (untuk memilih opsi sortir)
+        binding.filterIcon.setOnClickListener { showSortOptions() }
     }
 
+    // Fungsi untuk menampilkan dialog opsi sortir (A-Z, Z-A)
     private fun showSortOptions() {
-        val sortOptions = arrayOf("A-Z", "Z-A")
-
+        val sortOptions = arrayOf("A-Z", "Z-A") // Opsi sortir yang tersedia
         val sortDialog = AlertDialog.Builder(requireContext())
-        sortDialog.setTitle("Sort")
+        sortDialog.setTitle("Sort") // Judul dialog
         sortDialog.setItems(sortOptions) { _, which ->
+            // Menangani pemilihan opsi sortir
             when (which) {
-                0 -> menuViewModel.sortItems(MenuViewModel.SortOrder.A_TO_Z) // Sort A-Z
-                1 -> menuViewModel.sortItems(MenuViewModel.SortOrder.Z_TO_A) // Sort Z-A
+                0 -> menuViewModel.sortItems(MenuViewModel.SortOrder.A_TO_Z) // Urutkan A-Z
+                1 -> menuViewModel.sortItems(MenuViewModel.SortOrder.Z_TO_A) // Urutkan Z-A
             }
         }
-        sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() }
-        sortDialog.create().show()
+        sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() } // Tombol batal
+        sortDialog.create().show() // Menampilkan dialog sortir
+    }
+
+    // Fungsi ini dipanggil saat fragment dihancurkan untuk membersihkan referensi binding
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null // Melepas binding agar tidak terjadi kebocoran memori
     }
 }

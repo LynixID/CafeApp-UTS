@@ -53,6 +53,7 @@ class AddToCardAdapter(
         }
 
         // Handle minus button click
+        // Handle minus button click
         holder.btnMinus.setOnClickListener {
             if (position != RecyclerView.NO_POSITION) {
                 if (item.quantity > 1) {
@@ -62,7 +63,7 @@ class AddToCardAdapter(
                 } else {
                     // Remove item if quantity becomes 0
                     items.removeAt(position)
-                    viewModel.removeItem(item.id, item.category)
+                    viewModel.removeItem(item.id)  // Pass only item.id here
                     notifyItemRemoved(position)
                     notifyItemRangeChanged(position, items.size)
                 }

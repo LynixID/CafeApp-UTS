@@ -40,32 +40,33 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
         allMakans.removeObserver { _filteredMakans.value = it }
     }
 
+    // Fungsi untuk mendapatkan semua makanan (allMakans) tanpa filter
     fun getAllMakans(): LiveData<List<Menu>> = allMakans
 
-    fun insertMakan(menu: Menu) {
-        viewModelScope.launch(Dispatchers.IO) {
-            menuDao.insert(menu)
-        }
+    // Fungsi untuk memuat semua item tanpa filter
+    fun loadAllItems() {
+        _filteredMakans.value = allMakans.value // Mengambil data dari allMakans dan memperbarui _filteredMakans
     }
 
-    fun deleteMakanById(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            menuDao.deleteById(id)
-        }
+
+    // Fungsi untuk pencarian item
+    fun searchItems(query: String) {
+        val filteredList = allMakans.value?.filter {
+            it.nama.contains(query, ignoreCase = true)
+        } ?: emptyList()
+        _filteredMakans.value = filteredList
     }
 
-    // Metode untuk mendapatkan makanan berdasarkan ID
-    fun getMakanById(id: Int): LiveData<Menu> {
-        return menuDao.getMakanById(id) // Metode ini perlu ditambahkan di DAO
+    // Fungsi untuk pengurutan item A-Z atau Z-A
+    fun sortItems(order: SortOrder) {
+        val sortedList = when (order) {
+            SortOrder.A_TO_Z -> _filteredMakans.value?.sortedBy { it.nama }
+            SortOrder.Z_TO_A -> _filteredMakans.value?.sortedByDescending { it.nama }
+        } ?: emptyList()
+        _filteredMakans.value = sortedList
     }
 
-    // Fungsi untuk update data Makan
-    fun updateMakan(id: Int, name: String, harga: Int, deskripsi: String, namaFoto: String?) {
-        viewModelScope.launch(Dispatchers.IO) {
-            menuDao.updateMakan(id, name, harga, deskripsi, namaFoto)
-        }
-    }
-
+    // Fungsi untuk menyimpan gambar ke penyimpanan internal
     fun saveImageToInternalStorage(bitmap: Bitmap, imageName: String): String? {
         val context = getApplication<Application>().applicationContext
         val directory = File(context.filesDir, "app_images")
@@ -86,24 +87,29 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun searchItems(query: String) {
-        val filteredList = allMakans.value?.filter {
-            it.nama.contains(query, ignoreCase = true)
-        } ?: emptyList()
-        _filteredMakans.value = filteredList
+    // Fungsi untuk memasukkan item menu ke dalam database
+    fun insertMakan(menu: Menu) {
+        viewModelScope.launch(Dispatchers.IO) {
+            menuDao.insert(menu)
+        }
     }
 
-    // Sort items A-Z or Z-A
-    fun sortItems(order: SortOrder) {
-        val sortedList = when (order) {
-            SortOrder.A_TO_Z -> _filteredMakans.value?.sortedBy { it.nama }
-            SortOrder.Z_TO_A -> _filteredMakans.value?.sortedByDescending { it.nama }
-        } ?: emptyList()
-        _filteredMakans.value = sortedList
+    // Fungsi untuk menghapus item menu berdasarkan ID
+    fun deleteMakanById(id: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            menuDao.deleteById(id)
+        }
     }
 
-    fun filterByCategory(category: Kategori) {
-        val filteredList = allMakans.value?.filter { it.kategori == category } ?: emptyList()
-        _filteredMakans.value = filteredList
+    // Fungsi untuk mendapatkan makanan berdasarkan ID
+    fun getMakanById(id: Int): LiveData<Menu> {
+        return menuDao.getMakanById(id) // Metode ini perlu ditambahkan di DAO
+    }
+
+    // Fungsi untuk memperbarui data Makan
+    fun updateMakan(id: Int, name: String, harga: Int, deskripsi: String, namaFoto: String?) {
+        viewModelScope.launch(Dispatchers.IO) {
+            menuDao.updateMakan(id, name, harga, deskripsi, namaFoto)
+        }
     }
 }

@@ -64,13 +64,11 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        // Handle navigation from intent
+        // Check if we need to navigate to the CartFragment
         if (intent.getBooleanExtra("NAVIGATE_TO_CART", false)) {
-            val cartFragment = CartFragment()
             supportFragmentManager.beginTransaction()
-                .replace(R.id.fragment_container, cartFragment)
+                .replace(R.id.fragment_container, CartFragment()) // Replace with CartFragment
                 .commit()
-            binding.bottomNavigationView.selectedItemId = R.id.cart
         }
     }
 }

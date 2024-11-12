@@ -1,64 +1,90 @@
 package com.example.cafeapp.MenuDatabase
 
+import android.content.Intent
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
-import java.io.File
+import com.example.cafeapp.databinding.ItemRecommendedBinding
+import com.example.cafeapp.databinding.ItemHeaderBinding
 
 class MenuAdapter(
     private var menuList: List<Menu>,
-    private val onItemClick: (Menu) -> Unit,
-) : RecyclerView.Adapter<MenuAdapter.MenuViewHolder>() {
+    private val itemClickListener: (Menu) -> Unit
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    class MenuViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val itemdescription: TextView = view.findViewById(R.id.textViewFoodDescription)
-        val namaMenu: TextView = view.findViewById(R.id.textViewFoodName)
-        val hargaMenu: TextView = view.findViewById(R.id.textViewFoodPrice)
-        val fotoMenu: ImageView = view.findViewById(R.id.imageViewFood)
-
+    companion object {
+        private const val TYPE_HEADER = 0
+        private const val TYPE_ITEM = 1
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recommended, parent, false)
-        return MenuViewHolder(view)
-    }
+    fun getMenuList(): List<Menu> = menuList
 
-    override fun onBindViewHolder(holder: MenuViewHolder, position: Int) {
-        val makan = menuList[position]
-
-        // Menampilkan nama dan harga makan
-        holder.namaMenu.text = makan.nama
-        holder.hargaMenu.text = "Rp. ${makan.harga}" // Menambahkan simbol mata uang
-        holder.itemdescription.text = makan.deskripsi
-
-        // Dapatkan path gambar dari direktori internal
-        val context = holder.itemView.context
-        val imgPath = File(context.filesDir, "app_images/${makan.namaFoto}")
-
-        if (imgPath.exists()) {
-            holder.fotoMenu.setImageURI(Uri.fromFile(imgPath))
+    override fun getItemViewType(position: Int): Int {
+        return if (menuList[position].nama == "Makanan" || menuList[position].nama == "Minuman") {
+            TYPE_HEADER
         } else {
-            holder.fotoMenu.setImageResource(R.drawable.placeholder_image)
-        }
-
-        // Set listener untuk klik seluruh item
-        holder.itemView.setOnClickListener {
-            onItemClick(makan) // Trigger saat seluruh item diklik
+            TYPE_ITEM
         }
     }
 
-    override fun getItemCount() = menuList.size
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        return when (viewType) {
+            TYPE_HEADER -> {
+                val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                HeaderViewHolder(binding)
+            }
+            else -> {
+                val binding = ItemRecommendedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                ItemViewHolder(binding)
+            }
+        }
+    }
+
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        when (holder) {
+            is HeaderViewHolder -> {
+                holder.bind(menuList[position])
+            }
+            is ItemViewHolder -> {
+                val menu = menuList[position]
+                if (menu._id != 0) { // Hanya bind click listener jika bukan header
+                    holder.bind(menu, itemClickListener)
+                }
+            }
+        }
+    }
+
+    override fun getItemCount(): Int = menuList.size
 
     fun updateData(newMenuList: List<Menu>) {
         menuList = newMenuList
-        notifyDataSetChanged() // Beritahu adapter bahwa data telah berubah
+        notifyDataSetChanged()
     }
 
+    class HeaderViewHolder(private val binding: ItemHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+        fun bind(menu: Menu) {
+            binding.headerText.text = menu.nama
+        }
+    }
 
+    class ItemViewHolder(private val binding: ItemRecommendedBinding) : RecyclerView.ViewHolder(binding.root) {
+        private val context = binding.root.context
+
+        fun bind(menu: Menu, clickListener: (Menu) -> Unit) {
+            binding.textViewFoodName.text = menu.nama
+            binding.textViewFoodDescription.text = menu.deskripsi
+            binding.textViewFoodPrice.text = "Rp. ${menu.harga}"
+
+            val imgPath = Uri.parse("file://${context.filesDir}/app_images/${menu.namaFoto}")
+            binding.imageViewFood.setImageURI(imgPath)
+
+            binding.root.setOnClickListener {
+                clickListener(menu)
+            }
+        }
+    }
 }

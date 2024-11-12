@@ -97,7 +97,8 @@ class MenuDetailActivity : AppCompatActivity() {
             name = nameFood.text.toString(),
             price = priceDouble.toString(),
             imageResId = menu.namaFoto, // Menggunakan nama foto dari objek Makan
-            quantity = 1  // Always start with quantity 1 when adding from menu
+            quantity = 1,  // Always start with quantity 1 when adding from menu
+            category = menu.kategori.toString()
         )
 
         cardViewModel.addItem(cartItem)

@@ -5,15 +5,18 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import com.example.cafeapp.MenuDatabase.Cart
+import com.example.cafeapp.MenuDatabase.CartDAO
 import com.example.cafeapp.MenuDatabase.KategoriConverter
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuDAO
 
-@Database(entities = [Menu::class, User::class], version = 8, exportSchema = false)
+@Database(entities = [Menu::class, User::class, Cart::class], version = 9, exportSchema = false)
 @TypeConverters(KategoriConverter::class)
 abstract class CafeDatabase : RoomDatabase() {
     abstract fun menuDao(): MenuDAO
     abstract fun userDao(): UserDao
+    abstract fun cartDao(): CartDAO
 
     companion object {
         @Volatile

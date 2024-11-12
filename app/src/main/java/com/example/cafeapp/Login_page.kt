@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cafeapp.AdminMenu.TambahMenu
+import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.databinding.LoginPageBinding // Import your generated binding class
 import kotlinx.coroutines.launch
 

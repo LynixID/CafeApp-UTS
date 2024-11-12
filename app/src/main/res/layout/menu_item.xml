@@ -1,7 +1,7 @@
 <!-- res/layout/item_recommended.xml -->
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="180dp"
+    android:layout_width="140dp"
     android:background="#E4E0E1"
     android:layout_height="250dp"
     android:orientation="vertical"
@@ -10,7 +10,7 @@
     <ImageView
         android:id="@+id/imageViewFood"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="120dp"
         android:src="@drawable/pizza" />
     <TextView
         android:id="@+id/textViewFoodName"

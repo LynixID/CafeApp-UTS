@@ -25,7 +25,7 @@ class MenuAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_recommended, parent, false)
+            .inflate(R.layout.menu_item, parent, false)
         return MenuViewHolder(view)
     }
 

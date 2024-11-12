@@ -5,8 +5,6 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.example.cafeapp.MenuDatabase.Cart
-import com.example.cafeapp.MenuDatabase.CartDAO
 import com.example.cafeapp.MenuDatabase.KategoriConverter
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuDAO

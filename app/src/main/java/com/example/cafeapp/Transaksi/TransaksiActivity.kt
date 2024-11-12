@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
-import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.MenuDatabase.MenuDAO
 import com.example.cafeapp.Transaksi.Transaksi
 import kotlinx.coroutines.Dispatchers

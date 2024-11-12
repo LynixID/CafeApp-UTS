@@ -1,4 +1,4 @@
-package com.example.cafeapp.UserDatabase
+package com.example.cafeapp
 
 import android.content.Context
 import androidx.room.Database
@@ -10,8 +10,10 @@ import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuDAO
 import com.example.cafeapp.Transaksi.Transaksi
 import com.example.cafeapp.Transaksi.TransaksiDAO
+import com.example.cafeapp.UserDatabase.User
+import com.example.cafeapp.UserDatabase.UserDao
 
-@Database(entities = [Menu::class, User::class, Transaksi::class], version = 8, exportSchema = false)
+@Database(entities = [Menu::class, User::class, Transaksi::class], version = 9, exportSchema = false)
 @TypeConverters(KategoriConverter::class)
 abstract class CafeDatabase : RoomDatabase() {
     abstract fun menuDao(): MenuDAO

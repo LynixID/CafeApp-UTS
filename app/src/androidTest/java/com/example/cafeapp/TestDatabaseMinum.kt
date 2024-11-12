@@ -6,7 +6,6 @@ import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.example.cafeapp.MinumDatabase.MinumDAO
 import com.example.cafeapp.MinumDatabase.Minum
-import com.example.cafeapp.UserDatabase.CafeDatabase
 import org.junit.After
 import org.junit.Before
 import org.junit.Test

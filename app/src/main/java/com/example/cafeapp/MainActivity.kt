@@ -36,11 +36,11 @@ class MainActivity : AppCompatActivity() {
                         .commit()
                     true
                 }
-                R.id.nav_favorites -> {
-                    // Navigate to Favorites Fragment
-                    val favoritesFragment = TransaksiFragment()
+                R.id.nav_transaction -> {
+                    // Navigate to Transaction Fragment
+                    val transaksiFragment = TransaksiFragment()
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.fragment_container, favoritesFragment)
+                        .replace(R.id.fragment_container, transaksiFragment)
                         .commit()
                     true
                 }

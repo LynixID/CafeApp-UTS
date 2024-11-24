@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
+import android.widget.ViewFlipper
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -79,6 +80,10 @@ class HomeFragment : Fragment() {
             // Update adapter dengan data yang telah diolah
             menuAdapter.updateData(items)
         }
+
+//        Setup ViewFlipper
+        binding.viewFlipper.flipInterval = 3000
+        binding.viewFlipper.startFlipping()
 
 
         setupUIComponents()

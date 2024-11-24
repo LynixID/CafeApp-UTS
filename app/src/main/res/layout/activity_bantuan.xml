@@ -28,7 +28,7 @@
         android:textColor="@color/black"
         android:textSize="28sp"
         android:textStyle="bold"
-        android:fontFamily="@font/poppinslight"
+        android:fontFamily="@font/opensans_light"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -42,7 +42,7 @@
         android:gravity="center"
         android:textColor="@color/black"
         android:textSize="18sp"
-        android:fontFamily="@font/poppinslight"
+        android:fontFamily="@font/opensans_light"
         app:layout_constraintTop_toBottomOf="@id/titleTextView"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -86,7 +86,7 @@
                     android:text="Hubungi WhatsApp:"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:fontFamily="@font/poppinslight"/>
+                    android:fontFamily="@font/opensans_light"/>
 
                 <TextView
                     android:id="@+id/waContact"
@@ -95,7 +95,7 @@
                     android:text="083845586939"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:fontFamily="@font/poppinslight"/>
+                    android:fontFamily="@font/opensans_light"/>
             </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
@@ -138,7 +138,7 @@
                     android:text="Hubungi Instagram:"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:fontFamily="@font/poppinslight"/>
+                    android:fontFamily="@font/opensans_light"/>
 
                 <TextView
                     android:id="@+id/igContact"
@@ -147,7 +147,7 @@
                     android:text="987654321"
                     android:textColor="@color/black"
                     android:textSize="16sp"
-                    android:fontFamily="@font/poppinslight"/>
+                    android:fontFamily="@font/opensans_light"/>
 
             </LinearLayout>
         </LinearLayout>

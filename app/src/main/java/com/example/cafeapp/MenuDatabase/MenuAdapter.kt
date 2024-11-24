@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.MenuItemBinding
-import com.example.cafeapp.databinding.ItemHeaderBinding
+import com.example.cafeapp.databinding.MenuHeaderBinding
 
 class MenuAdapter(
     private var menuList: List<Menu>,
@@ -34,7 +35,7 @@ class MenuAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             TYPE_HEADER -> {
-                val binding = ItemHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+                val binding = MenuHeaderBinding.inflate(LayoutInflater.from(parent.context), parent, false)
                 HeaderViewHolder(binding)
             }
             else -> {
@@ -65,7 +66,7 @@ class MenuAdapter(
         notifyDataSetChanged()
     }
 
-    class HeaderViewHolder(private val binding: ItemHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
+    class HeaderViewHolder(private val binding: MenuHeaderBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(menu: Menu) {
             binding.headerText.text = menu.nama
         }
@@ -79,8 +80,17 @@ class MenuAdapter(
             binding.textViewFoodDescription.text = menu.deskripsi
             binding.textViewFoodPrice.text = "Rp. ${menu.harga}"
 
-            val imgPath = Uri.parse("file://${context.filesDir}/app_images/${menu.namaFoto}")
-            binding.imageViewFood.setImageURI(imgPath)
+            // Memuat gambar menggunakan Glide
+            val imgPath = "${context.filesDir}/app_images/${menu.namaFoto}"
+            Glide.with(context)
+                .load(imgPath)
+                .placeholder(R.drawable.placeholder_image) // Tambahkan placeholder jika diperlukan
+                .error(R.drawable.placeholder_image) // Tambahkan error fallback jika diperlukan
+                .into(binding.imageViewFood)
+
+//            val imgPath = Uri.parse("file://${context.filesDir}/app_images/${menu.namaFoto}")
+//            binding.imageViewFood.setImageURI(imgPath)
+
 
             binding.root.setOnClickListener {
                 clickListener(menu)

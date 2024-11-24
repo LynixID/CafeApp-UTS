@@ -1,0 +1,17 @@
+<!-- res/layout/item_header.xml -->
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="26dp">
+        <TextView
+            android:id="@+id/headerText"
+            android:fontFamily="@font/price_tag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:textColor="@color/black" />
+    </LinearLayout>
+
+</layout>

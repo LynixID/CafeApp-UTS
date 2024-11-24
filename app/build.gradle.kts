@@ -80,4 +80,11 @@ dependencies {
     androidTestImplementation ("androidx.test.ext:junit:1.1.0")
     androidTestImplementation ("androidx.test.espresso:espresso-core:3.1.1")
     testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+
+    implementation("com.github.bumptech.glide:glide:4.15.1")
+    implementation("com.github.bumptech.glide:annotations:4.15.1")
+    ksp("com.github.bumptech.glide:ksp:4.15.1")
+
 }

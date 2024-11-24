@@ -4,11 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
 import kotlinx.coroutines.Dispatchers
@@ -31,12 +29,32 @@ class RiwayatTransaksiFragment : Fragment() {
         recyclerView = view.findViewById(R.id.recyclerViewRiwayatTransaksi)
         recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
+        // Inisialisasi TransaksiDAO
         transaksiDao = TransaksiDatabase.getInstance(requireContext()).transaksiDao()
 
-        // Ambil data transaksi dari database dan update UI
+        // Load data transaksi saat halaman dibuat
         loadRiwayatTransaksi()
 
         return view
+    }
+
+    // Dipanggil setiap kali fragment kembali terlihat
+    override fun onResume() {
+        super.onResume()
+        updateTransaksiList()
+    }
+
+    private fun updateTransaksiList() {
+        lifecycleScope.launch(Dispatchers.IO) {
+            // Ambil semua data transaksi terbaru
+            val transaksiList = transaksiDao.getAllTransaksi()
+
+            withContext(Dispatchers.Main) {
+                // Update RecyclerView dengan data baru
+                transaksiAdapter = TransaksiAdapter(transaksiList)
+                recyclerView.adapter = transaksiAdapter
+            }
+        }
     }
 
     private fun loadRiwayatTransaksi() {
@@ -45,7 +63,7 @@ class RiwayatTransaksiFragment : Fragment() {
             val transaksiList = transaksiDao.getAllTransaksi()
 
             withContext(Dispatchers.Main) {
-                // Update RecyclerView dengan data transaksi
+                // Set adapter untuk RecyclerView
                 transaksiAdapter = TransaksiAdapter(transaksiList)
                 recyclerView.adapter = transaksiAdapter
             }

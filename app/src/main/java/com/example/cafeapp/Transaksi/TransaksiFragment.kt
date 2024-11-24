@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import com.example.cafeapp.CafeDatabase
+import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.MenuDatabase.MenuDAO
 import com.example.cafeapp.Transaksi.RiwayatTransaksiFragment
 import com.example.cafeapp.Transaksi.Transaksi

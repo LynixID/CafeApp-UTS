@@ -6,6 +6,7 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.UserDatabase.User
 import com.example.cafeapp.UserDatabase.UserDao
 import com.example.cafeapp.databinding.ActivityUserBinding

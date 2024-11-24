@@ -1,49 +1,108 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
-    android:padding="8dp"
-    android:background="@android:color/white"
-    android:layout_marginBottom="8dp">
+    android:layout_margin="8dp"
+    card_view:cardCornerRadius="12dp"
+    card_view:cardElevation="4dp"
+    android:background="#2C2C2C"
+    card_view:cardBackgroundColor="#ececec">
 
-    <TextView
-        android:id="@+id/tvNamaMenu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Nama Menu"
-        android:textSize="16sp"
-        android:textColor="#000000" />
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="16dp">
 
-    <TextView
-        android:id="@+id/tvHarga"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Harga"
-        android:textSize="14sp"
-        android:textColor="#000000" />
+<!-- Bagian Utama -->
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
 
-    <TextView
-        android:id="@+id/tvJumlahTransaksi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Jumlah"
-        android:textSize="14sp"
-        android:textColor="#000000" />
+    <!-- Gambar Menu -->
+    <ImageView
+        android:id="@+id/ivGambarMenu"
+        android:layout_width="72dp"
+        android:layout_height="72dp"
+        android:scaleType="centerCrop"
+        android:layout_marginEnd="12dp"
+        android:clipToOutline="true" />
 
-    <TextView
-        android:id="@+id/tvTanggalTransaksi"
-        android:layout_width="wrap_content"
+    <!-- Kontainer Informasi -->
+    <LinearLayout
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Tanggal"
-        android:textSize="14sp"
-        android:textColor="#000000" />
+        android:layout_weight="1"
+        android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/tvJamTransaksi"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Jam"
-        android:textSize="14sp"
-        android:textColor="#000000" />
+        <!-- Nama Menu -->
+        <TextView
+            android:id="@+id/tvNamaMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Mielikin Kamu"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:textStyle="bold" />
+
+        <!-- Deskripsi Menu -->
+        <TextView
+            android:id="@+id/tvDeskripsiMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spesial 2 telur"
+            android:textSize="12sp"
+            android:textColor="#5a5a5a"
+            android:layout_marginTop="4dp" />
+
+        <!-- Harga dan Jumlah -->
+        <TextView
+            android:id="@+id/tvHarga"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Rp20.000"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/tvJumlah"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2 items"
+            android:textSize="14sp"
+            android:textColor="#000000"
+            android:layout_marginTop="8dp" />
+
+        <!-- Tanggal dan Waktu -->
+        <TextView
+            android:id="@+id/tvTanggalDanWaktu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Today 10:59 PM"
+            android:textSize="12sp"
+            android:textColor="#5a5a5a"
+            android:layout_marginTop="2dp" />
+    </LinearLayout>
 </LinearLayout>
+
+<!-- Sekat Divider -->
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#858585"
+    android:layout_marginVertical="8dp" />
+
+<!-- ID Pesanan -->
+<TextView
+    android:id="@+id/tvOrderId"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="#01681"
+    android:textSize="12sp"
+    android:textColor="#000000"
+    android:layout_gravity="center_horizontal"
+    android:padding="4dp" />
+</LinearLayout>
+    </androidx.cardview.widget.CardView>

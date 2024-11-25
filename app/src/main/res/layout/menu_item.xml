@@ -4,32 +4,37 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
-    android:layout_marginTop="0dp"
+    android:layout_marginVertical="8dp"
     app:cardCornerRadius="10dp"
-    app:cardElevation="3dp"
-    android:backgroundTint="@color/white">
+    app:cardElevation="2dp"
+    android:layout_marginHorizontal="5dp"
+    android:layout_marginBottom="20dp"
+    android:backgroundTint="#FDFDFD">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:paddingBottom="10dp">
 
         <!-- Gambar Menu -->
         <ImageView
             android:id="@+id/imageViewFood"
             android:layout_width="match_parent"
-            android:layout_height="120dp"
+            android:layout_height="150dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/sample_image" />
+            android:src="@drawable/sample_image"
+            android:background="@drawable/rounded_item"/>
+
+
 
         <!-- Nama Menu -->
         <TextView
             android:id="@+id/textViewFoodName"
-            android:fontFamily="@font/poppins_medium"
-            android:layout_width="wrap_content"
+            android:fontFamily="@font/opensans_lightsemibold"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginTop="8dp"
             android:text="Nama Menu"
             android:textSize="16sp"
@@ -38,9 +43,10 @@
         <!-- Detail Menu -->
         <TextView
             android:id="@+id/textViewFoodDescription"
-            android:fontFamily="@font/poppins_regular"
-            android:layout_width="wrap_content"
+            android:fontFamily="@font/opensans_light"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:text="Detail deskripsi menu"
             android:textSize="12sp"
             android:textColor="@android:color/darker_gray" />
@@ -48,10 +54,12 @@
         <!-- Harga Menu -->
         <TextView
             android:id="@+id/textViewFoodPrice"
-            android:fontFamily="@font/poppins_regular"
-            android:layout_width="wrap_content"
+            android:fontFamily="@font/price_tag"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
             android:layout_marginTop="8dp"
+            android:textColor="#29522B"
             android:text="Rp 10,000"
             android:textSize="16sp" />
 

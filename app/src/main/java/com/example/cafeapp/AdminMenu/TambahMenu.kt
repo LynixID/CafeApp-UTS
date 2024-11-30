@@ -21,6 +21,10 @@ import com.example.cafeapp.MenuDatabase.Kategori
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.databinding.TambahMenuBinding
 import java.io.IOException
+import android.Manifest
+import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat
+import androidx.appcompat.app.AlertDialog
 
 class TambahMenu : AppCompatActivity() {
 
@@ -29,6 +33,10 @@ class TambahMenu : AppCompatActivity() {
     private val menuViewModel: MenuViewModel by viewModels()
     private var imagePath: String? = null
     private lateinit var getImageLauncher: ActivityResultLauncher<Intent>
+    private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
+    private val prefsName = "GalleryPermissionPrefs"
+    private val keyPermission = "gallery_permission"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -63,12 +71,26 @@ class TambahMenu : AppCompatActivity() {
             }
         }
 
-        // Button to select image
-        binding.btnSelectImage.setOnClickListener {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            getImageLauncher.launch(intent)
+        // Register activity result for permission request
+        requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
+            if (isGranted) {
+                showPermissionChoiceDialog() // Menampilkan dialog pilihan izin setelah diizinkan
+            } else {
+                showPermissionRationaleDialog()
+            }
         }
+
+        // Button to select image with permission check
+        binding.btnSelectImage.setOnClickListener {
+            checkAndRequestPermission()
+        }
+
+        // Button to select image
+//        binding.btnSelectImage.setOnClickListener {
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            getImageLauncher.launch(intent)
+//        }
 
         // Submit button logic
         binding.btnTambahMenu.setOnClickListener {
@@ -85,6 +107,62 @@ class TambahMenu : AppCompatActivity() {
             val intent = Intent(this, ListDataMenu::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun checkAndRequestPermission() {
+        val permissionState = getPermissionState()
+        if (permissionState == "always") {
+            // Jika izin selalu diberikan, langsung buka galeri
+            selectImage()
+        } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
+            android.content.pm.PackageManager.PERMISSION_GRANTED) {
+            // Jika izin diberikan hanya untuk saat ini, langsung buka galeri
+            selectImage()
+        } else {
+            // Minta izin akses galeri
+            requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+    }
+
+    private fun showPermissionChoiceDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Pilih Opsi Izin")
+            .setMessage("Apakah Anda ingin memberikan izin akses galeri untuk saat ini atau selalu?")
+            .setPositiveButton("Izinkan Selalu") { dialog, _ ->
+                savePermissionState("always") // Simpan izin sebagai selalu
+                selectImage()
+                dialog.dismiss()
+            }
+            .setNegativeButton("Izinkan Hanya Sekali") { dialog, _ ->
+                savePermissionState("once") // Simpan izin sebagai sementara
+                selectImage()
+                dialog.dismiss()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun showPermissionRationaleDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Izin Akses Galeri Diperlukan")
+            .setMessage("Aplikasi ini memerlukan izin akses galeri untuk memilih gambar. Apakah Anda ingin memberikan izin?")
+            .setPositiveButton("Izinkan") { dialog, _ ->
+                dialog.dismiss()
+                showPermissionChoiceDialog()
+                // requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
+            .setNegativeButton("Cancel") { dialog, _ ->
+                dialog.dismiss()
+                Toast.makeText(this, "Izin akses galeri diperlukan untuk menambahkan gambar.", Toast.LENGTH_SHORT).show()
+            }
+            .setCancelable(false)
+            .show()
+    }
+
+    private fun selectImage() {
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
+        getImageLauncher.launch(intent)
     }
 
     private fun keLoginPage() {
@@ -158,5 +236,15 @@ class TambahMenu : AppCompatActivity() {
             e.printStackTrace()
             null
         }
+    }
+
+    private fun savePermissionState(state: String) {
+        val prefs = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        prefs.edit().putString(keyPermission, state).apply()
+    }
+
+    private fun getPermissionState(): String? {
+        val prefs = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
+        return prefs.getString(keyPermission, "once")
     }
 }

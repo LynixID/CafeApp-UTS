@@ -87,4 +87,6 @@ dependencies {
     implementation("com.github.bumptech.glide:annotations:4.15.1")
     ksp("com.github.bumptech.glide:ksp:4.15.1")
 
+    implementation ("pub.devrel:easypermissions:3.0.0")
+
 }

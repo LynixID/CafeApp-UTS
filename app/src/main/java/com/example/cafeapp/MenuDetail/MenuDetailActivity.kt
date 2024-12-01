@@ -1,4 +1,4 @@
-package com.example.cafeapp
+package com.example.cafeapp.MenuDetail
 
 import android.content.Intent
 import android.net.Uri
@@ -7,8 +7,12 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.cafeapp.Cart.CardViewModel
+import com.example.cafeapp.Cart.CartManager
+import com.example.cafeapp.Home.MainActivity
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuViewModel
+import com.example.cafeapp.R
 import com.example.cafeapp.databinding.MenuDetailBinding
 import java.io.File
 

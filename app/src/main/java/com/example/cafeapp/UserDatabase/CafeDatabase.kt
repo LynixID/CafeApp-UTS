@@ -11,7 +11,7 @@ import com.example.cafeapp.MenuDatabase.MenuDAO
 import com.example.cafeapp.Transaksi.Transaksi
 import com.example.cafeapp.Transaksi.TransaksiDAO
 
-@Database(entities = [Menu::class, User::class, Transaksi::class], version = 9, exportSchema = false)
+@Database(entities = [Menu::class, User::class, Transaksi::class], version = 10, exportSchema = false)
 @TypeConverters(KategoriConverter::class)
 abstract class CafeDatabase : RoomDatabase() {
     abstract fun menuDao(): MenuDAO
@@ -29,7 +29,7 @@ abstract class CafeDatabase : RoomDatabase() {
                     CafeDatabase::class.java,
                     "cafe_database"
                 )
-                    .fallbackToDestructiveMigration()
+                    .fallbackToDestructiveMigration() // jika ada perubahan pada schema
                     .build()
                 INSTANCE = instance
                 instance

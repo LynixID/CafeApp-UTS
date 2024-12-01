@@ -5,10 +5,12 @@ import androidx.room.PrimaryKey
 
 
 
-@Entity(tableName = "transaksi")
+@Entity
 data class Transaksi(
     @PrimaryKey(autoGenerate = true) val id: Int,
     val namaMenu: String,
+    val jumlahTransaksi: Int,
     val pembayaran: Int,
-    val jumlahTransaksi: Int
+    val waktu: String
 )
+

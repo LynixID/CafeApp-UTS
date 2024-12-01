@@ -1,4 +1,4 @@
-package com.example.cafeapp
+package com.example.cafeapp.Home
 
 import android.content.Intent
 import android.os.Bundle
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import android.widget.ViewFlipper
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -15,6 +14,7 @@ import com.example.cafeapp.MenuDatabase.Kategori
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuAdapter
 import com.example.cafeapp.MenuDatabase.MenuViewModel
+import com.example.cafeapp.MenuDetail.MenuDetailActivity
 import com.example.cafeapp.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {

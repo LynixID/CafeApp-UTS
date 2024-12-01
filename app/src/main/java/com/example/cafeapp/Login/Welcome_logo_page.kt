@@ -1,9 +1,10 @@
-package com.example.cafeapp
+package com.example.cafeapp.Login
 
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import androidx.appcompat.app.AppCompatActivity
+import com.example.cafeapp.R
 
 class welcome_logo_page : AppCompatActivity() {
     private val SPLASH_TIME_OUT: Long = 3000 // 3 detik

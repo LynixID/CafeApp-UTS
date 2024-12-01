@@ -5,19 +5,49 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
+    <!-- Home Fragment -->
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.example.restaurant.HomeFragment"
+        android:name="com.example.cafeapp.Home.HomeFragment"
         android:label="Home"
-        tools:layout="@layout/fragment_home">
+        tools:layout="@layout/fragment_home" />
+
+    <!-- Cart Fragment -->
+    <fragment
+        android:id="@+id/cartFragment"
+        android:name="com.example.cafeapp.Cart.CartFragment"
+        android:label="Cart"
+        tools:layout="@layout/fragment_cart">
+        <!-- Aksi navigasi ke TransaksiFragment -->
         <action
-            android:id="@+id/action_homeFragment_to_allItemsFragment"
-            app:destination="@id/allItemsFragment" />
+            android:id="@+id/action_cartFragment_to_transaksiFragment"
+            app:destination="@id/nav_transaction" />
     </fragment>
 
+    <!-- Transaction Fragment -->
     <fragment
-        android:id="@+id/allItemsFragment"
-        android:name="com.example.restaurant.AllItemsFragment"
-        android:label="All Items"
-        tools:layout="@layout/fragment_all_items" />
+        android:id="@+id/nav_transaction"
+        android:name="com.example.cafeapp.Transaksi.TransaksiFragment"
+        android:label="Transaction"
+        tools:layout="@layout/fragment_transaksi">
+        <!-- Aksi navigasi ke RiwayatTransaksiFragment -->
+        <action
+            android:id="@+id/action_transaksiFragment_to_riwayatTransaksiFragment"
+            app:destination="@id/riwayatTransaksiFragment" />
+    </fragment>
+
+    <!-- Riwayat Transaksi Fragment -->
+    <fragment
+        android:id="@+id/riwayatTransaksiFragment"
+        android:name="com.example.cafeapp.Transaksi.RiwayatTransaksiFragment"
+        android:label="Riwayat Transaksi"
+        tools:layout="@layout/fragment_riwayat_transaksi" />
+
+    <!-- Profile Fragment -->
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.cafeapp.Profile.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile" />
+
 </navigation>

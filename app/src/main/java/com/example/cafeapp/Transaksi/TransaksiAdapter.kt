@@ -18,6 +18,8 @@ class TransaksiAdapter(private val transaksiList: List<Transaksi>) : RecyclerVie
         val transaksi = transaksiList[position]
         holder.namaMenu.text = transaksi.namaMenu
         holder.jumlahTransaksi.text = "Jumlah: ${transaksi.jumlahTransaksi}"
+        holder.harga.text = "Pembayaran: Rp${transaksi.pembayaran}"
+        holder.waktu.text = "Tanggal: ${transaksi.waktu}"
     }
 
     override fun getItemCount(): Int = transaksiList.size

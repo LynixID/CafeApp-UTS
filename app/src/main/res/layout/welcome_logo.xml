@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ECFFDC"
-    tools:context=".welcome_logo_page">
+    tools:context=".Login.welcome_logo_page">
 
 
     <ImageView

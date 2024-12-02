@@ -6,16 +6,46 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Title -->
-    <TextView
-        android:id="@+id/tvTransactionTitle"
-        android:layout_width="wrap_content"
+    <!-- Title and History Button Container -->
+    <LinearLayout
+        android:id="@+id/headerContainer"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Transaction Summary"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:layout_marginBottom="16dp"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/tvTransactionTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Transaction Summary"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="16dp" />
+
+        <!-- View History Button -->
+        <Button
+            android:id="@+id/btnViewHistory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View History"
+            android:textColor="@android:color/white"
+            android:backgroundTint="#2196F3"
+            android:layout_marginStart="8dp" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/ivTransactionImage"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="16dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintTop_toBottomOf="@id/headerContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
@@ -24,7 +54,8 @@
         android:id="@+id/rvMenuList"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/tvTransactionTitle"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/headerContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toTopOf="@id/transactionTotalSection" />
@@ -43,12 +74,32 @@
         <!-- Label Total -->
         <TextView
             android:id="@+id/tvTotalLabel"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Total:"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_marginBottom="8dp" />
+
+        <!-- Total Amount to Pay -->
+        <TextView
+            android:id="@+id/tvTotalAmount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Rp0"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#396330"
+            android:layout_marginBottom="16dp" />
+
+        <!-- Input Pembayaran Label -->
+        <TextView
+            android:id="@+id/tvPembayaranLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Jumlah Pembayaran:"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
         <!-- Input Pembayaran -->
         <EditText
@@ -57,15 +108,26 @@
             android:layout_height="wrap_content"
             android:hint="Masukkan pembayaran"
             android:inputType="number"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="16dp" />
+
+        <!-- Kembalian Label -->
+        <TextView
+            android:id="@+id/tvKembalianLabel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Kembalian:"
+            android:textSize="16sp"
+            android:layout_marginBottom="4dp" />
 
         <!-- Teks Kembalian -->
         <TextView
             android:id="@+id/textViewKembalian"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Kembalian: Rp0"
-            android:visibility="gone"
+            android:text="Rp0"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:textColor="#2196F3"
             android:layout_marginBottom="8dp" />
     </LinearLayout>
 

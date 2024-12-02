@@ -11,7 +11,7 @@ import com.example.cafeapp.MenuDatabase.MenuDAO
 import com.example.cafeapp.Transaksi.Transaksi
 import com.example.cafeapp.Transaksi.TransaksiDAO
 
-@Database(entities = [Menu::class, User::class, Transaksi::class], version = 10, exportSchema = false)
+@Database(entities = [Menu::class, User::class, Transaksi::class], version = 12, exportSchema = false)
 @TypeConverters(KategoriConverter::class)
 abstract class CafeDatabase : RoomDatabase() {
     abstract fun menuDao(): MenuDAO

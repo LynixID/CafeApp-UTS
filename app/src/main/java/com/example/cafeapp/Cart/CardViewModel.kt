@@ -17,6 +17,10 @@ class CardViewModel : ViewModel() {
         _cartItems.value = CartManager.getItems().toMutableList()
     }
 
+    fun clearCart() {
+        _cartItems.value = mutableListOf()
+    }
+
     fun addItem(cartItem: CartItem) {
         val currentList = _cartItems.value?.toMutableList() ?: mutableListOf()
 

@@ -1,4 +1,6 @@
-package com.example.cafeapp
+package com.example.cafeapp.Cart
+
+import com.example.cafeapp.MenuDetail.CartItem
 
 object CartManager {
     private val cartItems = mutableMapOf<String, CartItem>()

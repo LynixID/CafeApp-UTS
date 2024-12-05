@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:padding="16dp"
     android:background="@drawable/bg_gradient"
-    tools:context=".TentangKitaActivity">
+    tools:context=".Profile.TentangKitaActivity">
 
     <!-- Tombol Back -->
     <ImageButton

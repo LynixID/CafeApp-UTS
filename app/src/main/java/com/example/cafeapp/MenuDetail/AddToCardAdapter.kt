@@ -1,4 +1,4 @@
-package com.example.cafeapp
+package com.example.cafeapp.MenuDetail
 
 import android.net.Uri
 import android.view.LayoutInflater
@@ -7,6 +7,8 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.example.cafeapp.Cart.CardViewModel
+import com.example.cafeapp.R
 import com.example.cafeapp.databinding.AddToCardBinding
 import java.io.File
 

@@ -6,6 +6,34 @@
     android:padding="16dp"
     android:background="@android:color/white">
 
+    <!-- Header with Back Button and Sort Spinner -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:background="#f5f5f5">
+
+        <!-- Back Button -->
+        <ImageButton
+            android:id="@+id/btnBack"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_alignParentStart="true"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:src="@drawable/ic_arrow_back"
+            android:contentDescription="Back" />
+
+        <!-- Sort Spinner in the top right -->
+        <Spinner
+            android:id="@+id/sortSpinner"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:layout_centerVertical="true" />
+    </RelativeLayout>
+
+    <!-- RecyclerView for Transaction History -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRiwayatTransaksi"
         android:layout_width="match_parent"

@@ -3,6 +3,8 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
 
     id("com.google.devtools.ksp")
+
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -86,5 +88,10 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.15.1")
     implementation("com.github.bumptech.glide:annotations:4.15.1")
     ksp("com.github.bumptech.glide:ksp:4.15.1")
+
+//    Untuk Firebase
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
+    implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
 
 }

@@ -1,7 +1,9 @@
 package com.example.cafeapp.AdminMenu
 
+import MyDbHelper
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.widget.EditText
 import android.widget.ImageView
@@ -13,11 +15,13 @@ import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuViewModel
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
+import com.google.firebase.database.FirebaseDatabase
 import java.io.File
 
 class ListDataMenu : AppCompatActivity() {
     private lateinit var binding: ActivityTestDatabase2Binding
     private val menuViewModel: MenuViewModel by viewModels() // Jangan ulangi ViewModelProvider
+    private lateinit var dbHelper: MyDbHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +47,10 @@ class ListDataMenu : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+
+//        Persiapan Database FireBase
+        dbHelper = MyDbHelper(this)
+        migrateDataToFirebase()
     }
 
     private fun showConfirmationDialog(item: Any, tabel: String) {
@@ -101,5 +109,36 @@ class ListDataMenu : AppCompatActivity() {
             }
             .setNegativeButton("Batal", null)
             .show()
+    }
+
+    private fun migrateDataToFirebase() {
+        val db = dbHelper.readableDatabase
+        val cursor = db.rawQuery("SELECT * FROM table_name", null)
+
+        // Referensi Firebase
+        val databaseReference = FirebaseDatabase.getInstance().getReference("path_to_your_data")
+
+        while (cursor.moveToNext()) {
+            val id = cursor.getString(0) // Kolom pertama sebagai ID
+            val data = cursor.getString(1) // Kolom kedua sebagai data
+
+            // Buat entry data
+            val entry = mapOf(
+                "id" to id,
+                "data" to data
+            )
+
+            // Unggah data ke Firebase
+            databaseReference.child(id).setValue(entry)
+                .addOnSuccessListener {
+                    Log.d("Firebase", "Data with ID $id uploaded successfully")
+                }
+                .addOnFailureListener { e ->
+                    Log.e("Firebase", "Error uploading data with ID $id", e)
+                }
+        }
+
+        // Tutup cursor setelah selesai
+        cursor.close()
     }
 }

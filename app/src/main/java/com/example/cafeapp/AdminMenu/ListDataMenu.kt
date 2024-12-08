@@ -22,6 +22,8 @@ import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
 import com.example.cafeapp.databinding.ModalEditDataBinding
 import java.io.File
 import java.io.IOException
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.DatabaseReference
 
 class ListDataMenu : AppCompatActivity() {
     private lateinit var binding: ActivityTestDatabase2Binding
@@ -29,6 +31,7 @@ class ListDataMenu : AppCompatActivity() {
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageUri: Uri? = null
     private var selectedImageName: String? = null
+    private val firebaseDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("list menu")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,6 +61,8 @@ class ListDataMenu : AppCompatActivity() {
 
         binding.recyclerView1.layoutManager = LinearLayoutManager(this)
 
+        syncFirebaseToLocalDatabase()
+
         // Observasi data menu dari database
         menuViewModel.getAllMakans().observe(this) { menus ->
             binding.recyclerView1.adapter = MenuAdminAdapter(menus, object : MenuAdminAdapter.OnItemClickListener {
@@ -84,13 +89,26 @@ class ListDataMenu : AppCompatActivity() {
             .setMessage("Apakah Anda yakin ingin menghapus menu '$itemName'?")
             .setPositiveButton("Ya") { _, _ ->
                 if (table == "menus") {
+                    // Hapus dari database lokal
                     menuViewModel.deleteMakanById(item._id)
+
+                    // Hapus dari Firebase
+                    firebaseDatabase.child(item._id.toString()).removeValue()
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Menu berhasil dihapus dari Firebase!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(this, "Gagal menghapus dari Firebase.", Toast.LENGTH_SHORT).show()
+                        }
+
+                    Toast.makeText(this, "Menu berhasil dihapus.", Toast.LENGTH_SHORT).show()
                 }
             }
             .setNegativeButton("Tidak", null)
             .create()
             .show()
     }
+
 
     private fun showEditDialogMakan(item: Menu) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.modal_edit_data, null)
@@ -107,7 +125,7 @@ class ListDataMenu : AppCompatActivity() {
             dialogBinding.editFoto.setImageURI(Uri.fromFile(imgPath))
         }
 
-        // ganti gambar
+        // Ganti gambar
         dialogBinding.editFoto.setOnClickListener {
             val intent = Intent(Intent.ACTION_PICK).apply {
                 type = "image/*"
@@ -131,19 +149,51 @@ class ListDataMenu : AppCompatActivity() {
 
                 val finalImageName = selectedImageName ?: item.namaFoto
 
-                menuViewModel.updateMakan(
-                    id = item._id,
-                    name = updatedName,
+                // Buat objek Menu baru dengan data yang diperbarui
+                val updatedMenu = Menu(
+                    _id = item._id,
+                    nama = updatedName,
                     harga = updatedHarga,
                     deskripsi = updatedDeskripsi,
-                    namaFoto = finalImageName
+                    namaFoto = finalImageName,
+                    kategori = item.kategori
                 )
+
+                // Simpan ke database lokal
+                menuViewModel.updateMakan(
+                    id = updatedMenu._id,
+                    name = updatedMenu.nama,
+                    harga = updatedMenu.harga,
+                    deskripsi = updatedMenu.deskripsi,
+                    namaFoto = updatedMenu.namaFoto
+                )
+
+                // Simpan ke Firebase
+                firebaseDatabase.child(updatedMenu._id.toString()).setValue(updatedMenu)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Menu berhasil diperbarui di Firebase!", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(this, "Gagal memperbarui di Firebase.", Toast.LENGTH_SHORT).show()
+                    }
 
                 Toast.makeText(this, "Menu berhasil diperbarui!", Toast.LENGTH_SHORT).show()
             }
             .setNegativeButton("Batal", null)
             .show()
     }
+
+    private fun syncFirebaseToLocalDatabase() {
+        firebaseDatabase.get().addOnSuccessListener { snapshot ->
+            val menus = snapshot.children.mapNotNull { it.getValue(Menu::class.java) }
+            menus.forEach { menu ->
+                menuViewModel.insertMakan(menu) // Sinkronkan ke database lokal
+            }
+        }.addOnFailureListener {
+            Toast.makeText(this, "Gagal sinkronisasi dari Firebase.", Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     private fun getBitmapFromUri(context: ListDataMenu, uri: Uri): Bitmap? {
         return try {

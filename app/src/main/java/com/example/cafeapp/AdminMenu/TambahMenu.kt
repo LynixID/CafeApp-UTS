@@ -25,6 +25,8 @@ import android.Manifest
 import androidx.core.content.ContextCompat
 import androidx.core.app.ActivityCompat
 import androidx.appcompat.app.AlertDialog
+import com.google.firebase.database.FirebaseDatabase
+
 
 class TambahMenu : AppCompatActivity() {
 
@@ -36,7 +38,8 @@ class TambahMenu : AppCompatActivity() {
     private lateinit var requestPermissionLauncher: ActivityResultLauncher<String>
     private val prefsName = "GalleryPermissionPrefs"
     private val keyPermission = "gallery_permission"
-
+    private val database = FirebaseDatabase.getInstance()
+    private val menuRef = database.getReference("menu")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -171,6 +174,7 @@ class TambahMenu : AppCompatActivity() {
         startActivity(intent)
         finish() 
     }
+
     private fun addMenu() {
         val nama = binding.inputNamaProduk.text.toString()
         val harga = binding.inputHargaProduk.text.toString().toIntOrNull() ?: 0
@@ -186,7 +190,6 @@ class TambahMenu : AppCompatActivity() {
             }
 
             if (categoryEnum != null) {
-                // Create Makan object and save to Makan table
                 val menu = Menu(
                     _id = 0,
                     nama = nama,
@@ -197,11 +200,19 @@ class TambahMenu : AppCompatActivity() {
                 )
                 menuViewModel.insertMakan(menu)
 
-                Toast.makeText(this, "Menu berhasil ditambahkan", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, ListDataMenu::class.java)
-                startActivity(intent)
+                // Simpan ke Firebase
+                val menuId = menuRef.push().key ?: return
+                menuRef.child(menuId).setValue(menu)
+                    .addOnSuccessListener {
+                        Toast.makeText(this, "Menu berhasil disimpan di Firebase", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this, ListDataMenu::class.java)
+                        startActivity(intent)
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(this, "Gagal menyimpan ke Firebase: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
 
-                // Clear input fields after saving
+                // Reset input field
                 clearInputFields()
             } else {
                 Toast.makeText(this, "Kategori tidak valid", Toast.LENGTH_SHORT).show()
@@ -209,8 +220,7 @@ class TambahMenu : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Mohon lengkapi semua field", Toast.LENGTH_SHORT).show()
         }
-    }
-
+}
 
     private fun clearInputFields() {
         binding.inputNamaProduk.text?.clear()

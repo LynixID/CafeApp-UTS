@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cafe App</string>
+    <string name="app_name">Cafe GRID</string>
 
     <string-array name="menu_options">
         <item>Makanan</item>

@@ -1,4 +1,4 @@
-package com.example.cafeapp
+package com.example.cafeapp.Profile
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

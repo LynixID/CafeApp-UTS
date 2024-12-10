@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Cafe App</string>
+    <string name="app_name">Cafe GRID</string>
 
     <string-array name="menu_options">
         <item>Makanan</item>
@@ -11,6 +11,10 @@
     <string name="label_harga_produk">Harga Produk</string>
     <string name="label_kategori_produk">Kategori Produk</string>
     <string name="action_add_menu">Tambah Menu</string>
+    <string-array name="sort_options">
+        <item>Terbaru</item>
+        <item>Terlama</item>
+    </string-array>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -1,4 +1,4 @@
-package com.example.cafeapp
+package com.example.cafeapp.Login
 
 import android.content.ContentValues.TAG
 import android.content.Intent
@@ -9,6 +9,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cafeapp.AdminMenu.TambahMenu
+import com.example.cafeapp.Home.MainActivity
+import com.example.cafeapp.UserDatabase.UserActivity
 import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.databinding.LoginPageBinding // Import your generated binding class
 import com.google.firebase.database.DataSnapshot

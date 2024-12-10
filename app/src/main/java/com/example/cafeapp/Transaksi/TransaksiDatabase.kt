@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = [Transaksi::class], version = 1)
+@Database(entities = [Transaksi::class], version = 11)
 abstract class TransaksiDatabase : RoomDatabase() {
     abstract fun transaksiDao(): TransaksiDAO
 
@@ -19,7 +19,9 @@ abstract class TransaksiDatabase : RoomDatabase() {
                     context.applicationContext,
                     TransaksiDatabase::class.java,
                     "transaksi_database"
-                ).build()
+                )
+                    .fallbackToDestructiveMigration() // Menambahkan fallback untuk migrasi yang gagal
+                    .build()
                 INSTANCE = instance
                 instance
             }

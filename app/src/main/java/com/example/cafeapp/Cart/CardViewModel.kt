@@ -1,9 +1,9 @@
-package com.example.cafeapp
+package com.example.cafeapp.Cart
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.cafeapp.MenuDatabase.Kategori
+import com.example.cafeapp.MenuDetail.CartItem
 
 class CardViewModel : ViewModel() {
     private val _cartItems = MutableLiveData<MutableList<CartItem>>()
@@ -15,6 +15,10 @@ class CardViewModel : ViewModel() {
 
     fun refreshItems() {
         _cartItems.value = CartManager.getItems().toMutableList()
+    }
+
+    fun clearCart() {
+        _cartItems.value = mutableListOf()
     }
 
     fun addItem(cartItem: CartItem) {

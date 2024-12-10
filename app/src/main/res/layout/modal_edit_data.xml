@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="16dp">
+
     <ImageView
         android:id="@+id/editFoto"
         android:layout_width="match_parent"
@@ -11,28 +13,57 @@
         android:scaleType="centerCrop"
         android:src="@drawable/coffe" />
 
-    <EditText
-        android:id="@+id/editNama"
+    <!-- Input untuk Nama -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Nama"
-        android:textSize="16sp" />
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="#4CAF50"
+        app:boxStrokeWidthFocused="2dp"
+        app:hintTextColor="@color/black">
 
-    <EditText
-        android:id="@+id/editHarga"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editNama"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16sp"
+            android:padding="12dp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Input untuk Harga -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Harga"
-        android:inputType="numberDecimal"
-        android:textSize="16sp" />
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="#4CAF50"
+        app:boxStrokeWidthFocused="2dp">
 
-    <EditText
-        android:id="@+id/editDeskripsi"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editHarga"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <!-- Input untuk Deskripsi -->
+    <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Deskripsi"
-        android:textSize="16sp" />
+        app:boxBackgroundMode="outline"
+        app:boxStrokeColor="#4CAF50"
+        app:boxStrokeWidthFocused="2dp">
 
-
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editDeskripsi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="100dp"
+            android:gravity="top|start"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

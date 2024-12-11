@@ -67,6 +67,15 @@
                 android:backgroundTint="#2196F3"
                 android:text="Add User"
                 android:textColor="#FFFFFF" />
+            <Button
+                android:id="@+id/update"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:backgroundTint="#2196F3"
+                android:text="Update User"
+                android:textColor="#FFFFFF"
+                android:visibility="gone"/>
 
             <Button
                 android:id="@+id/btnBacktoLogin"

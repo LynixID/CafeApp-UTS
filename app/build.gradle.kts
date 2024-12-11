@@ -56,7 +56,6 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
-    implementation(libs.firebase.database)
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -89,8 +88,9 @@ dependencies {
     implementation("com.github.bumptech.glide:annotations:4.15.1")
     ksp("com.github.bumptech.glide:ksp:4.15.1")
 
-    //firebase
+//    Untuk Firebase
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
-    implementation ("pub.devrel:easypermissions:3.0.0")
     implementation("com.google.firebase:firebase-analytics")
+    implementation("com.google.firebase:firebase-database-ktx:21.0.0")
+
 }

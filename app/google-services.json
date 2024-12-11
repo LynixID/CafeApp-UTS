@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "766572355992",
+    "project_id": "grid-cafe-app",
+    "storage_bucket": "grid-cafe-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:766572355992:android:77f000224014480fcc4bed",
+        "android_client_info": {
+          "package_name": "com.example.cafeapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfKkRMdB40G-YkxalUyFxil9oKmgRGRls"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

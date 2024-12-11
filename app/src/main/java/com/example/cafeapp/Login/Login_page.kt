@@ -10,7 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import com.example.cafeapp.AdminMenu.TambahMenu
 import com.example.cafeapp.Home.MainActivity
-import com.example.cafeapp.UserDatabase.UserActivity
+import com.example.cafeapp.UserActivity
 import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.databinding.LoginPageBinding // Import your generated binding class
 import com.google.firebase.database.DataSnapshot
@@ -23,73 +23,83 @@ import kotlinx.coroutines.launch
 
 class Login_page : AppCompatActivity() {
 
-
-    private lateinit var db: CafeDatabase
-    private lateinit var binding: LoginPageBinding // Declare the binding variable
+    private lateinit var binding: LoginPageBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = LoginPageBinding.inflate(layoutInflater) // Inflate the binding
-        setContentView(binding.root) // Set the content view to the root of the binding
+        binding = LoginPageBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        // Initialize the database
-        db = CafeDatabase.getInstance(this)
+        val database = Firebase.database
+        val usersRef = database.getReference("user")
 
         binding.BtnSubmit.setOnClickListener {
             val inputUser = binding.inputUser.text.toString()
             val inputPass = binding.inputPassword.text.toString()
 
-            // Check login in the database using a coroutine
-            lifecycleScope.launch {
-                val user = db.userDao().getUserByUsernameAndPassword(inputUser, inputPass)
-                if (user != null) {
-                    when (user.role) {
-                        "admin" -> {
-                            val intent = Intent(this@Login_page, TambahMenu::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                        "staff" -> {
-                            val intent = Intent(this@Login_page, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        }
-                        else -> {
-                            Toast.makeText(this@Login_page, "Role tidak dikenal", Toast.LENGTH_SHORT).show()
+            if (inputUser.isEmpty() || inputPass.isEmpty()) {
+                Toast.makeText(this, "Silakan masukkan username dan password", Toast.LENGTH_SHORT)
+                    .show()
+                return@setOnClickListener
+            }
+
+            usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    var loginSuccess = false
+                    for (userSnapshot in snapshot.children) {
+                        val username = userSnapshot.child("username").getValue(String::class.java)
+                        val password = userSnapshot.child("password").getValue(String::class.java)
+                        val role = userSnapshot.child("role").getValue(String::class.java)
+
+                        if (username == inputUser && password == inputPass) {
+                            loginSuccess = true
+                            when (role) {
+                                "admin" -> {
+                                    val intent = Intent(this@Login_page, TambahMenu::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                                "staff" -> {
+                                    val intent = Intent(this@Login_page, MainActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                }
+
+                                else -> {
+                                    Toast.makeText(
+                                        this@Login_page,
+                                        "Role tidak dikenal",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            }
+                            break
                         }
                     }
-                } else {
-                    Toast.makeText(this@Login_page, "Gagal, input data dengan benar", Toast.LENGTH_SHORT).show()
+                    if (!loginSuccess) {
+                        Toast.makeText(
+                            this@Login_page,
+                            "Gagal, username atau password salah",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
                 }
-            }
-        }
 
-        // Logic for the register button
-        binding.BtnDaftar.setOnClickListener {
-            val intent = Intent(this, UserActivity::class.java)
+                override fun onCancelled(error: DatabaseError) {
+                    Toast.makeText(
+                        this@Login_page,
+                        "Gagal memuat data: ${error.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            })
+
+        }
+        binding.BtnDaftar.setOnClickListener{
+            val intent = Intent(this@Login_page, UserActivity::class.java)
             startActivity(intent)
+            finish()
         }
-
-        // Write a message to the database
-        val database = Firebase.database
-        val myRef = database.getReference("message")
-
-        myRef.setValue("Hello, World!")
-
-        // Read from the database
-        myRef.addValueEventListener(object: ValueEventListener {
-
-            override fun onDataChange(snapshot: DataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                val value = snapshot.getValue<String>()
-                Log.d("Firebase", "Value is: " + value)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                Log.w("Firebase", "Failed to read value.", error.toException())
-            }
-
-        })
     }
 }

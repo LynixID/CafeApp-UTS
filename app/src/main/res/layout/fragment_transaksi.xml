@@ -31,7 +31,7 @@
             android:textColor="#212121" />
 
         <!-- Tombol untuk melihat riwayat transaksi -->
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnViewHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
             android:textColor="@android:color/white"
             android:backgroundTint="#396330"
             android:layout_marginStart="8dp"
-            android:cornerRadius="16dp" />
+            app:cornerRadius="16dp" />
     </LinearLayout>
 
     <!-- Gambar transaksi -->
@@ -141,7 +141,7 @@
     </LinearLayout>
 
     <!-- Tombol untuk menyelesaikan transaksi -->
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCompleteTransaction"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -151,6 +151,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:cornerRadius="16dp" />
+        app:cornerRadius="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

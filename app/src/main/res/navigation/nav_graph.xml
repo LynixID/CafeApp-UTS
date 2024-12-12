@@ -40,7 +40,7 @@
         <argument
             android:name="total_price"
             app:argType="integer"
-            android:defaultValue="0" />
+            app:defaultValue="0" />
     </fragment>
 
     <!-- Riwayat Transaksi Fragment -->

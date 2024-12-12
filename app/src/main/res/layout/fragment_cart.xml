@@ -33,7 +33,7 @@
         android:layout_marginTop="14dp"
         android:layout_gravity="center_horizontal" />
 
-    <!-- RecyclerView for products -->
+    <!-- RecyclerView untuk products -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view"
         android:layout_width="0dp"

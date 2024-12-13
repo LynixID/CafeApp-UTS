@@ -6,12 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.example.cafeapp.UserDatabase.CafeDatabase
 import com.example.cafeapp.MenuDetail.CartItem
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.FragmentTransaksiBinding
@@ -20,8 +18,10 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
+// Fragment untuk menangani transaksi pembelian
 class TransaksiFragment : Fragment() {
     private var _binding: FragmentTransaksiBinding? = null
     private val binding get() = _binding!!
@@ -29,6 +29,7 @@ class TransaksiFragment : Fragment() {
     private var totalPrice: Int = 0
     private lateinit var cartItems: ArrayList<CartItem>
 
+    // Menangani pembuatan tampilan untuk fragment transaksi
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -37,21 +38,23 @@ class TransaksiFragment : Fragment() {
         return binding.root
     }
 
+    // Menangani logika setelah tampilan fragment transaksi dibuat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         db = TransaksiDatabase.getInstance(requireContext())
-        cartItems = ArrayList() // Initialize empty list
+        cartItems = ArrayList() // Inisialisasi daftar keranjang kosong
 
-        // Initialize basic UI
+        // Inisialisasi UI dasar
         binding.tvTotalLabel.text = "Total: Rp 0"
         binding.tvTotalAmount.text = "Rp 0"
 
+        // Menavigasi ke riwayat transaksi
         binding.btnViewHistory.setOnClickListener {
             findNavController().navigate(R.id.action_transaksiFragment_to_riwayatTransaksiFragment)
         }
 
-        // Get arguments and update UI if available
+        // Mendapatkan argumen dan memperbarui UI jika tersedia
         arguments?.let { args ->
             val cartItemsArray = args.getParcelableArray("cart_items") as? Array<CartItem>
             if (cartItemsArray != null && cartItemsArray.isNotEmpty()) {
@@ -69,9 +72,10 @@ class TransaksiFragment : Fragment() {
             }
         }
 
-        setupCompleteTransaction()
+        setupCompleteTransaction() // Menyiapkan transaksi selesai
     }
 
+    // Menangani logika saat transaksi selesai
     private fun setupCompleteTransaction() {
         binding.btnCompleteTransaction.setOnClickListener {
             val pembayaranStr = binding.etPembayaran.text.toString()
@@ -95,7 +99,7 @@ class TransaksiFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            // Create itemized list of products
+            // Membuat daftar item menu yang dipesan
             val itemizedList = cartItems.joinToString("\n") {
                 "${it.name} ${it.quantity} items"
             }
@@ -115,7 +119,7 @@ class TransaksiFragment : Fragment() {
                     db.transaksiDao().insertTransaksi(transaksi)
 
                     withContext(Dispatchers.Main) {
-                        // Reset semua data transaksi
+                        // Reset data transaksi setelah selesai
                         cartItems.clear()
                         totalPrice = 0
                         binding.tvTotalLabel.text = "Total: Rp 0"
@@ -123,7 +127,7 @@ class TransaksiFragment : Fragment() {
                         binding.etPembayaran.text.clear()
                         binding.textViewKembalian.text = ""
                         binding.textViewKembalian.visibility = View.GONE
-                        binding.ivTransactionImage.setImageResource(R.drawable.placeholder_image) // atau gambar default lainnya
+                        binding.ivTransactionImage.setImageResource(R.drawable.placeholder_image) // Gambar default
 
                         Toast.makeText(requireContext(), "Transaksi berhasil disimpan!", Toast.LENGTH_SHORT).show()
                         findNavController().navigate(R.id.action_transaksiFragment_to_riwayatTransaksiFragment)
@@ -138,6 +142,7 @@ class TransaksiFragment : Fragment() {
         }
     }
 
+    // Membersihkan binding saat fragment dihancurkan
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null

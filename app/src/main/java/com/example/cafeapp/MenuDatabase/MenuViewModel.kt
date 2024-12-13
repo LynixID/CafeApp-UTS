@@ -13,6 +13,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
+// ViewModel untuk mengelola data menu
 class MenuViewModel(application: Application) : AndroidViewModel(application) {
     private val menuDao: MenuDAO
     private val allMakans: LiveData<List<Menu>>
@@ -23,31 +24,30 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
     // Definisi urutan sorting
     enum class SortOrder { A_TO_Z, Z_TO_A }
 
+    // Inisialisasi ViewModel dan data awal
     init {
         val db = CafeDatabase.getInstance(application)
         menuDao = db.menuDao()
-        allMakans = menuDao.getAll() // Mengambil semua data menu
+        allMakans = menuDao.getAll()
 
-        // Observe allMakans untuk selalu update _filteredMakans
         allMakans.observeForever { makans ->
             _filteredMakans.value = makans
         }
     }
 
+    // Membersihkan observer saat ViewModel dihancurkan
     override fun onCleared() {
         super.onCleared()
-        // Hapus observer dari allMakans untuk menghindari kebocoran memori
         allMakans.removeObserver { _filteredMakans.value = it }
     }
 
-    // Fungsi untuk mendapatkan semua makanan (allMakans) tanpa filter
+    // Fungsi untuk mendapatkan semua makanan
     fun getAllMakans(): LiveData<List<Menu>> = allMakans
 
-    // Fungsi untuk memuat semua item tanpa filter
+    // Fungsi untuk memuat semua item
     fun loadAllItems() {
-        _filteredMakans.value = allMakans.value // Mengambil data dari allMakans dan memperbarui _filteredMakans
+        _filteredMakans.value = allMakans.value
     }
-
 
     // Fungsi untuk pencarian item
     fun searchItems(query: String) {
@@ -57,7 +57,7 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
         _filteredMakans.value = filteredList
     }
 
-    // Fungsi untuk pengurutan item A-Z atau Z-A
+    // Fungsi untuk pengurutan item
     fun sortItems(order: SortOrder) {
         val sortedList = when (order) {
             SortOrder.A_TO_Z -> _filteredMakans.value?.sortedBy { it.nama }
@@ -87,6 +87,13 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
+    // Fungsi untuk menghapus item menu berdasarkan ID
+    fun deleteMakanById(menuId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            menuDao.deleteById(menuId)
+        }
+    }
+
     // Fungsi untuk memasukkan item menu ke dalam database
     fun insertMakan(menu: Menu) {
         viewModelScope.launch(Dispatchers.IO) {
@@ -94,16 +101,9 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    // Fungsi untuk menghapus item menu berdasarkan ID
-    fun deleteMakanById(id: Int) {
-        viewModelScope.launch(Dispatchers.IO) {
-            menuDao.deleteById(id)
-        }
-    }
-
     // Fungsi untuk mendapatkan makanan berdasarkan ID
     fun getMakanById(id: Int): LiveData<Menu> {
-        return menuDao.getMakanById(id) // Metode ini perlu ditambahkan di DAO
+        return menuDao.getMakanById(id)
     }
 
     // Fungsi untuk memperbarui data Makan

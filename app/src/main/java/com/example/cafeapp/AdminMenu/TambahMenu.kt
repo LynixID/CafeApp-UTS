@@ -1,6 +1,6 @@
 package com.example.cafeapp.AdminMenu
 
-import com.example.cafeapp.MenuDatabase.MenuViewModel
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,22 +15,21 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import com.bumptech.glide.Glide
 import com.example.cafeapp.Login.Login_page
 import com.example.cafeapp.MenuDatabase.Kategori
 import com.example.cafeapp.MenuDatabase.Menu
+import com.example.cafeapp.MenuDatabase.MenuViewModel
+import com.example.cafeapp.R
 import com.example.cafeapp.databinding.TambahMenuBinding
-import java.io.IOException
-import android.Manifest
-import androidx.core.content.ContextCompat
-import androidx.core.app.ActivityCompat
-import androidx.appcompat.app.AlertDialog
 import com.google.firebase.database.FirebaseDatabase
-
+import java.io.IOException
 
 class TambahMenu : AppCompatActivity() {
-
-
+    // Deklarasi variabel yang digunakan
     private lateinit var binding: TambahMenuBinding
     private val menuViewModel: MenuViewModel by viewModels()
     private var imagePath: String? = null
@@ -41,103 +40,101 @@ class TambahMenu : AppCompatActivity() {
     private val database = FirebaseDatabase.getInstance()
     private val menuRef = database.getReference("menu")
 
+    // Fungsi onCreate untuk inisialisasi dan pengaturan awal
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = TambahMenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // Clear input fields
+        // Mengatur input awal
         clearInputFields()
 
-        // Set up Spinner for category selection
+        // Mengatur spinner untuk memilih kategori
         val kategoriList = arrayOf("Makanan", "Minuman")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, kategoriList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerKategori.adapter = adapter
 
-        // Image selection logic
+        // Logika untuk memilih gambar
         getImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
                 result.data?.data?.let { uri ->
-                    binding.foto.setImageURI(uri) // Show selected image
-                    binding.foto.visibility = View.VISIBLE // Make ImageView visible
+                    // Menggunakan Glide untuk menampilkan gambar
+                    Glide.with(this)
+                        .load(uri)  // Memuat gambar dari URI yang dipilih
+                        .placeholder(R.drawable.placeholder_image)  // Placeholder
+                        .into(binding.foto)  // Menampilkan gambar pada ImageView
+                    binding.foto.visibility = View.VISIBLE // Membuat ImageView terlihat
 
-                    // Convert URI to Bitmap
+                    // Konversi URI ke Bitmap
                     val bitmap = getBitmapFromUri(this, uri)
                     if (bitmap != null) {
-                        val imageName = "menu_${System.currentTimeMillis()}" // Unique file name
+                        val imageName = "menu_${System.currentTimeMillis()}" // Nama file unik
                         menuViewModel.saveImageToInternalStorage(bitmap, imageName)?.let { savedImageName ->
-                            imagePath = savedImageName // Save image file name
+                            imagePath = savedImageName // Simpan nama file gambar
                         }
                     }
                 }
             }
         }
 
-        // Register activity result for permission request
+        // Mendaftarkan izin akses galeri
         requestPermissionLauncher = registerForActivityResult(ActivityResultContracts.RequestPermission()) { isGranted ->
             if (isGranted) {
-                showPermissionChoiceDialog() // Menampilkan dialog pilihan izin setelah diizinkan
+                showPermissionChoiceDialog()
             } else {
                 showPermissionRationaleDialog()
             }
         }
 
-        // Button to select image with permission check
+        // Tombol untuk memeriksa izin dan memilih gambar
         binding.btnSelectImage.setOnClickListener {
             checkAndRequestPermission()
         }
 
-        // Button to select image
-//        binding.btnSelectImage.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_PICK)
-//            intent.type = "image/*"
-//            getImageLauncher.launch(intent)
-//        }
-
-        // Submit button logic
+        // Tombol untuk menambahkan menu
         binding.btnTambahMenu.setOnClickListener {
             addMenu()
-
         }
 
-        binding.btnBack.setOnClickListener(){
+        // Tombol untuk kembali ke halaman sebelumnya
+        binding.btnBack.setOnClickListener {
             val intent = Intent(this, Login_page::class.java)
             startActivity(intent)
         }
 
-        binding.btnNext.setOnClickListener(){
+        // Tombol untuk melanjutkan ke daftar menu
+        binding.btnNext.setOnClickListener {
             val intent = Intent(this, ListDataMenu::class.java)
             startActivity(intent)
         }
     }
 
+    // Fungsi untuk memeriksa dan meminta izin
     private fun checkAndRequestPermission() {
         val permissionState = getPermissionState()
         if (permissionState == "always") {
-            // Jika izin selalu diberikan, langsung buka galeri
             selectImage()
         } else if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) ==
             android.content.pm.PackageManager.PERMISSION_GRANTED) {
-            // Jika izin diberikan hanya untuk saat ini, langsung buka galeri
             selectImage()
         } else {
-            // Minta izin akses galeri
             requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
         }
     }
 
+    // Menampilkan dialog untuk memilih jenis izin
     private fun showPermissionChoiceDialog() {
         AlertDialog.Builder(this)
             .setTitle("Pilih Opsi Izin")
             .setMessage("Apakah Anda ingin memberikan izin akses galeri untuk saat ini atau selalu?")
             .setPositiveButton("Izinkan Selalu") { dialog, _ ->
-                savePermissionState("always") // Simpan izin sebagai selalu
+                savePermissionState("always")
                 selectImage()
                 dialog.dismiss()
             }
             .setNegativeButton("Izinkan Hanya Sekali") { dialog, _ ->
-                savePermissionState("once") // Simpan izin sebagai sementara
+                savePermissionState("once")
                 selectImage()
                 dialog.dismiss()
             }
@@ -145,6 +142,7 @@ class TambahMenu : AppCompatActivity() {
             .show()
     }
 
+    // Menampilkan dialog jika izin tidak diberikan
     private fun showPermissionRationaleDialog() {
         AlertDialog.Builder(this)
             .setTitle("Izin Akses Galeri Diperlukan")
@@ -152,7 +150,6 @@ class TambahMenu : AppCompatActivity() {
             .setPositiveButton("Izinkan") { dialog, _ ->
                 dialog.dismiss()
                 showPermissionChoiceDialog()
-                // requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
@@ -162,27 +159,21 @@ class TambahMenu : AppCompatActivity() {
             .show()
     }
 
+    // Fungsi untuk membuka galeri dan memilih gambar
     private fun selectImage() {
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         getImageLauncher.launch(intent)
     }
 
-    private fun keLoginPage() {
-        val intent = Intent(this, Login_page::class.java)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
-        startActivity(intent)
-        finish() 
-    }
-
+    // Fungsi untuk menambahkan menu baru
     private fun addMenu() {
         val nama = binding.inputNamaProduk.text.toString()
         val harga = binding.inputHargaProduk.text.toString().toIntOrNull() ?: 0
         val deskripsi = binding.inputDeskripsiProduk.text.toString()
-        val kategori = binding.spinnerKategori.selectedItem.toString() // Get selected category
+        val kategori = binding.spinnerKategori.selectedItem.toString()
 
         if (nama.isNotEmpty() && harga >= 0 && imagePath != null) {
-            // Convert kategori from String to Category enum
             val categoryEnum = when (kategori) {
                 "Makanan" -> Kategori.MAKAN
                 "Minuman" -> Kategori.MINUM
@@ -191,7 +182,6 @@ class TambahMenu : AppCompatActivity() {
 
             if (categoryEnum != null) {
                 val menu = Menu(
-                    _id = 0,
                     nama = nama,
                     harga = harga,
                     deskripsi = deskripsi,
@@ -200,7 +190,6 @@ class TambahMenu : AppCompatActivity() {
                 )
                 menuViewModel.insertMakan(menu)
 
-                // Simpan ke Firebase
                 val menuId = menuRef.push().key ?: return
                 menuRef.child(menuId).setValue(menu)
                     .addOnSuccessListener {
@@ -212,7 +201,6 @@ class TambahMenu : AppCompatActivity() {
                         Toast.makeText(this, "Gagal menyimpan ke Firebase: ${e.message}", Toast.LENGTH_SHORT).show()
                     }
 
-                // Reset input field
                 clearInputFields()
             } else {
                 Toast.makeText(this, "Kategori tidak valid", Toast.LENGTH_SHORT).show()
@@ -220,18 +208,19 @@ class TambahMenu : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Mohon lengkapi semua field", Toast.LENGTH_SHORT).show()
         }
-}
+    }
 
+    // Fungsi untuk membersihkan input setelah data disimpan
     private fun clearInputFields() {
         binding.inputNamaProduk.text?.clear()
         binding.inputHargaProduk.text?.clear()
         binding.inputDeskripsiProduk.text?.clear()
         binding.foto.setImageURI(null)
         binding.foto.visibility = View.GONE
-        binding.spinnerKategori.setSelection(0) // Reset spinner to first item
+        binding.spinnerKategori.setSelection(0)
     }
 
-    // Function to convert URI to Bitmap
+    // Fungsi untuk mengonversi URI ke Bitmap
     fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -248,11 +237,13 @@ class TambahMenu : AppCompatActivity() {
         }
     }
 
+    // Fungsi untuk menyimpan status izin
     private fun savePermissionState(state: String) {
         val prefs = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         prefs.edit().putString(keyPermission, state).apply()
     }
 
+    // Fungsi untuk mendapatkan status izin
     private fun getPermissionState(): String? {
         val prefs = getSharedPreferences(prefsName, Context.MODE_PRIVATE)
         return prefs.getString(keyPermission, "once")

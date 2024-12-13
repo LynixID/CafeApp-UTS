@@ -1,71 +1,77 @@
 package com.example.cafeapp.Transaksi
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.ImageButton
-import android.widget.Spinner
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.R
-import com.example.cafeapp.UserDatabase.CafeDatabase
+import com.example.cafeapp.databinding.FragmentRiwayatTransaksiBinding
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+// Kelas Fragment untuk menampilkan riwayat transaksi pengguna
 class RiwayatTransaksiFragment : Fragment() {
+    // Deklarasi variabel untuk database dan RecyclerView
     private lateinit var db: TransaksiDatabase
+    private lateinit var binding: FragmentRiwayatTransaksiBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: TransaksiAdapter
-    private var isNewestFirst = true  // Default is Terbaru
+    private var isNewestFirst = true  // Default untuk menampilkan transaksi terbaru terlebih dahulu
 
+    // Menangani pembuatan tampilan untuk fragment ini
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_riwayat_transaksi, container, false)
+        // Menginflate layout menggunakan ViewBinding
+        binding = FragmentRiwayatTransaksiBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
+    // Menangani logika setelah tampilan fragment dibuat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Mendapatkan instance dari TransaksiDatabase
         db = TransaksiDatabase.getInstance(requireContext())
-        recyclerView = view.findViewById(R.id.recyclerViewRiwayatTransaksi)
+        recyclerView = binding.recyclerViewRiwayatTransaksi
 
-        // Setup RecyclerView
+        // Mengatur RecyclerView
         setupRecyclerView()
 
-        // Setup Back Button
-        view.findViewById<ImageButton>(R.id.btnBack).setOnClickListener {
+        // Mengatur tombol kembali untuk navigasi ke halaman transaksi
+        binding.btnBack.setOnClickListener {
             findNavController().navigate(R.id.action_RiwayatTransaksiFragment_to_TransaksiFragment)
         }
 
-
-        // Setup Sort Spinner
+        // Mengatur Spinner untuk memilih urutan tampilan transaksi
         setupSortSpinner(view)
 
-        // Load initial data
+        // Memuat data transaksi awal
         loadTransactions()
     }
 
+    // Mengatur layout RecyclerView menggunakan LinearLayoutManager
     private fun setupRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
     }
 
+    // Mengatur Spinner untuk memilih urutan transaksi (terbaru atau terlama)
     private fun setupSortSpinner(view: View) {
-        val spinner = view.findViewById<Spinner>(R.id.sortSpinner)
+        val spinner = binding.sortSpinner
+        // Mengisi Spinner dengan opsi urutan
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.sort_options,
@@ -75,6 +81,7 @@ class RiwayatTransaksiFragment : Fragment() {
             spinner.adapter = adapter
         }
 
+        // Menangani pemilihan item di Spinner
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>?,
@@ -82,22 +89,26 @@ class RiwayatTransaksiFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                isNewestFirst = position == 0  // Position 0 is for "Terbaru"
+                // Menentukan apakah urutan transaksi terbaru atau terlama yang dipilih
+                isNewestFirst = position == 0  // Posisi 0 untuk "Terbaru"
                 loadTransactions()
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // Tidak perlu aksi khusus jika tidak ada yang dipilih
+                // Tidak ada aksi jika tidak ada yang dipilih
             }
         }
     }
 
+    // Memuat dan menampilkan transaksi berdasarkan urutan yang dipilih
     private fun loadTransactions() {
         lifecycleScope.launch(Dispatchers.IO) {
+            // Mendapatkan daftar transaksi dari database
             val transaksiList = db.transaksiDao().getAllTransaksi()
 
+            // Mengurutkan transaksi berdasarkan waktu (terbaru atau terlama)
             val sortedList = if (isNewestFirst) {
-                // Untuk yang terbaru di atas, gunakan sortedByDescending
+                // Jika yang terbaru di atas, urutkan secara menurun
                 transaksiList.sortedByDescending {
                     try {
                         SimpleDateFormat(
@@ -109,7 +120,7 @@ class RiwayatTransaksiFragment : Fragment() {
                     }
                 }
             } else {
-                // Untuk yang terlama di atas, gunakan sortedBy
+                // Jika yang terlama di atas, urutkan secara naik
                 transaksiList.sortedBy {
                     try {
                         SimpleDateFormat(
@@ -122,11 +133,14 @@ class RiwayatTransaksiFragment : Fragment() {
                 }
             }
 
+            // Menampilkan transaksi yang sudah diurutkan ke dalam RecyclerView
             withContext(Dispatchers.Main) {
                 if (sortedList.isEmpty()) {
+                    // Menampilkan pesan jika tidak ada transaksi
                     Toast.makeText(requireContext(), "Belum ada transaksi", Toast.LENGTH_SHORT)
                         .show()
                 } else {
+                    // Menampilkan transaksi dalam RecyclerView menggunakan adapter
                     adapter = TransaksiAdapter(sortedList)
                     recyclerView.adapter = adapter
                 }

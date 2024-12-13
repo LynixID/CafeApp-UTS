@@ -1,71 +1,69 @@
 package com.example.cafeapp.Login
 
-import android.content.ContentValues.TAG
 import android.content.Intent
-import android.nfc.Tag
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.example.cafeapp.AdminMenu.TambahMenu
 import com.example.cafeapp.Home.MainActivity
 import com.example.cafeapp.UserActivity
-import com.example.cafeapp.UserDatabase.CafeDatabase
-import com.example.cafeapp.databinding.LoginPageBinding // Import your generated binding class
+import com.example.cafeapp.databinding.LoginPageBinding // Binding untuk layout login
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.database.getValue
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.launch
 
+// Aktivitas untuk halaman login
 class Login_page : AppCompatActivity() {
+    private lateinit var binding: LoginPageBinding // Binding untuk elemen tampilan
 
-    private lateinit var binding: LoginPageBinding
-
+    // Fungsi utama saat aktivitas dibuat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = LoginPageBinding.inflate(layoutInflater)
+        binding = LoginPageBinding.inflate(layoutInflater) // Inisialisasi binding
         setContentView(binding.root)
 
-        val database = Firebase.database
-        val usersRef = database.getReference("user")
+        val database = Firebase.database // Mengakses database Firebase
+        val usersRef = database.getReference("user") // Referensi ke node "user" di Firebase
 
+        // Listener untuk tombol login
         binding.BtnSubmit.setOnClickListener {
-            val inputUser = binding.inputUser.text.toString()
-            val inputPass = binding.inputPassword.text.toString()
+            val inputUser = binding.inputUser.text.toString() // Ambil input username
+            val inputPass = binding.inputPassword.text.toString() // Ambil input password
 
+            // Validasi input kosong
             if (inputUser.isEmpty() || inputPass.isEmpty()) {
                 Toast.makeText(this, "Silakan masukkan username dan password", Toast.LENGTH_SHORT)
                     .show()
                 return@setOnClickListener
             }
 
+            // Periksa username dan password di Firebase
             usersRef.addListenerForSingleValueEvent(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
-                    var loginSuccess = false
+                    var loginSuccess = false // Flag untuk status login
                     for (userSnapshot in snapshot.children) {
-                        val username = userSnapshot.child("username").getValue(String::class.java)
-                        val password = userSnapshot.child("password").getValue(String::class.java)
-                        val role = userSnapshot.child("role").getValue(String::class.java)
+                        val username = userSnapshot.child("username").getValue(String::class.java) // Ambil username
+                        val password = userSnapshot.child("password").getValue(String::class.java) // Ambil password
+                        val role = userSnapshot.child("role").getValue(String::class.java) // Ambil role pengguna
 
+                        // Cek kecocokan username dan password
                         if (username == inputUser && password == inputPass) {
                             loginSuccess = true
                             when (role) {
                                 "admin" -> {
+                                    // Navigasi ke halaman admin
                                     val intent = Intent(this@Login_page, TambahMenu::class.java)
                                     startActivity(intent)
                                     finish()
                                 }
-
                                 "staff" -> {
+                                    // Navigasi ke halaman staff
                                     val intent = Intent(this@Login_page, MainActivity::class.java)
                                     startActivity(intent)
                                     finish()
                                 }
-
                                 else -> {
                                     Toast.makeText(
                                         this@Login_page,
@@ -74,9 +72,10 @@ class Login_page : AppCompatActivity() {
                                     ).show()
                                 }
                             }
-                            break
+                            break // Keluar dari loop jika login berhasil
                         }
                     }
+                    // Tampilkan pesan jika login gagal
                     if (!loginSuccess) {
                         Toast.makeText(
                             this@Login_page,
@@ -87,6 +86,7 @@ class Login_page : AppCompatActivity() {
                 }
 
                 override fun onCancelled(error: DatabaseError) {
+                    // Tampilkan pesan jika ada kesalahan saat membaca data Firebase
                     Toast.makeText(
                         this@Login_page,
                         "Gagal memuat data: ${error.message}",
@@ -94,10 +94,11 @@ class Login_page : AppCompatActivity() {
                     ).show()
                 }
             })
-
         }
-        binding.BtnDaftar.setOnClickListener{
-            val intent = Intent(this@Login_page, UserActivity::class.java)
+
+        // Listener untuk tombol daftar
+        binding.BtnDaftar.setOnClickListener {
+            val intent = Intent(this@Login_page, UserActivity::class.java) // Navigasi ke halaman pendaftaran
             startActivity(intent)
             finish()
         }

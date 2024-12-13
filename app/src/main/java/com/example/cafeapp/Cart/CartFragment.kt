@@ -10,22 +10,22 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cafeapp.MenuDetail.AddToCardAdapter
+import com.example.cafeapp.MenuDetail.AddToCartAdapter
 import com.example.cafeapp.MenuDetail.CartItem
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.FragmentCartBinding
 
-class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener {
-    private lateinit var viewModel: CardViewModel
+class CartFragment : Fragment(), AddToCartAdapter.TotalPriceListener {
+    private lateinit var viewModel: CartViewModel
     private lateinit var binding: FragmentCartBinding
-    private lateinit var adapter: AddToCardAdapter
+    private lateinit var adapter: AddToCartAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentCartBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[CardViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
         setupRecyclerView()
 
         viewModel.cartItems.observe(viewLifecycleOwner) { items ->
@@ -45,7 +45,7 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener {
     }
 
     private fun setupRecyclerView() {
-        adapter = AddToCardAdapter(mutableListOf(), viewModel, this)
+        adapter = AddToCartAdapter(mutableListOf(), viewModel, this)
         binding.recyclerView.adapter = adapter
         binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }

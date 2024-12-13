@@ -7,7 +7,7 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.cafeapp.Cart.CardViewModel
+import com.example.cafeapp.Cart.CartViewModel
 import com.example.cafeapp.Cart.CartManager
 import com.example.cafeapp.Home.MainActivity
 import com.example.cafeapp.MenuDatabase.Menu
@@ -19,7 +19,7 @@ import java.io.File
 class MenuDetailActivity : AppCompatActivity() {
     private lateinit var binding: MenuDetailBinding
     private var quantity = 1
-    private val cardViewModel: CardViewModel by viewModels()
+    private val cartViewModel: CartViewModel by viewModels()
     private val viewModel: MenuViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {

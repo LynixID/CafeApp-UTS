@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuViewModel
 import com.example.cafeapp.R
-import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
+import com.example.cafeapp.databinding.ActivityListdatamenuBinding
 import com.example.cafeapp.databinding.ModalEditDataBinding
 import java.io.File
 import java.io.IOException
@@ -26,7 +26,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
 
 class ListDataMenu : AppCompatActivity() {
-    private lateinit var binding: ActivityTestDatabase2Binding
+    private lateinit var binding: ActivityListdatamenuBinding
     private val menuViewModel: MenuViewModel by viewModels() // Jangan ulangi ViewModelProvider
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageUri: Uri? = null
@@ -56,7 +56,7 @@ class ListDataMenu : AppCompatActivity() {
         }
 
         // Mengatur tampilan utama
-        binding = ActivityTestDatabase2Binding.inflate(layoutInflater)
+        binding = ActivityListdatamenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.recyclerView1.layoutManager = LinearLayoutManager(this)

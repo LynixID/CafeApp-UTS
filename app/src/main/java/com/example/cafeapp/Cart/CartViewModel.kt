@@ -5,7 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.cafeapp.MenuDetail.CartItem
 
-class CardViewModel : ViewModel() {
+class CartViewModel : ViewModel() {
     private val _cartItems = MutableLiveData<MutableList<CartItem>>()
     val cartItems: LiveData<MutableList<CartItem>> = _cartItems
 

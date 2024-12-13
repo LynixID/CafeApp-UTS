@@ -7,22 +7,22 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.cafeapp.Cart.CardViewModel
+import com.example.cafeapp.Cart.CartViewModel
 import com.example.cafeapp.R
-import com.example.cafeapp.databinding.AddToCardBinding
+import com.example.cafeapp.databinding.AddToCartBinding
 import java.io.File
 
-class AddToCardAdapter(
+class AddToCartAdapter(
     private val items: MutableList<CartItem>,
-    private val viewModel: CardViewModel,
+    private val viewModel: CartViewModel,
     private val totalPriceListener: TotalPriceListener
-) : RecyclerView.Adapter<AddToCardAdapter.CartViewHolder>() {
+) : RecyclerView.Adapter<AddToCartAdapter.CartViewHolder>() {
 
     interface TotalPriceListener {
         fun onTotalPriceUpdated(totalPrice: Double)
     }
 
-    class CartViewHolder(private val binding: AddToCardBinding) : RecyclerView.ViewHolder(binding.root) {
+    class CartViewHolder(private val binding: AddToCartBinding) : RecyclerView.ViewHolder(binding.root) {
         val itemImage: ImageView = binding.itemImage
         val itemName: TextView = binding.itemName
         val itemPrice: TextView = binding.itemPrice
@@ -32,7 +32,7 @@ class AddToCardAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CartViewHolder {
-        val binding = AddToCardBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = AddToCartBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CartViewHolder(binding)
     }
 

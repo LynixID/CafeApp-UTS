@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.R
-import com.example.cafeapp.databinding.TestItemMenuBinding
+import com.example.cafeapp.databinding.ListItemMenuadminBinding
 import java.io.File
 
 class MenuAdminListAdapter(
@@ -20,11 +20,11 @@ class MenuAdminListAdapter(
         fun onDeleteClick(item: Menu)
     }
 
-    class MenuViewHolder(val binding: TestItemMenuBinding) : RecyclerView.ViewHolder(binding.root)
+    class MenuViewHolder(val binding: ListItemMenuadminBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
-        val binding = TestItemMenuBinding.inflate(layoutInflater, parent, false)
+        val binding = ListItemMenuadminBinding.inflate(layoutInflater, parent, false)
         return MenuViewHolder(binding)
     }
 

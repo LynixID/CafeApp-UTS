@@ -45,7 +45,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                tools:listitem="@layout/test_item_menu" />
+                tools:listitem="@layout/list_item_menuadmin" />
 
         </LinearLayout>
 

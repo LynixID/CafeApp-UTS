@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.R
-import com.example.cafeapp.databinding.TestItemMenuBinding
+import com.example.cafeapp.databinding.ListItemMenuadminBinding
 import java.io.File
 
 class MenuAdminAdapter(
@@ -19,7 +19,7 @@ class MenuAdminAdapter(
         fun onDeleteClick(item: Menu)
     }
 
-    class MenuViewHolder(private val binding: TestItemMenuBinding) : RecyclerView.ViewHolder(binding.root) {
+    class MenuViewHolder(private val binding: ListItemMenuadminBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(menu: Menu, listener: OnItemClickListener) {
             // Menampilkan nama dan harga makan
             binding.makanNama.text = menu.nama
@@ -49,7 +49,7 @@ class MenuAdminAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MenuViewHolder {
-        val binding = TestItemMenuBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = ListItemMenuadminBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return MenuViewHolder(binding)
     }
 

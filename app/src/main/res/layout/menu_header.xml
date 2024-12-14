@@ -7,7 +7,7 @@
         android:paddingTop="26dp">
         <TextView
             android:id="@+id/headerText"
-            android:fontFamily="@font/lexend_medium"
+            android:fontFamily="@font/lexend_semibold"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="18sp"

@@ -1,7 +1,28 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.CafeApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your dark theme here. -->
-        <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">#51AF63</item> <!-- Ganti warna ini -->
+        <item name="colorPrimaryVariant">#337E43</item> <!-- Ganti warna ini -->
+        <item name="colorSecondary">#6CA67C</item> <!-- Ganti warna ini -->
+
+        <!-- Warna tambahan untuk elemen UI -->
+        <item name="colorOnPrimary">#FFFFFF</item> <!-- Teks di atas warna utama -->
+        <item name="colorOnSecondary">#000000</item> <!-- Teks di atas warna sekunder -->
+        <item name="android:statusBarColor" tools:targetApi="l">#23753A</item> <!-- Status bar -->
+
+        <item name="colorControlHighlight">#51AF63</item> <!-- Warna ripple -->
     </style>
+
+    <style name="Theme.CafeApp" parent="Base.Theme.CafeApp" />
 </resources>
+
+<!--TEMA ASLI DARK-->
+<!--<resources xmlns:tools="http://schemas.android.com/tools">-->
+<!--    &lt;!&ndash; Base application theme. &ndash;&gt;-->
+<!--    <style name="Base.Theme.CafeApp" parent="Theme.Material3.DayNight.NoActionBar">-->
+<!--        &lt;!&ndash; Customize your dark theme here. &ndash;&gt;-->
+<!--        &lt;!&ndash; <item name="colorPrimary">@color/my_dark_primary</item> &ndash;&gt;-->
+<!--    </style>-->
+<!--</resources>-->

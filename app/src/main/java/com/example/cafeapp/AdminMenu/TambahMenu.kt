@@ -1,6 +1,6 @@
 package com.example.cafeapp.AdminMenu
 
-import com.example.cafeapp.MenuDatabase.MenuViewModel
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -15,21 +15,21 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.cafeapp.Login.Login_page
 import com.example.cafeapp.MenuDatabase.Kategori
 import com.example.cafeapp.MenuDatabase.Menu
+import com.example.cafeapp.MenuDatabase.MenuViewModel
 import com.example.cafeapp.databinding.TambahMenuBinding
-import java.io.IOException
-import android.Manifest
-import androidx.core.content.ContextCompat
-import androidx.core.app.ActivityCompat
-import androidx.appcompat.app.AlertDialog
+import com.google.firebase.FirebaseApp
 import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.storage.FirebaseStorage
+import java.io.IOException
 
 
 class TambahMenu : AppCompatActivity() {
-
 
     private lateinit var binding: TambahMenuBinding
     private val menuViewModel: MenuViewModel by viewModels()
@@ -49,11 +49,20 @@ class TambahMenu : AppCompatActivity() {
         // Clear input fields
         clearInputFields()
 
+        // Inisialisasi Firebase
+        FirebaseApp.initializeApp(this)
+
         // Set up Spinner for category selection
         val kategoriList = arrayOf("Makanan", "Minuman")
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, kategoriList)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.spinnerKategori.adapter = adapter
+
+//        val storage: FirebaseStorage = FirebaseStorage.getInstance()
+//        storage.useEmulator(
+//            "127.0.0.1",
+//            9199
+//        )
 
         // Image selection logic
         getImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -61,15 +70,7 @@ class TambahMenu : AppCompatActivity() {
                 result.data?.data?.let { uri ->
                     binding.foto.setImageURI(uri) // Show selected image
                     binding.foto.visibility = View.VISIBLE // Make ImageView visible
-
-                    // Convert URI to Bitmap
-                    val bitmap = getBitmapFromUri(this, uri)
-                    if (bitmap != null) {
-                        val imageName = "menu_${System.currentTimeMillis()}" // Unique file name
-                        menuViewModel.saveImageToInternalStorage(bitmap, imageName)?.let { savedImageName ->
-                            imagePath = savedImageName // Save image file name
-                        }
-                    }
+                    imagePath = uri.toString() // Save the image URI as the image path
                 }
             }
         }
@@ -88,17 +89,9 @@ class TambahMenu : AppCompatActivity() {
             checkAndRequestPermission()
         }
 
-        // Button to select image
-//        binding.btnSelectImage.setOnClickListener {
-//            val intent = Intent(Intent.ACTION_PICK)
-//            intent.type = "image/*"
-//            getImageLauncher.launch(intent)
-//        }
-
         // Submit button logic
         binding.btnTambahMenu.setOnClickListener {
             addMenu()
-
         }
 
         binding.btnBack.setOnClickListener(){
@@ -152,7 +145,6 @@ class TambahMenu : AppCompatActivity() {
             .setPositiveButton("Izinkan") { dialog, _ ->
                 dialog.dismiss()
                 showPermissionChoiceDialog()
-                // requestPermissionLauncher.launch(Manifest.permission.READ_EXTERNAL_STORAGE)
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.dismiss()
@@ -172,15 +164,14 @@ class TambahMenu : AppCompatActivity() {
         val intent = Intent(this, Login_page::class.java)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
         startActivity(intent)
-        finish() 
+        finish()
     }
 
     private fun addMenu() {
         val nama = binding.inputNamaProduk.text.toString()
         val harga = binding.inputHargaProduk.text.toString().toIntOrNull() ?: 0
         val deskripsi = binding.inputDeskripsiProduk.text.toString()
-        val kategori = binding.spinnerKategori.selectedItem.toString() // Get selected category
-
+        val kategori = binding.spinnerKategori.selectedItem.toString()
         if (nama.isNotEmpty() && harga >= 0 && imagePath != null) {
             // Convert kategori from String to Category enum
             val categoryEnum = when (kategori) {
@@ -220,7 +211,7 @@ class TambahMenu : AppCompatActivity() {
         } else {
             Toast.makeText(this, "Mohon lengkapi semua field", Toast.LENGTH_SHORT).show()
         }
-}
+    }
 
     private fun clearInputFields() {
         binding.inputNamaProduk.text?.clear()
@@ -229,23 +220,6 @@ class TambahMenu : AppCompatActivity() {
         binding.foto.setImageURI(null)
         binding.foto.visibility = View.GONE
         binding.spinnerKategori.setSelection(0) // Reset spinner to first item
-    }
-
-    // Function to convert URI to Bitmap
-    fun getBitmapFromUri(context: Context, uri: Uri): Bitmap? {
-        return try {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                val source = ImageDecoder.createSource(context.contentResolver, uri)
-                ImageDecoder.decodeBitmap(source)
-            } else {
-                context.contentResolver.openInputStream(uri)?.use {
-                    BitmapFactory.decodeStream(it)
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-            null
-        }
     }
 
     private fun savePermissionState(state: String) {

@@ -93,4 +93,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
     implementation ("pub.devrel:easypermissions:3.0.0")
     implementation("com.google.firebase:firebase-analytics")
+    implementation ("com.google.firebase:firebase-storage:20.3.0")
+
+//    implementation("com.google.firebase:fireba
+//    se-firestore")
 }

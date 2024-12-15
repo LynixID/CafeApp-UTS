@@ -20,14 +20,13 @@ import com.example.cafeapp.MenuDatabase.MenuViewModel
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
 import com.example.cafeapp.databinding.ModalEditDataBinding
-import java.io.File
-import java.io.IOException
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
+import java.io.IOException
 
 class ListDataMenu : AppCompatActivity() {
     private lateinit var binding: ActivityTestDatabase2Binding
-    private val menuViewModel: MenuViewModel by viewModels() // Jangan ulangi ViewModelProvider
+    private val menuViewModel: MenuViewModel by viewModels()
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageUri: Uri? = null
     private var selectedImageName: String? = null
@@ -43,13 +42,7 @@ class ListDataMenu : AppCompatActivity() {
                 selectedImageUri?.let { uri ->
                     val bitmap = getBitmapFromUri(this, uri)
                     if (bitmap != null) {
-                        val imageName = "menu_${System.currentTimeMillis()}" // Nama file unik
-                        val savedImageName = menuViewModel.saveImageToInternalStorage(bitmap, imageName)
-                        if (savedImageName != null) {
-                            selectedImageName = savedImageName
-                        } else {
-                            Toast.makeText(this, "Gagal menyimpan gambar.", Toast.LENGTH_SHORT).show()
-                        }
+                        selectedImageName = uri.lastPathSegment // Menggunakan nama file dari URI
                     }
                 }
             }
@@ -109,7 +102,6 @@ class ListDataMenu : AppCompatActivity() {
             .show()
     }
 
-
     private fun showEditDialogMakan(item: Menu) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.modal_edit_data, null)
         val dialogBinding = ModalEditDataBinding.bind(dialogView)
@@ -120,10 +112,8 @@ class ListDataMenu : AppCompatActivity() {
         dialogBinding.editDeskripsi.setText(item.deskripsi)
 
         // Menampilkan gambar awal
-        val imgPath = File(filesDir, "app_images/${item.namaFoto}")
-        if (imgPath.exists()) {
-            dialogBinding.editFoto.setImageURI(Uri.fromFile(imgPath))
-        }
+        val imgPath = Uri.parse(item.namaFoto)
+        dialogBinding.editFoto.setImageURI(imgPath)
 
         // Ganti gambar
         dialogBinding.editFoto.setOnClickListener {
@@ -147,7 +137,7 @@ class ListDataMenu : AppCompatActivity() {
                     return@setPositiveButton
                 }
 
-                val finalImageName = selectedImageName ?: item.namaFoto
+                val finalImageName = selectedImageName ?: item.namaFoto // Menggunakan gambar baru jika ada, atau gambar lama
 
                 // Buat objek Menu baru dengan data yang diperbarui
                 val updatedMenu = Menu(
@@ -193,7 +183,6 @@ class ListDataMenu : AppCompatActivity() {
             Toast.makeText(this, "Gagal sinkronisasi dari Firebase.", Toast.LENGTH_SHORT).show()
         }
     }
-
 
     private fun getBitmapFromUri(context: ListDataMenu, uri: Uri): Bitmap? {
         return try {

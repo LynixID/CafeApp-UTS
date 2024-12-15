@@ -7,7 +7,8 @@ import androidx.room.PrimaryKey
 // Entitas untuk tabel "menus" di database Room
 @Entity(tableName = "menus")
 data class Menu(
-    @PrimaryKey(autoGenerate = true) val _id: Int = 0,
+    @PrimaryKey(autoGenerate = true)
+    var _id: Int = 0,
     var nama: String = "",  // Default value
     var harga: Int = 0,     // Default value
     var deskripsi: String = "",  // Default value

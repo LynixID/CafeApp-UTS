@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.cafeapp.UserDatabase.CafeDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
@@ -95,7 +96,16 @@ class MenuViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     // Fungsi untuk memasukkan item menu ke dalam database
-    fun insertMakan(menu: Menu) {
+    fun insertMakan(menu: Menu, onInsertSuccess: (Long) -> Unit) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val generatedId = menuDao.insert(menu) // Mendapatkan _id dari hasil insert
+            withContext(Dispatchers.Main) {
+                onInsertSuccess(generatedId) // Panggil callback dengan _id
+            }
+        }
+    }
+
+    fun insertUpdateMakan(menu: Menu) {
         viewModelScope.launch(Dispatchers.IO) {
             menuDao.insert(menu)
         }

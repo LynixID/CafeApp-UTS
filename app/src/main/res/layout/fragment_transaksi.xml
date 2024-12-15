@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="16dp">
 
-    <!-- Title and History Button Container -->
+    <!-- Container untuk judul dan tombol View History -->
     <LinearLayout
         android:id="@+id/headerContainer"
         android:layout_width="match_parent"
@@ -15,9 +15,10 @@
         android:gravity="center_vertical"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:paddingVertical="8dp">
 
-        <!-- Title -->
+        <!-- Judul -->
         <TextView
             android:id="@+id/tvTransactionTitle"
             android:layout_width="0dp"
@@ -26,19 +27,22 @@
             android:text="Transaction Summary"
             android:textSize="18sp"
             android:textStyle="bold"
-            android:layout_marginBottom="16dp" />
+            android:layout_marginBottom="16dp"
+            android:textColor="#212121" />
 
-        <!-- View History Button -->
-        <Button
+        <!-- Tombol untuk melihat riwayat transaksi -->
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btnViewHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="View History"
             android:textColor="@android:color/white"
-            android:backgroundTint="#2196F3"
-            android:layout_marginStart="8dp" />
+            android:backgroundTint="#396330"
+            android:layout_marginStart="8dp"
+            app:cornerRadius="16dp" />
     </LinearLayout>
 
+    <!-- Gambar transaksi -->
     <ImageView
         android:id="@+id/ivTransactionImage"
         android:layout_width="120dp"
@@ -49,7 +53,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- RecyclerView for Menu Items -->
+    <!-- RecyclerView untuk menu items -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvMenuList"
         android:layout_width="0dp"
@@ -58,9 +62,10 @@
         app:layout_constraintTop_toBottomOf="@id/headerContainer"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/transactionTotalSection" />
+        app:layout_constraintBottom_toTopOf="@id/transactionTotalSection"
+        android:padding="8dp" />
 
-    <!-- Total Section -->
+    <!-- Seksi Total Transaksi -->
     <LinearLayout
         android:id="@+id/transactionTotalSection"
         android:layout_width="0dp"
@@ -69,7 +74,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toTopOf="@id/btnCompleteTransaction"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintEnd_toEndOf="parent"
+        android:padding="16dp">
 
         <!-- Label Total -->
         <TextView
@@ -79,9 +85,10 @@
             android:text="Total:"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            android:textColor="#212121" />
 
-        <!-- Total Amount to Pay -->
+        <!-- Total jumlah yang harus dibayar -->
         <TextView
             android:id="@+id/tvTotalAmount"
             android:layout_width="match_parent"
@@ -92,16 +99,17 @@
             android:textColor="#396330"
             android:layout_marginBottom="16dp" />
 
-        <!-- Input Pembayaran Label -->
+        <!-- Label untuk input pembayaran -->
         <TextView
             android:id="@+id/tvPembayaranLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Jumlah Pembayaran:"
             android:textSize="16sp"
+            android:textColor="#212121"
             android:layout_marginBottom="4dp" />
 
-        <!-- Input Pembayaran -->
+        <!-- Input untuk jumlah pembayaran -->
         <EditText
             android:id="@+id/etPembayaran"
             android:layout_width="match_parent"
@@ -110,16 +118,17 @@
             android:inputType="number"
             android:layout_marginBottom="16dp" />
 
-        <!-- Kembalian Label -->
+        <!-- Label untuk pengembalian -->
         <TextView
             android:id="@+id/tvKembalianLabel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Kembalian:"
             android:textSize="16sp"
+            android:textColor="#212121"
             android:layout_marginBottom="4dp" />
 
-        <!-- Teks Kembalian -->
+        <!-- Menampilkan jumlah kembalian -->
         <TextView
             android:id="@+id/textViewKembalian"
             android:layout_width="match_parent"
@@ -127,12 +136,12 @@
             android:text="Rp0"
             android:textSize="20sp"
             android:textStyle="bold"
-            android:textColor="#2196F3"
+            android:textColor="#396330"
             android:layout_marginBottom="8dp" />
     </LinearLayout>
 
-    <!-- Complete Transaction Button -->
-    <Button
+    <!-- Tombol untuk menyelesaikan transaksi -->
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCompleteTransaction"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -141,6 +150,7 @@
         android:backgroundTint="#396330"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:cornerRadius="16dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

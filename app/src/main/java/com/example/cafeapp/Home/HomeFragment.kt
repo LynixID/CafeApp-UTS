@@ -17,12 +17,15 @@ import com.example.cafeapp.MenuDatabase.MenuViewModel
 import com.example.cafeapp.MenuDetail.MenuDetailActivity
 import com.example.cafeapp.databinding.FragmentHomeBinding
 
+// Fragment untuk halaman Home
 class HomeFragment : Fragment() {
+    // Variabel binding untuk mengakses elemen tampilan
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
     private lateinit var menuViewModel: MenuViewModel
     private lateinit var menuAdapter: MenuAdapter
 
+    // Fungsi untuk membuat tampilan fragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
@@ -30,27 +33,29 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    // Fungsi yang dipanggil setelah tampilan dibuat
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        // Inisialisasi ViewModel dan Adapter
         menuViewModel = ViewModelProvider(this).get(MenuViewModel::class.java)
-
         menuAdapter = MenuAdapter(emptyList()) { selectedMenu ->
-            if (selectedMenu._id != 0) { // Pastikan bukan header
+            if (selectedMenu._id != 0) { // Cek apakah item bukan header
                 val intent = Intent(requireContext(), MenuDetailActivity::class.java)
                 intent.putExtra("MAKAN_ID", selectedMenu._id.toString())
-                startActivity(intent)
+                startActivity(intent) // Navigasi ke MenuDetailActivity
             }
         }
 
+        // Mengatur GridLayoutManager untuk RecyclerView
         val layoutManager = GridLayoutManager(requireContext(), 2)
         layoutManager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 val menu = menuAdapter.getMenuList().getOrNull(position)
                 return if (menu?.nama == "Makanan" || menu?.nama == "Minuman") {
-                    2
+                    2 // Header mengambil seluruh lebar
                 } else {
-                    1
+                    1 // Item biasa mengambil setengah lebar
                 }
             }
         }
@@ -58,77 +63,69 @@ class HomeFragment : Fragment() {
         binding.recyclerView.layoutManager = layoutManager
         binding.recyclerView.adapter = menuAdapter
 
+        // Observasi perubahan data menu
         menuViewModel.filteredMakans.observe(viewLifecycleOwner) { makans ->
             val items = mutableListOf<Menu>()
 
-            // Cek apakah ada item dengan kategori MAKAN
+            // Tambahkan header dan item untuk kategori MAKAN
             if (makans.any { it.kategori == Kategori.MAKAN }) {
-                // Tambahkan header untuk kategori MAKAN
                 items.add(Menu(_id = 0, nama = "Makanan", harga = 0, deskripsi = "", kategori = Kategori.MAKAN, namaFoto = ""))
-                // Tambahkan semua item dengan kategori MAKAN
                 items.addAll(makans.filter { it.kategori == Kategori.MAKAN })
             }
 
-            // Cek apakah ada item dengan kategori MINUM
+            // Tambahkan header dan item untuk kategori MINUM
             if (makans.any { it.kategori == Kategori.MINUM }) {
-                // Tambahkan header untuk kategori MINUM
                 items.add(Menu(_id = 0, nama = "Minuman", harga = 0, deskripsi = "", kategori = Kategori.MINUM, namaFoto = ""))
-                // Tambahkan semua item dengan kategori MINUM
                 items.addAll(makans.filter { it.kategori == Kategori.MINUM })
             }
 
-            // Update adapter dengan data yang telah diolah
-            menuAdapter.updateData(items)
+            menuAdapter.updateData(items) // Perbarui data di adapter
         }
 
-//        Setup ViewFlipper
+        // Pengaturan ViewFlipper untuk slideshow
         binding.viewFlipper.flipInterval = 3000
         binding.viewFlipper.startFlipping()
 
-
-        setupUIComponents()
+        setupUIComponents() // Inisialisasi komponen UI
     }
 
-    // Fungsi untuk menyiapkan komponen UI, seperti listener untuk pencarian dan filter
+    // Fungsi untuk menyiapkan komponen UI, seperti pencarian dan filter
     private fun setupUIComponents() {
-        // Menambahkan listener pada SearchView untuk pencarian menu
+        // Listener untuk SearchView
         binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            // Fungsi ini dipanggil saat teks pencarian dikirim
             override fun onQueryTextSubmit(query: String?): Boolean {
-                query?.let { menuViewModel.searchItems(it) } // Memanggil fungsi pencarian pada ViewModel
+                query?.let { menuViewModel.searchItems(it) } // Pencarian item
                 return true
             }
 
-            // Fungsi ini dipanggil saat teks pencarian berubah
             override fun onQueryTextChange(newText: String?): Boolean {
-                newText?.let { menuViewModel.searchItems(it) } // Memanggil fungsi pencarian saat teks berubah
+                newText?.let { menuViewModel.searchItems(it) } // Pencarian saat teks berubah
                 return true
             }
         })
 
-        // Menambahkan listener untuk ikon filter (untuk memilih opsi sortir)
+        // Listener untuk ikon filter
         binding.filterIcon.setOnClickListener { showSortOptions() }
     }
 
-    // Fungsi untuk menampilkan dialog opsi sortir (A-Z, Z-A)
+    // Fungsi untuk menampilkan dialog opsi sortir
     private fun showSortOptions() {
-        val sortOptions = arrayOf("A-Z", "Z-A") // Opsi sortir yang tersedia
+        val sortOptions = arrayOf("A-Z", "Z-A") // Opsi sortir
         val sortDialog = AlertDialog.Builder(requireContext())
-        sortDialog.setTitle("Sort") // Judul dialog
+        sortDialog.setTitle("Sort")
         sortDialog.setItems(sortOptions) { _, which ->
-            // Menangani pemilihan opsi sortir
             when (which) {
-                0 -> menuViewModel.sortItems(MenuViewModel.SortOrder.A_TO_Z) // Urutkan A-Z
-                1 -> menuViewModel.sortItems(MenuViewModel.SortOrder.Z_TO_A) // Urutkan Z-A
+                0 -> menuViewModel.sortItems(MenuViewModel.SortOrder.A_TO_Z) // Sortir A-Z
+                1 -> menuViewModel.sortItems(MenuViewModel.SortOrder.Z_TO_A) // Sortir Z-A
             }
         }
         sortDialog.setNegativeButton("Cancel") { dialog, _ -> dialog.dismiss() } // Tombol batal
-        sortDialog.create().show() // Menampilkan dialog sortir
+        sortDialog.create().show()
     }
 
-    // Fungsi ini dipanggil saat fragment dihancurkan untuk membersihkan referensi binding
+    // Fungsi untuk membersihkan binding saat fragment dihancurkan
     override fun onDestroyView() {
         super.onDestroyView()
-        _binding = null // Melepas binding agar tidak terjadi kebocoran memori
+        _binding = null // Hindari kebocoran memori
     }
 }

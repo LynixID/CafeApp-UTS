@@ -7,14 +7,16 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.cafeapp.databinding.ActivityBantuanBinding
 
+// Aktivitas untuk halaman Bantuan yang menampilkan tombol untuk menghubungi melalui WhatsApp dan Instagram
 class BantuanActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityBantuanBinding
+    private lateinit var binding: ActivityBantuanBinding // Binding untuk layout
 
+    // Fungsi utama saat aktivitas dibuat
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityBantuanBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        binding = ActivityBantuanBinding.inflate(layoutInflater) // Mengatur binding layout
+        setContentView(binding.root) // Mengatur konten tampilan
 
         // Tombol WhatsApp
         binding.cardViewWA.setOnClickListener {
@@ -43,7 +45,7 @@ class BantuanActivity : AppCompatActivity() {
 
         // Tombol Back
         binding.buttonBack.setOnClickListener {
-            finish()
+            finish() // Menutup aktivitas dan kembali ke halaman sebelumnya
         }
     }
 }

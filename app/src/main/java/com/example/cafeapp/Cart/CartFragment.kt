@@ -10,61 +10,66 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.cafeapp.MenuDetail.AddToCardAdapter
+import com.example.cafeapp.MenuDetail.AddToCartAdapter
 import com.example.cafeapp.MenuDetail.CartItem
 import com.example.cafeapp.R
 import com.example.cafeapp.databinding.FragmentCartBinding
 
-class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener {
-    private lateinit var viewModel: CardViewModel
+class CartFragment : Fragment(), AddToCartAdapter.TotalPriceListener {
+    // Deklarasi variabel utama
+    private lateinit var viewModel: CartViewModel
     private lateinit var binding: FragmentCartBinding
-    private lateinit var adapter: AddToCardAdapter
+    private lateinit var adapter: AddToCartAdapter
 
+    // Fungsi untuk membuat tampilan fragment
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        // Inisialisasi binding dan ViewModel
         binding = FragmentCartBinding.inflate(inflater, container, false)
-        viewModel = ViewModelProvider(requireActivity())[CardViewModel::class.java]
+        viewModel = ViewModelProvider(requireActivity())[CartViewModel::class.java]
+
+        // Setup RecyclerView untuk menampilkan daftar item di keranjang
         setupRecyclerView()
 
+        // Observasi perubahan data di ViewModel
         viewModel.cartItems.observe(viewLifecycleOwner) { items ->
-            adapter.updateItems(items)
-            updateTotalPrice(items)
+            adapter.updateItems(items) // Perbarui item di adapter
+            updateTotalPrice(items) // Hitung ulang total harga
         }
 
+        // Tombol Checkout
         binding.btnCheckout.setOnClickListener {
             if (viewModel.cartItems.value.isNullOrEmpty()) {
                 Toast.makeText(requireContext(), "Keranjang kosong!", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            navigateToTransaksiFragment()
+            navigateToTransaksiFragment() // Navigasi ke fragment transaksi
         }
 
         return binding.root
     }
 
+    // Setup RecyclerView
     private fun setupRecyclerView() {
-        adapter = AddToCardAdapter(mutableListOf(), viewModel, this)
+        adapter = AddToCartAdapter(mutableListOf(), viewModel, this) // Inisialisasi adapter
         binding.recyclerView.adapter = adapter
-        binding.recyclerView.layoutManager = LinearLayoutManager(context)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context) // Gunakan layout manager linear
     }
 
+    // Fungsi untuk memperbarui total harga
     private fun updateTotalPrice(items: List<CartItem>) {
         var totalPrice = 0
         for (item in items) {
-            // Debug log untuk melihat nilai price sebelum diproses
-            Log.d("CartFragment", "Raw price: ${item.price}")
-
+            // Bersihkan format harga dari string
             val priceString = item.price
                 .replace("Rp ", "")
                 .replace(".0", "")
                 .replace(",", "")
                 .trim()
 
-            // Debug log untuk melihat string setelah dibersihkan
-            Log.d("CartFragment", "Cleaned price string: $priceString")
-
+            // Ubah harga menjadi integer
             val itemPrice = try {
                 priceString.toInt()
             } catch (e: NumberFormatException) {
@@ -72,22 +77,19 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener {
                 0
             }
 
-            // Debug log untuk melihat hasil perhitungan
-            Log.d("CartFragment", "Item: ${item.name}, Price: $itemPrice, Quantity: ${item.quantity}")
-
+            // Hitung total harga berdasarkan kuantitas
             totalPrice += itemPrice * item.quantity
         }
 
-        // Debug log untuk total akhir
-        Log.d("CartFragment", "Final total price: $totalPrice")
-
+        // Tampilkan total harga ke TextView
         binding.tvTotalPrice.text = "Rp ${String.format("%,d", totalPrice)}"
     }
 
+    // Fungsi untuk navigasi ke fragment transaksi
     private fun navigateToTransaksiFragment() {
         val cartItems = viewModel.cartItems.value ?: return
 
-        // Gunakan total yang sudah dihitung sebelumnya
+        // Hitung total harga
         var totalPrice = 0
         for (item in cartItems) {
             val priceString = item.price
@@ -105,27 +107,28 @@ class CartFragment : Fragment(), AddToCardAdapter.TotalPriceListener {
             totalPrice += itemPrice * item.quantity
         }
 
-        Log.d("CartFragment", "Total price before navigation: $totalPrice")
-
+        // Siapkan data untuk navigasi
         val cartItemsArray = cartItems.toTypedArray()
         val bundle = Bundle().apply {
             putParcelableArray("cart_items", cartItemsArray)
             putInt("total_price", totalPrice)
         }
 
-        // Navigate first
+        // Navigasi ke transaksi fragment
         findNavController().navigate(R.id.action_cartFragment_to_transaksiFragment, bundle)
 
-        // Then clear cart
+        // Kosongkan keranjang setelah navigasi
         viewModel.clearCart()
         CartManager.clear()
     }
 
+    // Fungsi untuk memperbarui data saat fragment kembali aktif
     override fun onResume() {
         super.onResume()
-        viewModel.refreshItems()
+        viewModel.refreshItems() // Segarkan item keranjang
     }
 
+    // Fungsi callback untuk memperbarui total harga
     override fun onTotalPriceUpdated(totalPrice: Double) {
         updateTotalPrice(viewModel.cartItems.value ?: listOf())
     }

@@ -1,19 +1,31 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
+    <!-- Tema dasar untuk aplikasi yang mengatur tampilan umum. -->
     <style name="Base.Theme.CafeApp" parent="Theme.Material3.DayNight.NoActionBar">
-        <!-- Customize your light theme here. -->
-        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
-        <item name="colorPrimary">#51AF63</item>
-        <item name="colorPrimaryVariant">#337E43</item>
-        <item name="colorSecondary">#6CA67C</item>
+        <!-- Tema yang menggunakan Material Design 3 dan mendukung mode terang dan gelap tanpa ActionBar. -->
 
-        <!-- Warna tambahan untuk elemen UI -->
+        <!-- Customize your light theme here. -->
+        <!-- Menyesuaikan tema terang aplikasi dengan warna dan elemen yang ditentukan. -->
+
+        <!-- Ganti warna utama aplikasi -->
+        <item name="colorPrimary">#51AF63</item> <!-- Ganti warna ini -->
+        <!-- Warna untuk variasi utama, sering digunakan untuk elemen yang lebih gelap dari warna utama -->
+        <item name="colorPrimaryVariant">#337E43</item> <!-- Ganti warna ini -->
+        <!-- Warna sekunder yang digunakan untuk elemen pendukung UI -->
+        <item name="colorSecondary">#6CA67C</item> <!-- Ganti warna ini -->
+
+        <!-- Warna untuk teks di atas elemen UI berwarna utama -->
         <item name="colorOnPrimary">#FFFFFF</item> <!-- Teks di atas warna utama -->
+        <!-- Warna untuk teks di atas elemen UI berwarna sekunder -->
         <item name="colorOnSecondary">#000000</item> <!-- Teks di atas warna sekunder -->
+
+        <!-- Mengatur warna status bar untuk tampilan yang lebih sesuai dengan tema -->
         <item name="android:statusBarColor" tools:targetApi="l">#23753A</item> <!-- Status bar -->
 
+        <!-- Warna untuk efek ripple pada elemen UI saat disentuh -->
         <item name="colorControlHighlight">#51AF63</item> <!-- Warna ripple -->
     </style>
 
+    <!-- Tema utama aplikasi yang mewarisi tema dasar -->
     <style name="Theme.CafeApp" parent="Base.Theme.CafeApp" />
 </resources>

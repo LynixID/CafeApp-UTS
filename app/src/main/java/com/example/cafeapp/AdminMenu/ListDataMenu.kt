@@ -15,18 +15,20 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.example.cafeapp.MenuDatabase.Menu
 import com.example.cafeapp.MenuDatabase.MenuViewModel
 import com.example.cafeapp.R
-import com.example.cafeapp.databinding.ActivityTestDatabase2Binding
+import com.example.cafeapp.databinding.ActivityListdatamenuBinding
 import com.example.cafeapp.databinding.ModalEditDataBinding
-import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import java.io.File
 import java.io.IOException
 
 class ListDataMenu : AppCompatActivity() {
-    private lateinit var binding: ActivityTestDatabase2Binding
-    private val menuViewModel: MenuViewModel by viewModels()
+    private lateinit var binding: ActivityListdatamenuBinding
+    private val menuViewModel: MenuViewModel by viewModels() // Menggunakan ViewModel untuk mengelola data menu
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageUri: Uri? = null
     private var selectedImageName: String? = null
@@ -42,38 +44,45 @@ class ListDataMenu : AppCompatActivity() {
                 selectedImageUri?.let { uri ->
                     val bitmap = getBitmapFromUri(this, uri)
                     if (bitmap != null) {
-                        selectedImageName = uri.lastPathSegment // Menggunakan nama file dari URI
+                        val imageName = "menu_${System.currentTimeMillis()}" // Nama file unik
+                        val savedImageName = menuViewModel.saveImageToInternalStorage(bitmap, imageName)
+                        if (savedImageName != null) {
+                            selectedImageName = savedImageName
+                        } else {
+                            Toast.makeText(this, "Gagal menyimpan gambar.", Toast.LENGTH_SHORT).show()
+                        }
                     }
                 }
             }
         }
 
         // Mengatur tampilan utama
-        binding = ActivityTestDatabase2Binding.inflate(layoutInflater)
+        binding = ActivityListdatamenuBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         binding.recyclerView1.layoutManager = LinearLayoutManager(this)
 
-        syncFirebaseToLocalDatabase()
+        syncFirebaseToLocalDatabase() // Sinkronisasi data Firebase ke database lokal
 
         // Observasi data menu dari database
         menuViewModel.getAllMakans().observe(this) { menus ->
             binding.recyclerView1.adapter = MenuAdminAdapter(menus, object : MenuAdminAdapter.OnItemClickListener {
                 override fun onEditClick(menu: Menu) {
-                    showEditDialogMakan(menu)
+                    showEditDialogMakan(menu) // Menampilkan dialog untuk mengedit data menu
                 }
 
                 override fun onDeleteClick(menu: Menu) {
-                    showConfirmationDialog(menu, "menus")
+                    showConfirmationDialog(menu, "menus") // Menampilkan dialog konfirmasi penghapusan
                 }
             })
         }
 
         binding.btnBack.setOnClickListener {
-            finish()
+            finish() // Kembali ke aktivitas sebelumnya
         }
     }
 
+    // Menampilkan dialog konfirmasi untuk menghapus data menu
     private fun showConfirmationDialog(item: Menu, table: String) {
         val itemName = item.nama
 
@@ -93,7 +102,6 @@ class ListDataMenu : AppCompatActivity() {
                         .addOnFailureListener {
                             Toast.makeText(this, "Gagal menghapus dari Firebase.", Toast.LENGTH_SHORT).show()
                         }
-
                     Toast.makeText(this, "Menu berhasil dihapus.", Toast.LENGTH_SHORT).show()
                 }
             }
@@ -102,6 +110,7 @@ class ListDataMenu : AppCompatActivity() {
             .show()
     }
 
+    // Menampilkan dialog untuk mengedit data menu
     private fun showEditDialogMakan(item: Menu) {
         val dialogView = LayoutInflater.from(this).inflate(R.layout.modal_edit_data, null)
         val dialogBinding = ModalEditDataBinding.bind(dialogView)
@@ -111,9 +120,14 @@ class ListDataMenu : AppCompatActivity() {
         dialogBinding.editHarga.setText(item.harga.toString())
         dialogBinding.editDeskripsi.setText(item.deskripsi)
 
-        // Menampilkan gambar awal
-        val imgPath = Uri.parse(item.namaFoto)
-        dialogBinding.editFoto.setImageURI(imgPath)
+        // Menampilkan gambar awal menggunakan Glide
+        val imgPath = File(filesDir, "app_images/${item.namaFoto}")
+        if (imgPath.exists()) {
+            Glide.with(this)
+                .load(Uri.fromFile(imgPath))  // Memuat gambar dari file
+                .placeholder(R.drawable.placeholder_image)  // Gambar placeholder
+                .into(dialogBinding.editFoto)  // Menampilkan gambar pada ImageView
+        }
 
         // Ganti gambar
         dialogBinding.editFoto.setOnClickListener {
@@ -137,11 +151,11 @@ class ListDataMenu : AppCompatActivity() {
                     return@setPositiveButton
                 }
 
-                val finalImageName = selectedImageName ?: item.namaFoto // Menggunakan gambar baru jika ada, atau gambar lama
+                val finalImageName = selectedImageName ?: item.namaFoto
 
                 // Buat objek Menu baru dengan data yang diperbarui
                 val updatedMenu = Menu(
-                    _id = item._id,
+                    _id = item._id, // Gunakan ID yang sama untuk memperbarui menu
                     nama = updatedName,
                     harga = updatedHarga,
                     deskripsi = updatedDeskripsi,
@@ -149,14 +163,11 @@ class ListDataMenu : AppCompatActivity() {
                     kategori = item.kategori
                 )
 
-                // Simpan ke database lokal
-                menuViewModel.updateMakan(
-                    id = updatedMenu._id,
-                    name = updatedMenu.nama,
-                    harga = updatedMenu.harga,
-                    deskripsi = updatedMenu.deskripsi,
-                    namaFoto = updatedMenu.namaFoto
-                )
+                // Hapus data lama berdasarkan ID sebelum menyimpan yang baru
+                menuViewModel.deleteMakanById(item._id) // Menghapus menu lama dari database lokal
+
+                // Simpan menu baru ke database lokal
+                menuViewModel.insertMakan(updatedMenu)
 
                 // Simpan ke Firebase
                 firebaseDatabase.child(updatedMenu._id.toString()).setValue(updatedMenu)
@@ -173,17 +184,19 @@ class ListDataMenu : AppCompatActivity() {
             .show()
     }
 
+    // Sinkronisasi data dari Firebase ke database lokal
     private fun syncFirebaseToLocalDatabase() {
         firebaseDatabase.get().addOnSuccessListener { snapshot ->
             val menus = snapshot.children.mapNotNull { it.getValue(Menu::class.java) }
             menus.forEach { menu ->
-                menuViewModel.insertMakan(menu) // Sinkronkan ke database lokal
+                menuViewModel.insertMakan(menu) // Sinkronkan data baru ke database lokal
             }
-        }.addOnFailureListener {
+    }.addOnFailureListener {
             Toast.makeText(this, "Gagal sinkronisasi dari Firebase.", Toast.LENGTH_SHORT).show()
         }
     }
 
+    // Mendapatkan Bitmap dari URI
     private fun getBitmapFromUri(context: ListDataMenu, uri: Uri): Bitmap? {
         return try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {

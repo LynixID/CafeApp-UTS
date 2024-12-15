@@ -29,7 +29,7 @@ interface MenuDAO {
 
     // Fungsi insert untuk menambahkan satu menu, bersifat suspend untuk menghindari pemblokiran thread utama.
     @Insert
-    suspend fun insert(menu: Menu)
+    suspend fun insert(menu: Menu): Long
 
     // Menghapus satu menu berdasarkan objek yang diberikan
     // Fungsi ini menghapus menu berdasarkan objek `menu` yang diberikan.

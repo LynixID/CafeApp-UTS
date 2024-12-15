@@ -188,20 +188,25 @@ class TambahMenu : AppCompatActivity() {
                     kategori = categoryEnum,
                     namaFoto = imagePath!!
                 )
-                menuViewModel.insertMakan(menu)
 
-                val menuId = menuRef.push().key ?: return
-                menuRef.child(menuId).setValue(menu)
-                    .addOnSuccessListener {
-                        Toast.makeText(this, "Menu berhasil disimpan di Firebase", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this, ListDataMenu::class.java)
-                        startActivity(intent)
-                    }
-                    .addOnFailureListener { e ->
-                        Toast.makeText(this, "Gagal menyimpan ke Firebase: ${e.message}", Toast.LENGTH_SHORT).show()
-                    }
+                // Simpan ke database lokal dan gunakan _id yang dihasilkan
+                menuViewModel.insertMakan(menu) { generatedId ->
+                    menu._id = generatedId.toInt() // Tetapkan _id yang dihasilkan dari Room
 
-                clearInputFields()
+                    // Simpan ke Firebase dengan _id yang diperbarui
+                    val menuId = generatedId.toString() // Gunakan _id sebagai key di Firebase
+                    menuRef.child(menuId).setValue(menu)
+                        .addOnSuccessListener {
+                            Toast.makeText(this, "Menu berhasil disimpan di Firebase", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this, ListDataMenu::class.java)
+                            startActivity(intent)
+                        }
+                        .addOnFailureListener { e ->
+                            Toast.makeText(this, "Gagal menyimpan ke Firebase: ${e.message}", Toast.LENGTH_SHORT).show()
+                        }
+
+                    clearInputFields()
+                }
             } else {
                 Toast.makeText(this, "Kategori tidak valid", Toast.LENGTH_SHORT).show()
             }
@@ -209,6 +214,7 @@ class TambahMenu : AppCompatActivity() {
             Toast.makeText(this, "Mohon lengkapi semua field", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     // Fungsi untuk membersihkan input setelah data disimpan
     private fun clearInputFields() {

@@ -32,7 +32,7 @@ class ListDataMenu : AppCompatActivity() {
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private var selectedImageUri: Uri? = null
     private var selectedImageName: String? = null
-    private val firebaseDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("list menu")
+    private val firebaseDatabase: DatabaseReference = FirebaseDatabase.getInstance().getReference("menu")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -62,7 +62,7 @@ class ListDataMenu : AppCompatActivity() {
 
         binding.recyclerView1.layoutManager = LinearLayoutManager(this)
 
-        syncFirebaseToLocalDatabase() // Sinkronisasi data Firebase ke database lokal
+//        syncFirebaseToLocalDatabase() // Sinkronisasi data Firebase ke database lokal
 
         // Observasi data menu dari database
         menuViewModel.getAllMakans().observe(this) { menus ->
@@ -167,7 +167,7 @@ class ListDataMenu : AppCompatActivity() {
                 menuViewModel.deleteMakanById(item._id) // Menghapus menu lama dari database lokal
 
                 // Simpan menu baru ke database lokal
-                menuViewModel.insertMakan(updatedMenu)
+                menuViewModel.insertUpdateMakan(updatedMenu)
 
                 // Simpan ke Firebase
                 firebaseDatabase.child(updatedMenu._id.toString()).setValue(updatedMenu)
@@ -189,7 +189,7 @@ class ListDataMenu : AppCompatActivity() {
         firebaseDatabase.get().addOnSuccessListener { snapshot ->
             val menus = snapshot.children.mapNotNull { it.getValue(Menu::class.java) }
             menus.forEach { menu ->
-                menuViewModel.insertMakan(menu) // Sinkronkan data baru ke database lokal
+                menuViewModel.insertUpdateMakan(menu) // Sinkronkan data baru ke database lokal
             }
     }.addOnFailureListener {
             Toast.makeText(this, "Gagal sinkronisasi dari Firebase.", Toast.LENGTH_SHORT).show()

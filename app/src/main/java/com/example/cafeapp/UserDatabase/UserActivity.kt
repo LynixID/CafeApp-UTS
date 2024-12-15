@@ -114,6 +114,7 @@ class UserActivity : AppCompatActivity() {
             binding.update.visibility = View.VISIBLE
 
             Log.d("selecteduser", selectedUser.key)
+//            Set user terpilih ke variable selectedUserKey
             selectedUserKey = selectedUser.key
         }
 
